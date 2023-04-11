@@ -19,13 +19,17 @@ body {
   padding-top: 40px;
   padding-bottom: 40px;
   color: #fff;
-  /* background-color: #f5f5f5; */
-  background: var(--eerie-black);
+  overflow: hidden;
+  background: url("/assets/images/bg.jpg");
+  background-position: center;
+  /* background: var(--eerie-black); */
 }
 
 .form-signin {
   max-width: 330px;
   padding: 15px;
+  border-radius: 10px;
+  background: var(--eerie-black);
 }
 
 .form-signin .form-floating:focus-within {
