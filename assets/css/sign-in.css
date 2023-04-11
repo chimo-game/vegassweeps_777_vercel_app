@@ -32,6 +32,16 @@ body {
   background: var(--eerie-black);
 }
 
+.congrats {
+  color: #ff8086;
+}
+
+.accepted {
+  max-width: 480px;
+  background: var(--eerie-black);
+  border-radius: 10px;
+}
+
 .form-signin .form-floating:focus-within {
   z-index: 2;
 }
