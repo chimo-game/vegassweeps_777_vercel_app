@@ -20,7 +20,19 @@ body {
   padding-bottom: 40px;
   color: #fff;
   overflow: hidden;
-  background: url("/assets/images/bg.jpg");
+
+  background-color: #99ffe0;
+  background-image: radial-gradient(
+      at 49% 8%,
+      hsla(234, 83%, 73%, 1) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 48% 65%, hsla(199, 78%, 65%, 1) 0px, transparent 50%),
+    radial-gradient(at 45% 0%, hsla(117, 74%, 79%, 1) 0px, transparent 50%),
+    radial-gradient(at 79% 19%, hsla(77, 65%, 67%, 1) 0px, transparent 50%),
+    radial-gradient(at 12% 85%, hsla(265, 80%, 66%, 1) 0px, transparent 50%),
+    radial-gradient(at 69% 27%, hsla(152, 87%, 61%, 1) 0px, transparent 50%),
+    radial-gradient(at 15% 70%, hsla(251, 63%, 65%, 1) 0px, transparent 50%);
   background-position: center;
   /* background: var(--eerie-black); */
 }

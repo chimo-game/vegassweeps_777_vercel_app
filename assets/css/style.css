@@ -18,10 +18,10 @@
   --selective-yellow: hsl(42, 100%, 56%);
   --roman-silver: hsl(240, 6%, 51%);
   --roman-silver_10: hsla(240, 6%, 51%, 0.1);
-  --light-coral: #ff8086;
+  --light-coral: #ffff;
   --oxford-blue: hsl(224, 53%, 10%);
   --light-gray: hsl(0, 0%, 80%);
-  --keppei: hsl(173, 60%, 47%);
+  --keppei: #000;
   --white: hsl(0, 0%, 100%);
   --black: hsl(0, 0%, 0%);
   --black_10: hsla(0, 0%, 0%, 0.1);
@@ -121,7 +121,18 @@ html {
 }
 
 body {
-  background-color: var(--white);
+  background-color: #99ffe0;
+  background-image: radial-gradient(
+      at 49% 8%,
+      hsla(234, 83%, 73%, 1) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 48% 65%, hsla(199, 78%, 65%, 1) 0px, transparent 50%),
+    radial-gradient(at 45% 0%, hsla(117, 74%, 79%, 1) 0px, transparent 50%),
+    radial-gradient(at 79% 19%, hsla(77, 65%, 67%, 1) 0px, transparent 50%),
+    radial-gradient(at 12% 85%, hsla(265, 80%, 66%, 1) 0px, transparent 50%),
+    radial-gradient(at 69% 27%, hsla(152, 87%, 61%, 1) 0px, transparent 50%),
+    radial-gradient(at 15% 70%, hsla(251, 63%, 65%, 1) 0px, transparent 50%);
   /* background-image: url("/assets/images/bg.jpg"); */
   color: var(--roman-silver);
   font-size: 1.6rem;
@@ -135,6 +146,9 @@ body {
   gap: 5px;
   justify-content: center;
   align-items: center;
+  padding: 10px;
+  background: #fff;
+  font-weight: 700;
 }
 #homepage_hero_party img {
   width: 24px;
@@ -269,7 +283,7 @@ body.nav-active {
 }
 
 .headline-md .has-after::after {
-  background-image: url("../images/line-shape.svg");
+  /* background-image: url("../images/line-shape.svg"); */
   width: 100%;
   height: 100%;
   top: 0;
