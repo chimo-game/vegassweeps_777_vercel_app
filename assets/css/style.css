@@ -121,23 +121,9 @@ html {
 }
 
 body {
-  background-color: #99ffe0;
-  background-image: radial-gradient(
-      at 49% 8%,
-      hsla(234, 83%, 73%, 1) 0px,
-      transparent 50%
-    ),
-    radial-gradient(at 48% 65%, hsla(199, 78%, 65%, 1) 0px, transparent 50%),
-    radial-gradient(at 45% 0%, hsla(117, 74%, 79%, 1) 0px, transparent 50%),
-    radial-gradient(at 79% 19%, hsla(77, 65%, 67%, 1) 0px, transparent 50%),
-    radial-gradient(at 12% 85%, hsla(265, 80%, 66%, 1) 0px, transparent 50%),
-    radial-gradient(at 69% 27%, hsla(152, 87%, 61%, 1) 0px, transparent 50%),
-    radial-gradient(at 15% 70%, hsla(251, 63%, 65%, 1) 0px, transparent 50%);
-  /* background-image: url("/assets/images/bg.jpg"); */
-  color: var(--roman-silver);
-  font-size: 1.6rem;
-  line-height: 1.5;
-  overflow: hidden;
+  background-image: url("/assets/images/1x/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #homepage_hero_party,
@@ -179,7 +165,7 @@ body.nav-active {
 .headline-md,
 .headline-sm,
 .title-lg {
-  color: var(--oxford-blue);
+  color: #fff;
   font-weight: var(--fw-700);
 }
 
@@ -260,13 +246,13 @@ body.nav-active {
 }
 
 :is(.headline-lg, .headline-md) .span {
-  color: var(--light-coral);
+  color: #ef0896;
   display: inline;
 }
 
 .section-subtitle {
   font-weight: var(--fw-600);
-  color: var(--keppei);
+  color: #fff;
   margin-block-end: 4px;
 }
 
