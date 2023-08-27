@@ -107,14 +107,25 @@ li {
 
 .filter-btn {
   position: relative;
-  background: #690754;
+  background: #b0058b;
   color: var(--light-gray);
   font-size: var(--fs-10);
   font-weight: var(--fw-700);
   text-transform: uppercase;
   padding: 17px 25px;
   border-radius: 4px;
-  box-shadow: inset 0 3px 7px hsla(0, 0%, 0%, 0.8);
+  box-shadow: inset 0 3px 7px var(--light-coral);
+}
+.withdraw {
+  position: relative;
+  background: #1ae008;
+  color: var(--light-coral);
+  font-size: var(--fs-10);
+  font-weight: var(--fw-700);
+  text-transform: uppercase;
+  padding: 17px 25px;
+  border-radius: 4px;
+  box-shadow: inset 0 3px 7px var(--light-coral);
 }
 .sign-up {
   position: relative;
