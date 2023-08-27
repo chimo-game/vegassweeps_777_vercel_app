@@ -107,8 +107,8 @@ li {
 
 .filter-btn {
   position: relative;
-  background: #b0058b;
-  color: var(--light-gray);
+  background: #f40478;
+  color: var(--light-coral);
   font-size: var(--fs-10);
   font-weight: var(--fw-700);
   text-transform: uppercase;
@@ -170,7 +170,7 @@ html {
 }
 
 body {
-  background-image: url("/assets/images/1x/bg.jpg");
+  background-image: url("/assets/images/bg4.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }
