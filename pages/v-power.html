@@ -1,159 +1,1473 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.108.0">
-
-
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>V Power</title>
-
-
-    <!-- <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Primary Meta Tags -->
+    <title>Join V Power - Exclusive Gaming Experience | Vegas Sweeps</title>
+    <meta name="title" content="Join V Power - Exclusive Gaming Experience | Vegas Sweeps">
+    <meta name="description" content="Sign up for V Power today and enjoy exclusive bonuses, fast payouts, and premium gaming experience. Secure account creation with instant access.">
+    <meta name="keywords" content="V Power, online gaming, sign up, join, gaming platform, exclusive bonuses, Vegas Sweeps">
+    <meta name="author" content="Vegas Sweeps">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vegassweeps.com/v-power/">
+    <meta property="og:title" content="Join V Power - Exclusive Gaming Experience | Vegas Sweeps">
+    <meta property="og:description" content="Sign up for V Power today and enjoy exclusive bonuses, fast payouts, and premium gaming experience.">
+    <meta property="og:image" content="https://vegassweeps.com/assets/images/games/vpower.gif">
+    <meta property="og:site_name" content="Vegas Sweeps">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://vegassweeps.com/v-power/">
+    <meta property="twitter:title" content="Join V Power - Exclusive Gaming Experience | Vegas Sweeps">
+    <meta property="twitter:description" content="Sign up for V Power and claim your exclusive welcome bonus today!">
+    <meta property="twitter:image" content="https://vegassweeps.com/assets/images/games/vpower.gif">
+    
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "V Power - Vegas Sweeps",
+        "description": "Sign up for V Power and enjoy exclusive bonuses and gaming experience",
+        "url": "https://vegassweeps.com/v-power/",
+        "image": "https://vegassweeps.com/assets/images/games/vpower.gif",
+        "applicationCategory": "GameApplication",
+        "offers": {
+            "@type": "Offer",
+            "description": "Exclusive welcome bonuses and promotions",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "2500",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "Customer Support",
+            "email": "support@vegassweeps.com"
         }
-      }
-
-      .b-example-divider {
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
+    }
+    </script>
+    
+    <!-- Additional Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a2e">
+    <link rel="canonical" href="https://vegassweeps.com/v-power/">
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    
+    <style>
+        /* ========================================
+           GLOBAL STYLES & RESET
+           ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #ec4899;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f97316;
+            --dark-bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --gradient-accent: linear-gradient(135deg, #f59e0b 0%, #ec4899 100%);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        a:hover {
+            color: var(--secondary-color);
+        }
+        
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            outline: none;
+        }
+        
+        input, textarea, select {
+            font-family: inherit;
+        }
+        
+        /* ========================================
+           LAYOUT
+           ======================================== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .content-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .game-showcase {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .game-showcase img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+        
+        .game-showcase img:hover {
+            transform: scale(1.05);
+        }
+        
+        .game-showcase h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .game-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .feature-badge {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        
+        .feature-badge:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.6);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+        
+        /* ========================================
+           FORM STYLES
+           ======================================== */
+        .form-container {
+            backdrop-filter: blur(10px);
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+            animation: gradientShift 6s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, 20px); }
+        }
+        
+        .form-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .form-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .form-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .form-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            width: 25%;
+            transition: var(--transition);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        /* Form Sections */
+        .form-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .form-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Form Group */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group.two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+        
+        .form-group .label-hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-left: 5px;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.5);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .form-group input.error,
+        .form-group select.error {
+            border-color: var(--danger-color);
+            background: rgba(239, 68, 68, 0.05);
+        }
+        
+        .form-group input.error:focus {
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+        
+        .form-group input.success {
+            border-color: var(--success-color);
+            background: rgba(16, 185, 129, 0.05);
+        }
+        
+        /* Error and Success Messages */
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .form-group.error .error-message {
+            display: block;
+        }
+        
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+            padding: 12px 15px;
+            color: var(--success-color);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        /* Promo Code Section */
+        .promo-section {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .promo-section h4 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .promo-group {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+        }
+        
+        .promo-input {
+            padding: 10px 12px;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            border-radius: 8px;
+            background: rgba(15, 23, 42, 0.5);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .promo-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .promo-apply-btn {
+            padding: 10px 20px;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            border-radius: 8px;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .promo-apply-btn:hover {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: rgba(99, 102, 241, 0.6);
+        }
+        
+        .promo-apply-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .promo-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .promo-badge {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .promo-badge:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(139, 92, 246, 0.25) 100%);
+            border-color: rgba(99, 102, 241, 0.6);
+        }
+        
+        .promo-badge.applied {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(34, 197, 94, 0.2) 100%);
+            border-color: var(--success-color);
+            color: var(--success-color);
+        }
+        
+        /* Payment Methods */
+        .payment-methods {
+            margin-bottom: 20px;
+        }
+        
+        .payment-methods label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+        }
+        
+        .payment-option {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .payment-option input[type="radio"] {
+            display: none;
+        }
+        
+        .payment-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+            min-height: 100px;
+        }
+        
+        .payment-option input[type="radio"]:checked + .payment-label {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+        }
+        
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .payment-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+        }
+        
+        /* Checkboxes and Radio */
+        .checkbox-group,
+        .radio-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-group input[type="checkbox"],
+        .radio-group input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+        
+        .checkbox-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-label a {
+            color: var(--primary-color);
+        }
+        
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 48px;
+            flex: 1;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+        
+        .btn-loading .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Loading Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(99, 102, 241, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        .modal-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        /* Confetti Container */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #f59e0b;
+            pointer-events: none;
+        }
+        
+        /* Notifications */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: var(--text-primary);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease-out;
+            z-index: 2000;
+            max-width: 350px;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .notification.success {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .notification.error {
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .notification.info {
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        /* ========================================
+           RESPONSIVE DESIGN
+           ======================================== */
+        @media (max-width: 1024px) {
+            .wrapper {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 20px;
+            }
+            
+            .game-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .promo-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .wrapper {
+                min-height: auto;
+                padding: 20px 15px;
+            }
+            
+            .form-container {
+                padding: 25px;
+            }
+            
+            .form-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .form-group.two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .game-showcase {
+                padding: 20px;
+            }
+            
+            .game-showcase h2 {
+                font-size: 1.8rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .promo-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .promo-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .notification {
+                bottom: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .game-showcase img {
+                max-width: 280px;
+            }
+            
+            .game-showcase h2 {
+                font-size: 1.4rem;
+            }
+            
+            .form-group label {
+                font-size: 0.9rem;
+            }
+            
+            .form-group input,
+            .form-group select {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .form-header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .payment-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-label {
+                min-height: 80px;
+            }
+        }
+        
+        /* ========================================
+           ACCESSIBILITY
+           ======================================== */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        @media (prefers-color-scheme: light) {
+            :root {
+                --dark-bg: #f8f9fa;
+                --card-bg: rgba(255, 255, 255, 0.7);
+                --text-primary: #1e293b;
+                --text-secondary: #64748b;
+                --text-muted: #94a3b8;
+                --border-color: #e2e8f0;
+            }
+            
+            body {
+                background: linear-gradient(135deg, #f0f4f8 0%, #e9ecef 50%, #f0f4f8 100%);
+            }
+        }
     </style>
-
-    <script type="text/javascript">
-      var RpRxd_IXQ_xrlZyc = {
-        "it": 4145213,
-        "key": "3b975"
-      };
-    </script>
-    <script src="https://d1xv7hxes9rviq.cloudfront.net/f8f3321.js"></script>
-
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Left Section: Game Showcase -->
+        <div class="content-section">
+            <div class="game-showcase">
+                <img src="/assets/images/games/vpower.gif" alt="V Power Gaming Platform">
+                <h2>V Power</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                    Premium Gaming Experience with Exclusive Rewards
+                </p>
+                <div class="game-features">
+                    <div class="feature-badge">✓ Instant Payouts</div>
+                    <div class="feature-badge">✓ 24/7 Support</div>
+                    <div class="feature-badge">✓ Secure Gaming</div>
+                    <div class="feature-badge">✓ Mobile Friendly</div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">Active Players</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">$50M+</div>
+                        <div class="stat-label">Paid Out</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">4.8★</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Section: Signup Form -->
+        <div class="content-section">
+            <div class="form-container">
+                <div class="form-wrapper">
+                    <div class="form-header">
+                        <h1>Join V Power</h1>
+                        <p>Quick signup • Verify account • Claim bonus</p>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="stepCounter">Step 1 of 4</span>
+                            <span id="progressPercent">25%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Success Message -->
+                    <div class="success-message" id="successMessage">
+                        ✓ Account created successfully! You'll be redirected shortly.
+                    </div>
+                    
+                    <form id="signupForm" novalidate>
+                        <!-- Step 1: Personal Information -->
+                        <div class="form-section active" data-step="1">
+                            <div class="form-group two-column">
+                                <div>
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" placeholder="John" required>
+                                    <div class="error-message">Please enter your first name</div>
+                                </div>
+                                <div>
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+                                    <div class="error-message">Please enter your last name</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                                <div class="error-message">Please enter a valid email address</div>
+                            </div>
+                            
+                            <div class="form-group two-column">
+                                <div>
+                                    <label for="phone">Phone Number *</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567" required>
+                                    <div class="error-message">Please enter a valid phone number</div>
+                                </div>
+                                <div>
+                                    <label for="dob">Date of Birth * <span class="label-hint">(Must be 18+)</span></label>
+                                    <input type="date" id="dob" name="dob" required>
+                                    <div class="error-message">Must be 18 years or older</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2: Account Setup -->
+                        <div class="form-section" data-step="2">
+                            <div class="form-group">
+                                <label for="username">Username *</label>
+                                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                                <div class="error-message">Username must be 4-20 characters</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="password">Password *</label>
+                                <input type="password" id="password" name="password" placeholder="Create a strong password" required>
+                                <div class="error-message">Password must be at least 8 characters</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password *</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                                <div class="error-message">Passwords do not match</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="country">Country *</label>
+                                <select id="country" name="country" required>
+                                    <option value="">Select your country</option>
+                                    <option value="us">United States</option>
+                                    <option value="ca">Canada</option>
+                                    <option value="uk">United Kingdom</option>
+                                    <option value="au">Australia</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <div class="error-message">Please select your country</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3: Promo Code & Payment -->
+                        <div class="form-section" data-step="3">
+                            <div class="promo-section">
+                                <h4>🎁 Apply Promo Code (Optional)</h4>
+                                <div class="promo-group">
+                                    <input type="text" id="promoCode" class="promo-input" placeholder="Enter code" maxlength="20">
+                                    <button type="button" class="promo-apply-btn" id="applyPromoBtn">APPLY</button>
+                                </div>
+                                <div class="promo-list">
+                                    <div class="promo-badge" onclick="applyPromo('CLAIM10')">
+                                        <strong>CLAIM10</strong><br><small>+10 Bonus</small>
+                                    </div>
+                                    <div class="promo-badge" onclick="applyPromo('FREEPLAY')">
+                                        <strong>FREEPLAY</strong><br><small>Free Play</small>
+                                    </div>
+                                    <div class="promo-badge" onclick="applyPromo('BONUS')">
+                                        <strong>BONUS</strong><br><small>+25 Bonus</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Preferred Payment Method *</label>
+                                <div class="payment-methods">
+                                    <div class="payment-grid">
+                                        <div class="payment-option">
+                                            <input type="radio" id="cashapp" name="payment" value="cashapp" required>
+                                            <label for="cashapp" class="payment-label">
+                                                <div class="payment-icon">💵</div>
+                                                <div class="payment-name">CashApp</div>
+                                            </label>
+                                        </div>
+                                        <div class="payment-option">
+                                            <input type="radio" id="venmo" name="payment" value="venmo" required>
+                                            <label for="venmo" class="payment-label">
+                                                <div class="payment-icon">📱</div>
+                                                <div class="payment-name">Venmo</div>
+                                            </label>
+                                        </div>
+                                        <div class="payment-option">
+                                            <input type="radio" id="paypal" name="payment" value="paypal" required>
+                                            <label for="paypal" class="payment-label">
+                                                <div class="payment-icon">🅿️</div>
+                                                <div class="payment-name">PayPal</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 4: Terms & Confirmation -->
+                        <div class="form-section" data-step="4">
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="termsCheckbox" name="terms" required>
+                                    <label for="termsCheckbox" class="checkbox-label">
+                                        I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a> *
+                                    </label>
+                                </div>
+                                <div class="error-message">You must accept the terms to continue</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="promotionCheckbox" name="promotion">
+                                    <label for="promotionCheckbox" class="checkbox-label">
+                                        Send me exclusive offers and updates
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div style="background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 15px; margin-top: 20px;">
+                                <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                                    <strong>Summary:</strong><br>
+                                    Username: <span id="summaryUsername" style="color: var(--primary-color); font-weight: 600;">—</span><br>
+                                    Email: <span id="summaryEmail" style="color: var(--primary-color); font-weight: 600;">—</span><br>
+                                    Payment: <span id="summaryPayment" style="color: var(--primary-color); font-weight: 600;">—</span><br>
+                                    Promo: <span id="summaryPromo" style="color: var(--success-color); font-weight: 600;">None</span>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Navigation Buttons -->
+                        <div class="button-group">
+                            <button type="button" class="btn btn-outline" id="prevBtn" onclick="previousStep()" style="display:none;">
+                                ← Previous
+                            </button>
+                            <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+                                Next →
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn" style="display:none;">
+                                Create Account
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <p style="text-align: center; color: var(--text-muted); margin-top: 20px; font-size: 0.9rem;">
+                        Already have an account? <a href="/sign-in">Sign in here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Modal -->
+    <div class="modal" id="loadingModal">
+        <div class="modal-content">
+            <div class="modal-spinner"></div>
+            <div class="modal-text">Creating your account...</div>
+        </div>
+    </div>
+    
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+    
     <script>
-      function CPABuildComplete() {
-        alert("Confirmed! you're a real person")
-      }
+        // ========================================
+        // FORM STATE MANAGEMENT
+        // ========================================
+        const formState = {
+            step: 1,
+            data: {
+                firstName: '',
+                lastName: '',
+                email: '',
+                phone: '',
+                dob: '',
+                username: '',
+                password: '',
+                confirmPassword: '',
+                country: '',
+                payment: '',
+                promo: ''
+            },
+            errors: {}
+        };
+        
+        const VALID_PROMOS = {
+            'CLAIM10': { bonus: 10, label: '+10 Bonus' },
+            'FREEPLAY': { bonus: 0, label: 'Free Play' },
+            'BONUS': { bonus: 25, label: '+25 Bonus' }
+        };
+        
+        // ========================================
+        // FORM VALIDATION
+        // ========================================
+        const validators = {
+            firstName: (value) => value.trim().length >= 2,
+            lastName: (value) => value.trim().length >= 2,
+            email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+            phone: (value) => /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/.test(value),
+            dob: (value) => {
+                const birthDate = new Date(value);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                return age >= 18 && age <= 120;
+            },
+            username: (value) => /^[a-zA-Z0-9_]{4,20}$/.test(value),
+            password: (value) => value.length >= 8,
+            confirmPassword: (value) => value === document.getElementById('password').value,
+            country: (value) => value.length > 0,
+            payment: (value) => value.length > 0,
+            termsCheckbox: (value) => document.getElementById('termsCheckbox').checked
+        };
+        
+        // ========================================
+        // UTILITY FUNCTIONS
+        // ========================================
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        function createConfetti() {
+            const container = document.getElementById('confettiContainer');
+            const colors = ['#f59e0b', '#10b981', '#6366f1', '#ec4899', '#f97316'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animation = `fall ${2 + Math.random() * 1}s linear forwards`;
+                container.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+            @keyframes slideOut {
+                to {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // ========================================
+        // STEP NAVIGATION
+        // ========================================
+        function updateProgress() {
+            const progress = (formState.step / 4) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('stepCounter').textContent = `Step ${formState.step} of 4`;
+            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+        }
+        
+        function showStep(step) {
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelector(`[data-step="${step}"]`).classList.add('active');
+            
+            // Update buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = step > 1 ? 'flex' : 'none';
+            nextBtn.style.display = step < 4 ? 'flex' : 'none';
+            submitBtn.style.display = step === 4 ? 'flex' : 'none';
+            
+            updateProgress();
+        }
+        
+        function validateStep(step) {
+            const fieldsToValidate = {
+                1: ['firstName', 'lastName', 'email', 'phone', 'dob'],
+                2: ['username', 'password', 'confirmPassword', 'country'],
+                3: ['payment'],
+                4: ['termsCheckbox']
+            };
+            
+            const fields = fieldsToValidate[step];
+            let isValid = true;
+            
+            fields.forEach(field => {
+                const input = document.getElementById(field);
+                const value = field === 'termsCheckbox' ? document.getElementById(field).checked : document.getElementById(field).value;
+                
+                if (!validators[field](value)) {
+                    isValid = false;
+                    input.parentElement.classList.add('error');
+                } else {
+                    input.parentElement.classList.remove('error');
+                    input.classList.add('success');
+                }
+            });
+            
+            return isValid;
+        }
+        
+        function nextStep() {
+            if (validateStep(formState.step)) {
+                if (formState.step < 4) {
+                    formState.step++;
+                    showStep(formState.step);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+        }
+        
+        function previousStep() {
+            if (formState.step > 1) {
+                formState.step--;
+                showStep(formState.step);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        // ========================================
+        // PROMO CODE HANDLING
+        // ========================================
+        function applyPromo(code) {
+            if (VALID_PROMOS[code]) {
+                formState.data.promo = code;
+                document.getElementById('promoCode').value = code;
+                
+                // Update UI
+                document.querySelectorAll('.promo-badge').forEach(badge => {
+                    badge.classList.remove('applied');
+                });
+                event.target.closest('.promo-badge').classList.add('applied');
+                
+                showNotification(`✓ Promo code "${code}" applied!`, 'success');
+                updateSummary();
+            }
+        }
+        
+        document.getElementById('applyPromoBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            const code = document.getElementById('promoCode').value.toUpperCase();
+            if (code && VALID_PROMOS[code]) {
+                applyPromo(code);
+            } else {
+                showNotification('Invalid promo code', 'error');
+            }
+        });
+        
+        // ========================================
+        // FORM SUBMISSION
+        // ========================================
+        function updateSummary() {
+            document.getElementById('summaryUsername').textContent = document.getElementById('username').value || '—';
+            document.getElementById('summaryEmail').textContent = document.getElementById('email').value || '—';
+            document.getElementById('summaryPayment').textContent = document.getElementById('payment').value?.toUpperCase() || '—';
+            document.getElementById('summaryPromo').textContent = formState.data.promo ? formState.data.promo + ` (${VALID_PROMOS[formState.data.promo].label})` : 'None';
+        }
+        
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!validateStep(4)) {
+                showNotification('Please accept the terms to continue', 'error');
+                return;
+            }
+            
+            // Collect form data
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                dob: document.getElementById('dob').value,
+                username: document.getElementById('username').value,
+                country: document.getElementById('country').value,
+                payment: document.getElementById('payment').value,
+                promo: formState.data.promo,
+                game: 'v-power',
+                terms: document.getElementById('termsCheckbox').checked,
+                marketing: document.getElementById('promotionCheckbox').checked
+            };
+            
+            // Show loading modal
+            document.getElementById('loadingModal').classList.add('active');
+            
+            // Simulate API call
+            setTimeout(() => {
+                document.getElementById('loadingModal').classList.remove('active');
+                document.getElementById('successMessage').classList.add('show');
+                createConfetti();
+                showNotification('✓ Account created successfully!', 'success');
+                
+                // Log submission (in production, send to backend)
+                console.log('Account Created:', formData);
+                
+                // Redirect after success
+                setTimeout(() => {
+                    // In production: window.location.href = '/dashboard';
+                }, 2000);
+            }, 2000);
+        });
+        
+        // ========================================
+        // EVENT LISTENERS
+        // ========================================
+        document.querySelectorAll('input, select').forEach(field => {
+            field.addEventListener('change', () => {
+                formState.data[field.name] = field.value;
+                if (formState.step === 4) {
+                    updateSummary();
+                }
+            });
+            
+            field.addEventListener('blur', () => {
+                field.parentElement.classList.remove('error');
+            });
+        });
+        
+        // Initialize
+        showStep(1);
+        updateProgress();
     </script>
-
-    <script>
-      document.addEventListener('contextmenu', (e) => e.preventDefault());
-
-      function ctrlShiftKey(e, keyCode) {
-        return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
-      }
-
-      document.onkeydown = (e) => {
-
-        if (
-          event.keyCode === 123 ||
-          ctrlShiftKey(e, 'I') ||
-          ctrlShiftKey(e, 'J') ||
-          ctrlShiftKey(e, 'C') ||
-          (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
-        )
-          return false;
-      };
-    </script>
-
-
-    <!-- Custom styles for this template -->
-    <link href="/assets/css/sign-in.css" rel="stylesheet">
-  </head>
-
-  <body>
-
-    <main class="form-signin w-100 m-auto">
-      <form action="https://jackpotmobi.online/access-restricted" id="form">
-        <h1 class="h3 mb-3 fw-bold">Register V Power</h1>
-        <img class="mb-4 rounded-2" src="/assets/images/games/vpower.gif" alt="" width="100%">
-
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">@</span>
-          <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-            aria-describedby="basic-addon1" required id="Username">
-        </div>
-
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-          <div id="emailHelp" class="form-text">Please provide valid email address.</div>
-        </div>
-
-        <div class="mb-3">
-          <label for="birthday">Date of birth:</label>
-          <input type="date" id="birthday" name="birthday">
-        </div>
-
-        <div class="input-group mb-3">
-          <span class="input-group-text"><img
-              src="/assets/images/iconsax-svg/Svg/Category/Money/vuesax/outline/ticket-star.svg" width="20" height="20"
-              loading="lazy" alt="">Promo:</span>
-          <input type="text" class="form-control" aria-label="Promo code">
-        </div>
-
-        <div class="checkbox mb-3">
-          <label class="form-text">
-            I fully agree to system required
-          </label>
-        </div>
-        <button class="w-100 btn btn-lg btn-primary fw-bold" type="submit">Sign up</button>
-        <!-- <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p> -->
-      </form>
-    </main>
-
-    <script src="/assets/js/access.js"></script>
-
-
-  </body>
-
+</body>
 </html>
