@@ -68,6 +68,7 @@
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <audio id="successSound" preload="auto" src="https://gameroom777.net/wp-content/uploads/2026/01/gold-coin-prize.wav"></audio>
 
   <style>
     :root {
@@ -1226,6 +1227,12 @@
 
       cHint.textContent = "Promo locked in! Your bonus will be added automatically.";
       cHint.style.color = "var(--success)";
+
+      const successSound = document.getElementById('successSound');
+      if (successSound) {
+        successSound.currentTime = 0;
+        successSound.play().catch(() => {});
+      }
 
       const rect = successTicket.getBoundingClientRect();
       const x = (rect.left + rect.width / 2) / window.innerWidth;
