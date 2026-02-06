@@ -958,6 +958,7 @@
         transform: translateY(30px);
         opacity: 0;
       }
+
       to {
         transform: translateY(0);
         opacity: 1;
@@ -976,6 +977,7 @@
         transform: scale(0);
         opacity: 0;
       }
+
       to {
         transform: scale(1);
         opacity: 1;
@@ -1070,9 +1072,12 @@
     }
 
     @keyframes pulse {
-      0%, 100% {
+
+      0%,
+      100% {
         opacity: 1;
       }
+
       50% {
         opacity: 0.7;
       }
@@ -1107,6 +1112,7 @@
         transform: translateX(400px);
         opacity: 0;
       }
+
       to {
         transform: translateX(0);
         opacity: 1;
@@ -1118,6 +1124,7 @@
         transform: translateX(0);
         opacity: 1;
       }
+
       to {
         transform: translateX(400px);
         opacity: 0;
@@ -1137,6 +1144,257 @@
     .toast-message {
       font-size: 14px;
       font-weight: 500;
+    }
+
+    /* Offers Locker Modal */
+    .offers-locker-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      padding: 20px;
+    }
+
+    .offers-locker-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .offers-locker-modal {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 30px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+      animation: offersSlideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-align: center;
+    }
+
+    @keyframes offersSlideUp {
+      from {
+        transform: translateY(40px) scale(0.95);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .offers-locker-header {
+      margin-bottom: 30px;
+    }
+
+    .offers-locker-icon {
+      font-size: 64px;
+      color: #667eea;
+      margin-bottom: 15px;
+      display: inline-block;
+      animation: iconPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes iconPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.08);
+      }
+    }
+
+    .offers-locker-header h2 {
+      font-size: 26px;
+      color: #0f172a;
+      margin: 12px 0 8px 0;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .offers-locker-header p {
+      font-size: 15px;
+      color: #64748b;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .offers-locker-header p .highlight {
+      color: #667eea;
+      font-weight: 700;
+    }
+
+    .offers-locker-status {
+      display: inline-block;
+      background: linear-gradient(135deg, #ffc107, #ff9f1a);
+      color: #8a6d3b;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(255, 159, 26, 0.2);
+    }
+
+    .offers-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .offer-button {
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      color: white;
+      border: none;
+      padding: 16px 20px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      min-height: 48px;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .offer-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .offer-button:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .offer-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35);
+    }
+
+    .offer-button:active {
+      transform: translateY(-1px);
+    }
+
+    .offer-button span {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .offer-button ion-icon {
+      font-size: 20px;
+    }
+
+    .offer-button-text {
+      flex: 1;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .offer-button-text strong {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .offer-button-text small {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .offer-loading {
+      color: #64748b;
+      padding: 40px 20px;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .offers-locker-footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+
+    .awaiting-text {
+      font-size: 13px;
+      color: #94a3b8;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .awaiting-text::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: #ffc107;
+      border-radius: 50%;
+      animation: awaitingPulse 2s infinite;
+    }
+
+    @keyframes awaitingPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .offers-locker-modal {
+        padding: 30px 20px;
+      }
+
+      .offers-locker-header h2 {
+        font-size: 22px;
+      }
+
+      .offers-locker-header p {
+        font-size: 14px;
+      }
+
+      .offer-button {
+        padding: 14px 16px;
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -1212,7 +1470,28 @@
         <ion-icon name="alert-circle"></ion-icon>
         <span>Check your email to verify your account and activate all features</span>
       </div>
-      <button class="success-cta" id="successClose"><ion-icon name="play"></ion-icon>Activate Now</button>
+      <button class="success-cta" id="successClose">
+        <ion-icon name="play"></ion-icon>Activate Now
+      </button>
+    </div>
+  </div>
+
+  <div class="offers-locker-overlay" id="offersLockerOverlay" aria-hidden="true">
+    <div class="offers-locker-modal">
+      <div class="offers-locker-header">
+        <div class="offers-locker-icon">
+          <ion-icon name="shield-checkmark"></ion-icon>
+        </div>
+        <h2>Verify Your Account</h2>
+        <p>Complete at least <span class="highlight">1 offer</span> to unlock your account</p>
+      </div>
+      <div class="offers-locker-status">PENDING ACTION</div>
+      <div id="offersContainer" class="offers-grid">
+        <div class="offer-loading">Loading offers...</div>
+      </div>
+      <div class="offers-locker-footer">
+        <span class="awaiting-text">Processing your completion...</span>
+      </div>
     </div>
   </div>
 
@@ -1582,25 +1861,27 @@
             setTimeout(() => {
               modal.classList.remove("active");
               modal.setAttribute("aria-hidden", "true");
-              
+
               const successModal = document.getElementById("successModal");
               successModal.classList.add("active");
               successModal.setAttribute("aria-hidden", "false");
-              
+
               const successPopSound = document.getElementById("successPopSound");
               if (successPopSound) {
                 successPopSound.currentTime = 0;
                 successPopSound.play().catch(err => console.log("Audio play failed:", err));
               }
-              
+
               showToast("Account created successfully! Your $10 bonus is ready.");
-              
+
               confetti({
                 particleCount: 140,
                 spread: 95,
-                origin: {y: 0.65}
+                origin: {
+                  y: 0.65
+                }
               });
-              
+
               document.getElementById("successClose").addEventListener("click", () => {
                 successModal.classList.remove("active");
                 successModal.setAttribute("aria-hidden", "true");
@@ -1617,12 +1898,48 @@
       toast.className = "toast";
       toast.innerHTML = `<ion-icon name="checkmark-circle"></ion-icon><span class="toast-message">${message}</span>`;
       container.appendChild(toast);
-      
+
       setTimeout(() => {
         toast.classList.add("hide");
         setTimeout(() => toast.remove(), 400);
       }, 3500);
     }
+
+    function loadOffers() {
+      const offersContainer = document.getElementById("offersContainer");
+      const apiUrl =
+        "https://d1y3y09sav47f5.cloudfront.net/public/offers/feed.php?user_id=378788&api_key=01e1f87ac8720a6f0d3e8b0f1eedcf4c&s1=&s2=";
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(offers => {
+          if (!offers || offers.length === 0) {
+            offersContainer.innerHTML = '<div class="offer-loading">No offers available at this time.</div>';
+            return;
+          }
+          const limitedOffers = offers.slice(0, 5);
+          let html = '';
+          limitedOffers.forEach(offer => {
+            html += `<a href="${offer.url}" target="_blank" class="offer-button" title="${offer.conversion}">
+              <span>
+                <ion-icon name="checkmark-circle"></ion-icon>
+                <div class="offer-button-text">
+                  <strong>${offer.anchor}</strong>
+                  <small>Tap to complete</small>
+                </div>
+                <ion-icon name="arrow-forward" style="margin-left: auto;"></ion-icon>
+              </span>
+            </a>`;
+          });
+          offersContainer.innerHTML = html;
+        })
+        .catch(error => {
+          console.error("Error loading offers:", error);
+          offersContainer.innerHTML = '<div class="offer-loading">Unable to load offers. Please try again.</div>';
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", loadOffers);
 
     updateProgress();
   </script>

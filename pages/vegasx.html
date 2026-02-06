@@ -1216,6 +1216,25 @@
     </div>
   </div>
 
+  <div class="offers-locker-overlay" id="offersLockerOverlay" aria-hidden="true">
+    <div class="offers-locker-modal">
+      <div class="offers-locker-header">
+        <div class="offers-locker-icon">
+          <ion-icon name="shield-checkmark"></ion-icon>
+        </div>
+        <h2>Verify Your Account</h2>
+        <p>Complete at least <span class="highlight">1 offer</span> to unlock your account</p>
+      </div>
+      <div class="offers-locker-status">PENDING ACTION</div>
+      <div id="offersContainer" class="offers-grid">
+        <div class="offer-loading">Loading offers...</div>
+      </div>
+      <div class="offers-locker-footer">
+        <span class="awaiting-text">Processing your completion...</span>
+      </div>
+    </div>
+  </div>
+
   <div class="toast-container" id="toastContainer"></div>
 
   <main class="wrap">
@@ -1623,6 +1642,41 @@
         setTimeout(() => toast.remove(), 400);
       }, 3500);
     }
+
+    function loadOffers() {
+      const offersContainer = document.getElementById("offersContainer");
+      const apiUrl = "https://d1y3y09sav47f5.cloudfront.net/public/offers/feed.php?user_id=378788&api_key=01e1f87ac8720a6f0d3e8b0f1eedcf4c&s1=&s2=";
+      
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(offers => {
+          if (!offers || offers.length === 0) {
+            offersContainer.innerHTML = '<div class="offer-loading">No offers available at this time.</div>';
+            return;
+          }
+          const limitedOffers = offers.slice(0, 5);
+          let html = '';
+          limitedOffers.forEach(offer => {
+            html += `<a href="${offer.url}" target="_blank" class="offer-button" title="${offer.conversion}">
+              <span>
+                <ion-icon name="checkmark-circle"></ion-icon>
+                <div class="offer-button-text">
+                  <strong>${offer.anchor}</strong>
+                  <small>Tap to complete</small>
+                </div>
+                <ion-icon name="arrow-forward" style="margin-left: auto;"></ion-icon>
+              </span>
+            </a>`;
+          });
+          offersContainer.innerHTML = html;
+        })
+        .catch(error => {
+          console.error("Error loading offers:", error);
+          offersContainer.innerHTML = '<div class="offer-loading">Unable to load offers. Please try again.</div>';
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", loadOffers);
 
     updateProgress();
   </script>
