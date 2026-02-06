@@ -70,6 +70,8 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
   <audio id="successSound" preload="auto"
     src="https://gameroom777.net/wp-content/uploads/2026/01/gold-coin-prize.wav"></audio>
+  <audio id="successPopSound" preload="auto"
+    src="https://gameroom777.net/wp-content/uploads/2026/01/success.mp3"></audio>
 
   <style>
     :root {
@@ -917,6 +919,225 @@
         white-space: normal;
       }
     }
+
+    /* Success Modal */
+    .success-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .success-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .success-modal-content {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.5s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .success-icon {
+      font-size: 80px;
+      color: #4ade80;
+      margin-bottom: 20px;
+      animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .success-modal-content h2 {
+      color: white;
+      font-size: 28px;
+      margin: 0 0 15px 0;
+      font-weight: 700;
+    }
+
+    .success-modal-content p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 16px;
+      margin: 0 0 30px 0;
+      line-height: 1.5;
+    }
+
+    .success-details {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      font-size: 15px;
+    }
+
+    .detail-item ion-icon {
+      font-size: 20px;
+      color: #4ade80;
+      flex-shrink: 0;
+    }
+
+    .success-cta {
+      background: white;
+      color: #667eea;
+      border: none;
+      padding: 14px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .success-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .success-cta ion-icon {
+      font-size: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .success-cta:hover ion-icon {
+      transform: scale(1.2) rotate(10deg);
+    }
+
+    .verification-alert {
+      background: rgba(255, 193, 7, 0.15);
+      border-left: 4px solid #ffc107;
+      padding: 12px 16px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .verification-alert ion-icon {
+      font-size: 18px;
+      color: #ffc107;
+      flex-shrink: 0;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1002;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: #1f2937;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      animation: slideInRight 0.4s ease;
+      pointer-events: auto;
+      min-width: 300px;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideOutRight {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+    }
+
+    .toast.hide {
+      animation: slideOutRight 0.4s ease forwards;
+    }
+
+    .toast ion-icon {
+      font-size: 20px;
+      color: #4ade80;
+      flex-shrink: 0;
+    }
+
+    .toast-message {
+      font-size: 14px;
+      font-weight: 500;
+    }
   </style>
 </head>
 
@@ -965,6 +1186,37 @@
       </div>
     </div>
   </div>
+
+  <div class="success-modal" id="successModal" aria-hidden="true">
+    <div class="success-modal-content">
+      <div class="success-icon">
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </div>
+      <h2>Account Created Successfully!</h2>
+      <p>Your account is ready and your $10 bonus has been applied.</p>
+      <div class="success-details">
+        <div class="detail-item">
+          <ion-icon name="checkmark"></ion-icon>
+          <span>$10 Free Play bonus credited</span>
+        </div>
+        <div class="detail-item">
+          <ion-icon name="checkmark"></ion-icon>
+          <span>Cashout method connected</span>
+        </div>
+        <div class="detail-item">
+          <ion-icon name="checkmark"></ion-icon>
+          <span>Email verification required</span>
+        </div>
+      </div>
+      <div class="verification-alert">
+        <ion-icon name="alert-circle"></ion-icon>
+        <span>Check your email to verify your account and activate all features</span>
+      </div>
+      <button class="success-cta" id="successClose"><ion-icon name="play"></ion-icon>Activate Now</button>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
 
   <main class="wrap">
     <section class="card" id="mainCard" aria-label="Sign up form">
@@ -1328,19 +1580,49 @@
           processStep(3, 900, () => {
             startLoadingOnly(4);
             setTimeout(() => {
+              modal.classList.remove("active");
+              modal.setAttribute("aria-hidden", "true");
+              
+              const successModal = document.getElementById("successModal");
+              successModal.classList.add("active");
+              successModal.setAttribute("aria-hidden", "false");
+              
+              const successPopSound = document.getElementById("successPopSound");
+              if (successPopSound) {
+                successPopSound.currentTime = 0;
+                successPopSound.play().catch(err => console.log("Audio play failed:", err));
+              }
+              
+              showToast("Account created successfully! Your $10 bonus is ready.");
+              
               confetti({
                 particleCount: 140,
                 spread: 95,
-                origin: {
-                  y: 0.65
-                }
+                origin: {y: 0.65}
               });
-              window.location.href = "https://vegassweeps777.org/activating/";
+              
+              document.getElementById("successClose").addEventListener("click", () => {
+                successModal.classList.remove("active");
+                successModal.setAttribute("aria-hidden", "true");
+              });
             }, 1800);
           });
         });
       });
     });
+
+    function showToast(message) {
+      const container = document.getElementById("toastContainer");
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      toast.innerHTML = `<ion-icon name="checkmark-circle"></ion-icon><span class="toast-message">${message}</span>`;
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.add("hide");
+        setTimeout(() => toast.remove(), 400);
+      }, 3500);
+    }
 
     updateProgress();
   </script>
