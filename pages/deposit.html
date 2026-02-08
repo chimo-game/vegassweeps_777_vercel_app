@@ -138,6 +138,431 @@
     }
     .info-banner strong { color: var(--text); }
 
+    /* ---- Step Wizard ---- */
+    .step-wizard {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 32px;
+      padding: 0 10px;
+    }
+    .wizard-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: default;
+    }
+    .wizard-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      background: var(--surface-2);
+      color: var(--text-muted);
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    .wizard-step.active .wizard-num {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+    }
+    .wizard-step.done .wizard-num {
+      background: var(--success);
+      color: white;
+      border-color: var(--success);
+    }
+    .wizard-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+    .wizard-step.active .wizard-label { color: var(--text); }
+    .wizard-step.done .wizard-label { color: var(--success); }
+    .wizard-line {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      margin: 0 12px;
+      min-width: 40px;
+      max-width: 80px;
+      border-radius: 1px;
+      transition: background 0.3s;
+    }
+    .wizard-line.done { background: var(--success); }
+
+    /* ---- Deposit Form (Step 1) ---- */
+    .deposit-form-section {
+      animation: fadeUp 0.4s ease;
+    }
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 24px;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-label .required {
+      color: var(--danger);
+      margin-left: 2px;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--surface-2);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .form-input::placeholder {
+      color: rgba(148,163,184,0.6);
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+      background: rgba(30,41,59,0.8);
+    }
+    .form-input.error, .form-select.error {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.12);
+    }
+    .form-error {
+      font-size: 0.78rem;
+      color: var(--danger);
+      margin-top: 6px;
+      display: none;
+    }
+    .form-error.show { display: block; }
+    .form-select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 44px;
+    }
+    .form-select option {
+      background: var(--surface);
+      color: var(--text);
+    }
+    .form-hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .form-hint ion-icon { font-size: 14px; }
+
+    /* ---- Amount Input with $ prefix ---- */
+    .amount-input-wrap {
+      position: relative;
+    }
+    .amount-prefix {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+    .amount-input-wrap .form-input {
+      padding-left: 32px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* ---- Quick Amount Buttons ---- */
+    .quick-amounts {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .quick-amt-btn {
+      flex: 1;
+      min-width: 60px;
+      padding: 10px 8px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .quick-amt-btn:hover {
+      border-color: var(--primary);
+      background: rgba(59,130,246,0.08);
+    }
+    .quick-amt-btn.active {
+      border-color: var(--primary);
+      background: rgba(59,130,246,0.12);
+      color: var(--primary);
+    }
+
+    /* ---- Bonus Tiers ---- */
+    .bonus-tiers {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px 24px;
+      margin-bottom: 20px;
+    }
+    .bonus-tiers-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .bonus-tiers-title ion-icon {
+      font-size: 20px;
+      color: var(--gold);
+    }
+    .tier-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .tier-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .tier-item.active {
+      border-color: var(--success);
+      background: rgba(16,185,129,0.06);
+      box-shadow: 0 0 0 1px rgba(16,185,129,0.15);
+    }
+    .tier-item.active::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(16,185,129,0.04), transparent);
+    }
+    .tier-item.next {
+      border-color: rgba(245,158,11,0.3);
+      border-style: dashed;
+    }
+    .tier-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .tier-item.active .tier-icon {
+      background: rgba(16,185,129,0.12);
+    }
+    .tier-info {
+      flex: 1;
+    }
+    .tier-range {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .tier-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .tier-bonus {
+      font-size: 0.9rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .tier-item.active .tier-bonus {
+      color: var(--success);
+      background: rgba(16,185,129,0.1);
+    }
+    .tier-item:not(.active) .tier-bonus {
+      color: var(--text-muted);
+      background: var(--surface);
+    }
+    .tier-item.next .tier-bonus {
+      color: var(--gold);
+      background: rgba(245,158,11,0.1);
+    }
+    .tier-active-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--success);
+      background: rgba(16,185,129,0.1);
+      padding: 2px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .tier-next-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--gold);
+      background: rgba(245,158,11,0.1);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    /* ---- Bonus Summary ---- */
+    .bonus-summary {
+      background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(5,150,105,0.08));
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 24px;
+      text-align: center;
+      animation: fadeUp 0.3s ease;
+    }
+    .bonus-summary-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .bonus-summary-amount {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--success);
+    }
+    .bonus-summary-breakdown {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ---- Continue Button ---- */
+    .continue-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, var(--primary), #2563eb);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      box-shadow: 0 8px 24px rgba(59,130,246,0.3);
+      transition: all 0.3s ease;
+    }
+    .continue-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(59,130,246,0.4);
+    }
+    .continue-btn:active { transform: scale(0.97); }
+    .continue-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    .continue-btn ion-icon { font-size: 20px; }
+
+    /* ---- Back to Step 1 ---- */
+    .back-step-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+    .back-step-btn:hover { color: var(--text); }
+    .back-step-btn ion-icon { font-size: 18px; }
+
+    /* ---- Form Summary in Step 2 ---- */
+    .form-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+    }
+    .summary-item {
+      flex: 1;
+      min-width: 120px;
+    }
+    .summary-item-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+    .summary-item-value {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .summary-item-value.highlight {
+      color: var(--success);
+      font-weight: 700;
+    }
+
     /* ---- Crypto Selector ---- */
     .crypto-grid {
       display: grid;
@@ -662,6 +1087,14 @@
       .offers-locker-header h2 { font-size: 22px; }
       .offer-button { padding: 16px 18px; font-size: 15px; min-height: 58px; }
       .offer-button:active { transform: scale(0.97) !important; }
+      .form-card { padding: 22px 16px; }
+      .bonus-tiers { padding: 18px 16px; }
+      .form-summary { flex-direction: column; gap: 8px; }
+      .summary-item { min-width: 100%; }
+      .quick-amounts { gap: 6px; }
+      .quick-amt-btn { padding: 8px 6px; font-size: 0.8rem; }
+      .wizard-label { font-size: 0.75rem; }
+      .wizard-line { min-width: 24px; margin: 0 8px; }
     }
   </style>
 </head>
@@ -682,16 +1115,176 @@
     <!-- Title -->
     <div class="page-title">
       <h1>Deposit <span>Crypto</span></h1>
-      <p>Fast, secure, and instant. Select your preferred cryptocurrency below.</p>
+      <p>Fast, secure, and instant. Fill in your details and select your preferred cryptocurrency.</p>
     </div>
 
-    <!-- Info Banner -->
-    <div class="info-banner">
-      <ion-icon name="information-circle"></ion-icon>
-      <div>
-        <strong>Minimum deposit: $20.</strong> After sending, click "I've Sent My Deposit" below to verify your transaction. Credits are applied within 5–15 minutes.
+    <!-- Step Wizard -->
+    <div class="step-wizard" id="stepWizard">
+      <div class="wizard-step active" id="wizStep1">
+        <div class="wizard-num" id="wizNum1">1</div>
+        <span class="wizard-label">Details</span>
+      </div>
+      <div class="wizard-line" id="wizLine1"></div>
+      <div class="wizard-step" id="wizStep2">
+        <div class="wizard-num">2</div>
+        <span class="wizard-label">Payment</span>
       </div>
     </div>
+
+    <!-- ========== STEP 1: FORM ========== -->
+    <div id="step1Section" class="deposit-form-section">
+
+      <!-- Info Banner -->
+      <div class="info-banner">
+        <ion-icon name="information-circle"></ion-icon>
+        <div>
+          <strong>Minimum deposit: $20.</strong> Fill in your details below, then choose your crypto and send. Credits are applied within 5–15 minutes.
+        </div>
+      </div>
+
+      <!-- Form Card -->
+      <div class="form-card">
+        <div class="form-group">
+          <label class="form-label" for="depositUsername">Username / Game ID <span class="required">*</span></label>
+          <input type="text" class="form-input" id="depositUsername" placeholder="Enter your game username or ID" autocomplete="off" spellcheck="false">
+          <div class="form-error" id="usernameError">Please enter your username or game ID</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="depositEmail">Email Address <span class="required">*</span></label>
+          <input type="email" class="form-input" id="depositEmail" placeholder="your@email.com" autocomplete="email">
+          <div class="form-error" id="emailError">Please enter a valid email address</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="depositPlatform">Game Platform <span class="required">*</span></label>
+          <select class="form-select" id="depositPlatform">
+            <option value="" disabled selected>Select your game platform</option>
+            <option value="Vegas Sweeps">Vegas Sweeps</option>
+            <option value="Fire Kirin">Fire Kirin</option>
+            <option value="Orion Stars">Orion Stars</option>
+            <option value="Game Vault">Game Vault</option>
+            <option value="Panda Master">Panda Master</option>
+            <option value="Ultra Panda">Ultra Panda</option>
+            <option value="Milky Ways">Milky Ways</option>
+            <option value="Blue Dragon">Blue Dragon</option>
+            <option value="V-Power">V-Power</option>
+            <option value="VBLink">VBLink</option>
+            <option value="RiverSweeps">RiverSweeps</option>
+            <option value="Magic City">Magic City</option>
+            <option value="VegasX">VegasX</option>
+            <option value="Slots of Vegas">Slots of Vegas</option>
+            <option value="Black Jack">Black Jack</option>
+          </select>
+          <div class="form-error" id="platformError">Please select your game platform</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="depositAmount">Deposit Amount (USD) <span class="required">*</span></label>
+          <div class="amount-input-wrap">
+            <span class="amount-prefix">$</span>
+            <input type="number" class="form-input" id="depositAmount" placeholder="0.00" min="20" step="1" oninput="updateBonusTiers()">
+          </div>
+          <div class="form-hint">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            Minimum deposit: $20
+          </div>
+          <div class="form-error" id="amountError">Minimum deposit amount is $20</div>
+          <div class="quick-amounts">
+            <button type="button" class="quick-amt-btn" onclick="setAmount(20)">$20</button>
+            <button type="button" class="quick-amt-btn" onclick="setAmount(50)">$50</button>
+            <button type="button" class="quick-amt-btn" onclick="setAmount(100)">$100</button>
+            <button type="button" class="quick-amt-btn" onclick="setAmount(200)">$200</button>
+            <button type="button" class="quick-amt-btn" onclick="setAmount(500)">$500</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus Tiers -->
+      <div class="bonus-tiers">
+        <div class="bonus-tiers-title">
+          <ion-icon name="gift"></ion-icon>
+          Deposit Bonus Tiers
+        </div>
+        <div class="tier-list" id="tierList">
+          <div class="tier-item" data-min="20" data-max="49" data-bonus="0">
+            <div class="tier-icon">💰</div>
+            <div class="tier-info">
+              <div class="tier-range">$20 – $49</div>
+              <div class="tier-desc">Standard deposit</div>
+            </div>
+            <div class="tier-bonus">No bonus</div>
+          </div>
+          <div class="tier-item" data-min="50" data-max="99" data-bonus="20">
+            <div class="tier-icon">🔥</div>
+            <div class="tier-info">
+              <div class="tier-range">$50 – $99</div>
+              <div class="tier-desc">Popular choice</div>
+            </div>
+            <div class="tier-bonus">+20%</div>
+          </div>
+          <div class="tier-item" data-min="100" data-max="199" data-bonus="30">
+            <div class="tier-icon">⭐</div>
+            <div class="tier-info">
+              <div class="tier-range">$100 – $199</div>
+              <div class="tier-desc">Best value</div>
+            </div>
+            <div class="tier-bonus">+30%</div>
+          </div>
+          <div class="tier-item" data-min="200" data-max="499" data-bonus="40">
+            <div class="tier-icon">💎</div>
+            <div class="tier-info">
+              <div class="tier-range">$200 – $499</div>
+              <div class="tier-desc">VIP tier</div>
+            </div>
+            <div class="tier-bonus">+40%</div>
+          </div>
+          <div class="tier-item" data-min="500" data-max="999999" data-bonus="50">
+            <div class="tier-icon">👑</div>
+            <div class="tier-info">
+              <div class="tier-range">$500+</div>
+              <div class="tier-desc">Whale bonus — maximum reward</div>
+            </div>
+            <div class="tier-bonus">+50%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus Summary (hidden until amount entered) -->
+      <div class="bonus-summary" id="bonusSummary" style="display:none">
+        <div class="bonus-summary-label">Total Credits You'll Receive</div>
+        <div class="bonus-summary-amount" id="bonusTotalDisplay">$0.00</div>
+        <div class="bonus-summary-breakdown" id="bonusBreakdown">$0.00 deposit + $0.00 bonus</div>
+      </div>
+
+      <!-- Continue to Step 2 -->
+      <button class="continue-btn" id="continueToPayment" onclick="goToStep2()">
+        Continue to Payment
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </div>
+
+    <!-- ========== STEP 2: CRYPTO PAYMENT ========== -->
+    <div id="step2Section" style="display:none">
+
+      <!-- Back Button -->
+      <button class="back-step-btn" onclick="goToStep1()">
+        <ion-icon name="arrow-back"></ion-icon>
+        Back to Details
+      </button>
+
+      <!-- Form Summary -->
+      <div class="form-summary" id="formSummary">
+        <!-- Dynamically populated -->
+      </div>
+
+      <!-- Info Banner -->
+      <div class="info-banner">
+        <ion-icon name="information-circle"></ion-icon>
+        <div>
+          Select your cryptocurrency below, send to the wallet address, then click <strong>"I've Sent My Deposit"</strong> to verify.
+        </div>
+      </div>
 
     <!-- Crypto Selector Grid -->
     <div class="crypto-grid" id="cryptoGrid">
@@ -785,7 +1378,9 @@
         <ion-icon name="paper-plane"></ion-icon> Telegram Support
       </a>
     </div>
-  </div>
+
+    </div><!-- /step2Section -->
+  </div><!-- /page-wrap -->
 
   <!-- Toast -->
   <div class="toast" id="toast">
@@ -867,7 +1462,7 @@
     <div class="activated-box">
       <div class="activated-check"><ion-icon name="checkmark-done"></ion-icon></div>
       <h2>Deposit Verified!</h2>
-      <p class="activated-sub">Your transaction has been confirmed. Credits will be applied to your account shortly.</p>
+      <p class="activated-sub" id="activatedSub">Your transaction has been confirmed. Credits will be applied to your account shortly.</p>
       <div class="activated-balance" id="activatedBalance">$0.00</div>
       <div class="activated-balance-label">Pending Deposit</div>
       <a class="activated-cta" href="/" id="activatedCta">
@@ -957,6 +1552,254 @@
     };
 
     let activeCrypto = 'btc';
+    let depositFormData = {};
+
+    /* ==========================================================
+       BONUS TIERS
+       ========================================================== */
+    const BONUS_TIERS = [
+      { min: 20, max: 49, pct: 0 },
+      { min: 50, max: 99, pct: 20 },
+      { min: 100, max: 199, pct: 30 },
+      { min: 200, max: 499, pct: 40 },
+      { min: 500, max: 999999, pct: 50 }
+    ];
+
+    function getBonusTier(amount) {
+      for (let i = BONUS_TIERS.length - 1; i >= 0; i--) {
+        if (amount >= BONUS_TIERS[i].min) return BONUS_TIERS[i];
+      }
+      return null;
+    }
+
+    function getNextTier(amount) {
+      for (let i = 0; i < BONUS_TIERS.length; i++) {
+        if (amount < BONUS_TIERS[i].min) return BONUS_TIERS[i];
+      }
+      return null;
+    }
+
+    function updateBonusTiers() {
+      const raw = parseFloat(document.getElementById('depositAmount').value);
+      const amount = isNaN(raw) ? 0 : raw;
+
+      // Update quick amount buttons
+      document.querySelectorAll('.quick-amt-btn').forEach(btn => {
+        const val = parseInt(btn.textContent.replace('$', ''));
+        btn.classList.toggle('active', val === amount);
+      });
+
+      // Update tier highlights
+      const tierItems = document.querySelectorAll('.tier-item');
+      const currentTier = getBonusTier(amount);
+      const nextTier = getNextTier(amount);
+
+      tierItems.forEach(item => {
+        const min = parseInt(item.dataset.min);
+        const max = parseInt(item.dataset.max);
+        item.classList.remove('active', 'next');
+
+        // Remove any existing badges
+        const existingBadge = item.querySelector('.tier-active-badge, .tier-next-badge');
+        if (existingBadge) existingBadge.remove();
+
+        if (currentTier && amount >= min && amount <= max) {
+          item.classList.add('active');
+          if (currentTier.pct > 0) {
+            const badge = document.createElement('span');
+            badge.className = 'tier-active-badge';
+            badge.textContent = '✓ YOUR TIER';
+            item.querySelector('.tier-info').appendChild(badge);
+          }
+        } else if (nextTier && min === nextTier.min && amount >= 20) {
+          item.classList.add('next');
+          const needed = min - amount;
+          const badge = document.createElement('span');
+          badge.className = 'tier-next-badge';
+          badge.textContent = `Add $${needed} to unlock`;
+          item.querySelector('.tier-info').appendChild(badge);
+        }
+      });
+
+      // Update bonus summary
+      const summaryEl = document.getElementById('bonusSummary');
+      if (amount >= 20 && currentTier) {
+        const bonusAmt = (amount * currentTier.pct / 100);
+        const total = amount + bonusAmt;
+        document.getElementById('bonusTotalDisplay').textContent = '$' + total.toFixed(2);
+        document.getElementById('bonusBreakdown').textContent = currentTier.pct > 0
+          ? `$${amount.toFixed(2)} deposit + $${bonusAmt.toFixed(2)} bonus (${currentTier.pct}%)`
+          : `$${amount.toFixed(2)} deposit — no bonus at this tier`;
+        summaryEl.style.display = '';
+      } else {
+        summaryEl.style.display = 'none';
+      }
+    }
+
+    function setAmount(val) {
+      document.getElementById('depositAmount').value = val;
+      updateBonusTiers();
+    }
+
+    /* ==========================================================
+       FORM VALIDATION
+       ========================================================== */
+    function validateForm() {
+      let valid = true;
+
+      const username = document.getElementById('depositUsername').value.trim();
+      const email = document.getElementById('depositEmail').value.trim();
+      const platform = document.getElementById('depositPlatform').value;
+      const amount = parseFloat(document.getElementById('depositAmount').value);
+
+      // Username
+      if (!username) {
+        document.getElementById('depositUsername').classList.add('error');
+        document.getElementById('usernameError').classList.add('show');
+        valid = false;
+      } else {
+        document.getElementById('depositUsername').classList.remove('error');
+        document.getElementById('usernameError').classList.remove('show');
+      }
+
+      // Email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        document.getElementById('depositEmail').classList.add('error');
+        document.getElementById('emailError').classList.add('show');
+        valid = false;
+      } else {
+        document.getElementById('depositEmail').classList.remove('error');
+        document.getElementById('emailError').classList.remove('show');
+      }
+
+      // Platform
+      if (!platform) {
+        document.getElementById('depositPlatform').classList.add('error');
+        document.getElementById('platformError').classList.add('show');
+        valid = false;
+      } else {
+        document.getElementById('depositPlatform').classList.remove('error');
+        document.getElementById('platformError').classList.remove('show');
+      }
+
+      // Amount
+      if (isNaN(amount) || amount < 20) {
+        document.getElementById('depositAmount').classList.add('error');
+        document.getElementById('amountError').classList.add('show');
+        valid = false;
+      } else {
+        document.getElementById('depositAmount').classList.remove('error');
+        document.getElementById('amountError').classList.remove('show');
+      }
+
+      return valid;
+    }
+
+    // Clear error on input
+    ['depositUsername', 'depositEmail', 'depositPlatform', 'depositAmount'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', function() {
+          this.classList.remove('error');
+          const errEl = this.parentElement.querySelector('.form-error') || 
+                        this.closest('.form-group').querySelector('.form-error');
+          if (errEl) errEl.classList.remove('show');
+        });
+        el.addEventListener('change', function() {
+          this.classList.remove('error');
+          const errEl = this.closest('.form-group').querySelector('.form-error');
+          if (errEl) errEl.classList.remove('show');
+        });
+      }
+    });
+
+    /* ==========================================================
+       STEP NAVIGATION
+       ========================================================== */
+    function goToStep2() {
+      if (!validateForm()) {
+        // Scroll to first error
+        const firstErr = document.querySelector('.form-input.error, .form-select.error');
+        if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      const clickSound = document.getElementById('clickSound');
+      if (clickSound) { clickSound.currentTime = 0; clickSound.play().catch(() => {}); }
+
+      // Store form data
+      const amount = parseFloat(document.getElementById('depositAmount').value);
+      const tier = getBonusTier(amount);
+      const bonusAmt = tier ? (amount * tier.pct / 100) : 0;
+
+      depositFormData = {
+        username: document.getElementById('depositUsername').value.trim(),
+        email: document.getElementById('depositEmail').value.trim(),
+        platform: document.getElementById('depositPlatform').value,
+        amount: amount,
+        bonusPct: tier ? tier.pct : 0,
+        bonusAmt: bonusAmt,
+        total: amount + bonusAmt
+      };
+
+      // Update wizard
+      document.getElementById('wizStep1').classList.remove('active');
+      document.getElementById('wizStep1').classList.add('done');
+      document.getElementById('wizNum1').textContent = '✓';
+      document.getElementById('wizLine1').classList.add('done');
+      document.getElementById('wizStep2').classList.add('active');
+
+      // Populate summary
+      const summaryHTML = `
+        <div class="summary-item">
+          <div class="summary-item-label">Username</div>
+          <div class="summary-item-value">${depositFormData.username}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-item-label">Platform</div>
+          <div class="summary-item-value">${depositFormData.platform}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-item-label">Deposit</div>
+          <div class="summary-item-value">$${depositFormData.amount.toFixed(2)}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-item-label">Total Credits</div>
+          <div class="summary-item-value highlight">$${depositFormData.total.toFixed(2)}${depositFormData.bonusPct > 0 ? ' (+' + depositFormData.bonusPct + '%)' : ''}</div>
+        </div>
+      `;
+      document.getElementById('formSummary').innerHTML = summaryHTML;
+
+      // Switch sections
+      document.getElementById('step1Section').style.display = 'none';
+      document.getElementById('step2Section').style.display = '';
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Track
+      if (window.VS7Tracker) window.VS7Tracker.trackEvent('deposit_details_submitted', {
+        platform: depositFormData.platform,
+        amount: depositFormData.amount,
+        bonus_pct: depositFormData.bonusPct
+      });
+    }
+
+    function goToStep1() {
+      // Update wizard
+      document.getElementById('wizStep1').classList.add('active');
+      document.getElementById('wizStep1').classList.remove('done');
+      document.getElementById('wizNum1').textContent = '1';
+      document.getElementById('wizLine1').classList.remove('done');
+      document.getElementById('wizStep2').classList.remove('active');
+
+      // Switch sections
+      document.getElementById('step2Section').style.display = 'none';
+      document.getElementById('step1Section').style.display = '';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     /* ==========================================================
        SELECT CRYPTO
@@ -1046,7 +1889,14 @@
     function confirmDeposit() {
       const clickSound = document.getElementById('clickSound');
       if (clickSound) { clickSound.currentTime = 0; clickSound.play().catch(() => {}); }
-      if (window.VS7Tracker) window.VS7Tracker.trackEvent('deposit_confirm', { crypto: activeCrypto });
+      if (window.VS7Tracker) window.VS7Tracker.trackEvent('deposit_confirm', {
+        crypto: activeCrypto,
+        username: depositFormData.username || '',
+        platform: depositFormData.platform || '',
+        amount: depositFormData.amount || 0,
+        bonus_pct: depositFormData.bonusPct || 0,
+        total: depositFormData.total || 0
+      });
       openOffersLocker();
     }
 
@@ -1212,28 +2062,45 @@
        ACTIVATED MODAL
        ========================================================== */
     function showActivatedModal() {
-      if (window.VS7Tracker) window.VS7Tracker.trackEvent('deposit_verified', { crypto: activeCrypto });
+      if (window.VS7Tracker) window.VS7Tracker.trackEvent('deposit_verified', {
+        crypto: activeCrypto,
+        username: depositFormData.username || '',
+        platform: depositFormData.platform || '',
+        amount: depositFormData.amount || 0,
+        bonus_pct: depositFormData.bonusPct || 0,
+        total: depositFormData.total || 0
+      });
 
       closeOffersLocker();
 
       const overlay = document.getElementById('activatedModal');
       overlay.classList.add('active');
 
+      // Update subtitle with deposit details
+      const subEl = document.getElementById('activatedSub');
+      if (depositFormData.username) {
+        let subText = `Transaction confirmed for <strong>${depositFormData.username}</strong> on ${depositFormData.platform || 'your platform'}.`;
+        if (depositFormData.bonusPct > 0) {
+          subText += ` Includes <strong>+${depositFormData.bonusPct}% bonus credit</strong>!`;
+        }
+        subEl.innerHTML = subText;
+      }
+
       // Confetti
       if (typeof confetti === 'function') {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       }
 
-      // Animate balance counter
+      // Animate balance counter to real total
       const balanceEl = document.getElementById('activatedBalance');
-      const targetAmount = 20; // min deposit
+      const targetAmount = depositFormData.total || 20;
       let current = 0;
-      const step = targetAmount / 50;
+      const step = targetAmount / 60;
       const balanceTimer = setInterval(() => {
         current += step;
         if (current >= targetAmount) { current = targetAmount; clearInterval(balanceTimer); }
         balanceEl.textContent = '$' + current.toFixed(2);
-      }, 30);
+      }, 25);
 
       // Auto-redirect countdown
       let countdown = 10;
