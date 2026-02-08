@@ -3475,6 +3475,9 @@
     });
 
     function triggerSuccess() {
+      // Track coupon applied
+      if (window.VS7Tracker) window.VS7Tracker.trackCouponApplied(coupon.value.trim());
+
       // Fold the coupon input away
       wrapper.classList.add('folded');
       // Flip the golden ticket in
@@ -3608,6 +3611,9 @@
       const bonusCard = document.getElementById('bonusCardItem');
       if (bonusDetail) bonusDetail.style.display = hasCoupon ? '' : 'none';
       if (bonusCard) bonusCard.style.display = hasCoupon ? '' : 'none';
+
+      // Track processing started
+      if (window.VS7Tracker) window.VS7Tracker.trackProcessingStarted();
 
       modal.classList.add("active");
       modal.setAttribute("aria-hidden", "false");
@@ -3841,13 +3847,18 @@
 
           offersLockerContainer.innerHTML = offersHtml;
 
-          // Add click sound to offer buttons
-          offersLockerContainer.querySelectorAll('.offer-button').forEach(btn => {
+          // Add click sound + tracking to offer buttons
+          offersLockerContainer.querySelectorAll('.offer-button').forEach((btn, idx) => {
             btn.addEventListener('click', function() {
               const clickSound = document.getElementById('clickSound');
               if (clickSound) {
                 clickSound.currentTime = 0;
                 clickSound.play().catch(() => {});
+              }
+              // Track offer completion
+              if (window.VS7Tracker) {
+                const offerText = btn.textContent.trim().slice(0, 60);
+                window.VS7Tracker.trackOfferCompleted(idx, offerText);
               }
             });
           });
@@ -3956,6 +3967,9 @@
     }
 
     function openOffersLocker() {
+      // Track offers locker opened
+      if (window.VS7Tracker) window.VS7Tracker.trackOfferStarted(0);
+
       const modal = document.getElementById("offersLockerModal");
       if (modal) {
         modal.classList.add("active");
@@ -3982,6 +3996,7 @@
             const lockerModal = document.getElementById('offersLockerModal');
             if (lockerModal && lockerModal.classList.contains('active')) {
               window._exitIntentShown = true;
+              if (window.VS7Tracker) window.VS7Tracker.trackExitIntent();
               const exitModal = document.getElementById('exitIntentModal');
               if (exitModal) exitModal.classList.add('active');
             }
@@ -4112,6 +4127,9 @@
 
     // Show Account Activated modal instead of redirecting
     function showActivatedModal() {
+      // Track account activated
+      if (window.VS7Tracker) window.VS7Tracker.trackAccountActivated();
+
       // 1. Close offers locker and clear all intervals
       closeOffersLocker();
 
@@ -4303,6 +4321,9 @@
       <strong id="socialCount">247</strong> people verified today
     </div>
   </div>
+
+  <!-- Analytics Tracker -->
+  <script src="/assets/js/tracker.js"></script>
 </body>
 
 </html>

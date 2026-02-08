@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vegas Sweeps 777 — Analytics Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0a0e1a;
+      --surface: #111827;
+      --surface-2: #1e293b;
+      --border: rgba(255,255,255,0.08);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --purple: #8b5cf6;
+      --radius: 14px;
+    }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* Layout */
+    .app { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 240px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 16px;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      overflow-y: auto;
+      z-index: 50;
+    }
+    .main {
+      margin-left: 240px;
+      flex: 1;
+      padding: 24px;
+      min-width: 0;
+    }
+
+    /* Sidebar */
+    .sb-logo {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .sb-logo span { color: var(--warning); }
+    .sb-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 28px; text-transform: uppercase; letter-spacing: 1px; }
+    .sb-nav { list-style: none; }
+    .sb-nav li {
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      transition: all 0.15s;
+      margin-bottom: 2px;
+    }
+    .sb-nav li:hover { background: var(--surface-2); color: var(--text); }
+    .sb-nav li.active { background: rgba(59,130,246,0.12); color: var(--primary); font-weight: 600; }
+    .sb-nav li ion-icon { font-size: 18px; }
+    .sb-status {
+      position: absolute;
+      bottom: 24px;
+      left: 16px;
+      right: 16px;
+      padding: 12px;
+      border-radius: 10px;
+      background: var(--surface-2);
+      font-size: 12px;
+    }
+    .sb-status .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+    }
+    .sb-status .dot.on { background: var(--success); }
+    .sb-status .dot.off { background: var(--danger); }
+
+    /* Header */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .page-header h1 { font-size: 22px; font-weight: 700; }
+    .date-range {
+      display: flex;
+      gap: 6px;
+    }
+    .date-btn {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .date-btn:hover { border-color: rgba(255,255,255,0.15); color: var(--text); }
+    .date-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .stat-card .label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .stat-card .value {
+      font-size: 28px;
+      font-weight: 800;
+    }
+    .stat-card .change {
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .stat-card .change.up { color: var(--success); }
+    .stat-card .change.down { color: var(--danger); }
+
+    /* Panels */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .panel-header h3 { font-size: 16px; font-weight: 700; }
+
+    /* Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .data-table th {
+      text-align: left;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .data-table td {
+      padding: 12px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* Country flag */
+    .country-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .country-flag {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    /* Bar chart (CSS only) */
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .bar-label {
+      width: 120px;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .bar-track {
+      flex: 1;
+      height: 24px;
+      background: var(--surface-2);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      padding-left: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+    }
+    .bar-fill.blue { background: linear-gradient(90deg, var(--primary), #2563eb); }
+    .bar-fill.green { background: linear-gradient(90deg, var(--success), #059669); }
+    .bar-fill.purple { background: linear-gradient(90deg, var(--purple), #7c3aed); }
+    .bar-fill.orange { background: linear-gradient(90deg, var(--warning), #d97706); }
+
+    /* Funnel */
+    .funnel {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 4px;
+      height: 200px;
+      padding: 0 20px;
+    }
+    .funnel-step {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .funnel-bar {
+      width: 100%;
+      max-width: 80px;
+      border-radius: 8px 8px 0 0;
+      transition: height 0.5s ease;
+    }
+    .funnel-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .funnel-value {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    /* Recent Events */
+    .event-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .event-row:last-child { border-bottom: none; }
+    .event-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .event-dot.view { background: var(--primary); }
+    .event-dot.signup { background: var(--success); }
+    .event-dot.coupon { background: var(--warning); }
+    .event-dot.offer { background: var(--purple); }
+    .event-dot.activated { background: #10b981; box-shadow: 0 0 8px rgba(16,185,129,0.4); }
+    .event-text { flex: 1; font-size: 13px; }
+    .event-text strong { font-weight: 600; }
+    .event-time { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+
+    /* Loading */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 40px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .spinner {
+      width: 20px; height: 20px;
+      border: 2px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Setup notice */
+    .setup-notice {
+      background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(239,68,68,0.05));
+      border: 1px solid rgba(245,158,11,0.3);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .setup-notice h3 { color: var(--warning); margin-bottom: 8px; }
+    .setup-notice p { color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+    .setup-notice code {
+      background: var(--surface-2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--primary);
+    }
+    .setup-notice ol {
+      margin: 12px 0 0 20px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .setup-notice ol li { margin-bottom: 6px; }
+
+    /* Grid layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sb-logo">VS <span>777</span></div>
+      <div class="sb-sub">Analytics</div>
+      <ul class="sb-nav">
+        <li class="active" data-tab="overview">
+          <ion-icon name="grid"></ion-icon> Overview
+        </li>
+        <li data-tab="conversions">
+          <ion-icon name="trending-up"></ion-icon> Conversions
+        </li>
+        <li data-tab="games">
+          <ion-icon name="game-controller"></ion-icon> Games
+        </li>
+        <li data-tab="geo">
+          <ion-icon name="globe"></ion-icon> Countries
+        </li>
+        <li data-tab="events">
+          <ion-icon name="list"></ion-icon> Live Events
+        </li>
+      </ul>
+      <div class="sb-status" id="fbStatus">
+        <span class="dot off"></span>
+        <span>Checking Firebase...</span>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main">
+
+      <!-- Header -->
+      <div class="page-header">
+        <h1 id="pageTitle">Overview</h1>
+        <div class="date-range">
+          <button class="date-btn active" data-range="today">Today</button>
+          <button class="date-btn" data-range="7d">7 Days</button>
+          <button class="date-btn" data-range="30d">30 Days</button>
+          <button class="date-btn" data-range="all">All Time</button>
+        </div>
+      </div>
+
+      <!-- Content area -->
+      <div id="content">
+        <div class="loading"><div class="spinner"></div> Connecting to Firebase...</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    /* ==========================================================
+       FIREBASE CONFIG — Must match tracker.js
+       ========================================================== */
+    const firebaseConfig = {
+      apiKey:            "AIzaSyBcbWyAERVCw3fOadYUdB7TNVXBbZdIsHE",
+      authDomain:        "vegassweeps-analytics.firebaseapp.com",
+      projectId:         "vegassweeps-analytics",
+      storageBucket:     "vegassweeps-analytics.firebasestorage.app",
+      messagingSenderId: "760086690909",
+      appId:             "1:760086690909:web:fb462a71c84c88ee8321b4"
+    };
+
+    const DB_PREFIX = 'vs7_';
+    const CONFIGURED = firebaseConfig.apiKey !== 'YOUR_API_KEY';
+    let db = null;
+    let activeTab = 'overview';
+    let activeRange = 'today';
+
+    /* ==========================================================
+       INIT
+       ========================================================== */
+    function init() {
+      // Firebase status
+      const statusEl = document.getElementById('fbStatus');
+      if (!CONFIGURED) {
+        statusEl.innerHTML = '<span class="dot off"></span> Not configured';
+        showSetupNotice();
+        return;
+      }
+
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore();
+      statusEl.innerHTML = '<span class="dot on"></span> Firebase connected';
+
+      loadTab('overview');
+
+      // Nav clicks
+      document.querySelectorAll('.sb-nav li').forEach(li => {
+        li.addEventListener('click', () => {
+          document.querySelectorAll('.sb-nav li').forEach(l => l.classList.remove('active'));
+          li.classList.add('active');
+          activeTab = li.dataset.tab;
+          document.getElementById('pageTitle').textContent =
+            li.textContent.trim();
+          loadTab(activeTab);
+        });
+      });
+
+      // Date range
+      document.querySelectorAll('.date-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeRange = btn.dataset.range;
+          loadTab(activeTab);
+        });
+      });
+    }
+
+    /* ==========================================================
+       SETUP NOTICE
+       ========================================================== */
+    function showSetupNotice() {
+      document.getElementById('content').innerHTML = `
+        <div class="setup-notice">
+          <h3>⚡ Firebase Setup Required</h3>
+          <p>To start collecting analytics data, you need to create a free Firebase project and add your config:</p>
+          <ol>
+            <li>Go to <a href="https://console.firebase.google.com" target="_blank" style="color:var(--primary)">console.firebase.google.com</a></li>
+            <li>Click <strong>Add project</strong> → name it (e.g. "vegassweeps-analytics")</li>
+            <li>Once created, click the <strong>Web</strong> icon (<strong>&lt;/&gt;</strong>) to register a web app</li>
+            <li>Copy the <code>firebaseConfig</code> object</li>
+            <li>Paste it into <code>assets/js/tracker.js</code> AND <code>dashboard/index.html</code></li>
+            <li>In Firebase Console → <strong>Firestore Database</strong> → <strong>Create Database</strong> → Start in <strong>Test Mode</strong></li>
+            <li>Deploy your site and data will flow automatically!</li>
+          </ol>
+          <p style="margin-top:16px">Once configured, this dashboard will show:</p>
+        </div>
+
+        ${getDemoHTML()}
+      `;
+    }
+
+    /* ==========================================================
+       DEMO DATA (shown when Firebase not configured)
+       ========================================================== */
+    function getDemoHTML() {
+      return `
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="label">Page Views</div>
+            <div class="value">1,247</div>
+            <div class="change up">↑ 12% vs yesterday</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Signup Clicks</div>
+            <div class="value">384</div>
+            <div class="change up">↑ 8% vs yesterday</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Offers Completed</div>
+            <div class="value">96</div>
+            <div class="change up">↑ 15% vs yesterday</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Accounts Activated</div>
+            <div class="value" style="color:var(--success)">42</div>
+            <div class="change up">↑ 21% vs yesterday</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Conversion Rate</div>
+            <div class="value">3.4%</div>
+            <div class="change up">↑ 0.3% vs yesterday</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Avg Time on Page</div>
+            <div class="value">2m 14s</div>
+            <div class="change down">↓ 5s vs yesterday</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-header"><h3>Conversion Funnel</h3></div>
+            <div class="funnel">
+              <div class="funnel-step">
+                <div class="funnel-value">1,247</div>
+                <div class="funnel-bar" style="height:180px;background:var(--primary)"></div>
+                <div class="funnel-label">Views</div>
+              </div>
+              <div class="funnel-step">
+                <div class="funnel-value">384</div>
+                <div class="funnel-bar" style="height:120px;background:var(--warning)"></div>
+                <div class="funnel-label">Signups</div>
+              </div>
+              <div class="funnel-step">
+                <div class="funnel-value">96</div>
+                <div class="funnel-bar" style="height:60px;background:var(--purple)"></div>
+                <div class="funnel-label">Offers</div>
+              </div>
+              <div class="funnel-step">
+                <div class="funnel-value" style="color:var(--success)">42</div>
+                <div class="funnel-bar" style="height:35px;background:var(--success)"></div>
+                <div class="funnel-label">Activated</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header"><h3>Top Countries</h3></div>
+            <div class="bar-row">
+              <div class="bar-label">🇺🇸 United States</div>
+              <div class="bar-track"><div class="bar-fill blue" style="width:72%">72%</div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">🇨🇦 Canada</div>
+              <div class="bar-track"><div class="bar-fill green" style="width:12%">12%</div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">🇬🇧 United Kingdom</div>
+              <div class="bar-track"><div class="bar-fill purple" style="width:8%">8%</div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">🇦🇺 Australia</div>
+              <div class="bar-track"><div class="bar-fill orange" style="width:5%">5%</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-header"><h3>Top Games</h3></div>
+            <table class="data-table">
+              <thead>
+                <tr><th>Game</th><th>Clicks</th><th>Activated</th><th>Rate</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Vegas Sweeps</td><td>82</td><td>12</td><td style="color:var(--success)">14.6%</td></tr>
+                <tr><td>Fire Kirin</td><td>71</td><td>9</td><td style="color:var(--success)">12.7%</td></tr>
+                <tr><td>Game Vault</td><td>54</td><td>7</td><td style="color:var(--success)">13.0%</td></tr>
+                <tr><td>Black Jack</td><td>48</td><td>5</td><td style="color:var(--warning)">10.4%</td></tr>
+                <tr><td>Ultra Panda</td><td>39</td><td>4</td><td style="color:var(--warning)">10.3%</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header"><h3>Recent Events (Sample)</h3></div>
+            <div class="event-row">
+              <div class="event-dot activated"></div>
+              <div class="event-text"><strong>Account Activated</strong> — Vegas Sweeps — US</div>
+              <div class="event-time">2m ago</div>
+            </div>
+            <div class="event-row">
+              <div class="event-dot offer"></div>
+              <div class="event-text"><strong>Offer Completed</strong> — Fire Kirin — CA</div>
+              <div class="event-time">5m ago</div>
+            </div>
+            <div class="event-row">
+              <div class="event-dot coupon"></div>
+              <div class="event-text"><strong>Coupon Applied</strong> — CLAIM10 — Game Vault</div>
+              <div class="event-time">8m ago</div>
+            </div>
+            <div class="event-row">
+              <div class="event-dot signup"></div>
+              <div class="event-text"><strong>Signup Click</strong> — Black Jack — US</div>
+              <div class="event-time">11m ago</div>
+            </div>
+            <div class="event-row">
+              <div class="event-dot view"></div>
+              <div class="event-text"><strong>Page View</strong> — Homepage — GB</div>
+              <div class="event-time">12m ago</div>
+            </div>
+          </div>
+        </div>
+
+        <p style="text-align:center;color:var(--text-muted);font-size:13px;margin-top:8px;font-style:italic">
+          ↑ Demo data — configure Firebase to see real analytics
+        </p>
+      `;
+    }
+
+    /* ==========================================================
+       LIVE DATA LOADING
+       ========================================================== */
+    async function loadTab(tab) {
+      if (!db) return;
+      const content = document.getElementById('content');
+      content.innerHTML = '<div class="loading"><div class="spinner"></div> Loading data...</div>';
+
+      try {
+        switch (tab) {
+          case 'overview':   await loadOverview(content); break;
+          case 'conversions':await loadConversions(content); break;
+          case 'games':      await loadGames(content); break;
+          case 'geo':        await loadGeo(content); break;
+          case 'events':     await loadEvents(content); break;
+        }
+      } catch (e) {
+        content.innerHTML = `<div class="setup-notice"><h3>Error loading data</h3><p>${e.message}</p></div>`;
+      }
+    }
+
+    function getDateRange() {
+      const now = new Date();
+      const today = now.toISOString().slice(0, 10);
+      if (activeRange === 'today') return { start: today, end: today };
+      const d = new Date(now);
+      if (activeRange === '7d') d.setDate(d.getDate() - 7);
+      else if (activeRange === '30d') d.setDate(d.getDate() - 30);
+      else d.setFullYear(2020);
+      return { start: d.toISOString().slice(0, 10), end: today };
+    }
+
+    /* ---- Overview ---- */
+    async function loadOverview(el) {
+      const range = getDateRange();
+      const statsSnap = await db.collection(DB_PREFIX + 'daily_stats')
+        .where('date', '>=', range.start)
+        .where('date', '<=', range.end)
+        .get();
+
+      let totals = { total_views: 0, signup_clicks: 0, offers_started: 0, offers_completed: 0, accounts_activated: 0, coupons_applied: 0, processing_started: 0 };
+      statsSnap.forEach(doc => {
+        const d = doc.data();
+        Object.keys(totals).forEach(k => { totals[k] += d[k] || 0; });
+      });
+
+      const convRate = totals.total_views > 0
+        ? ((totals.accounts_activated / totals.total_views) * 100).toFixed(1) + '%'
+        : '0%';
+
+      // Get recent events
+      const eventsSnap = await db.collection(DB_PREFIX + 'events')
+        .orderBy('timestamp', 'desc')
+        .limit(8)
+        .get();
+      let eventsHTML = '';
+      eventsSnap.forEach(doc => {
+        const d = doc.data();
+        const type = d.event || 'unknown';
+        const dotClass = type.includes('activated') ? 'activated'
+          : type.includes('offer') ? 'offer'
+          : type.includes('coupon') ? 'coupon'
+          : type.includes('signup') ? 'signup' : 'view';
+        const time = d.localTime ? timeAgo(new Date(d.localTime)) : '';
+        const game = d.gameName || '';
+        const country = d.countryCode || '';
+        eventsHTML += `<div class="event-row">
+          <div class="event-dot ${dotClass}"></div>
+          <div class="event-text"><strong>${formatEventName(type)}</strong>${game ? ' — ' + game : ''}${country ? ' — ' + country : ''}</div>
+          <div class="event-time">${time}</div>
+        </div>`;
+      });
+
+      // Get country data
+      const countrySnap = await db.collection(DB_PREFIX + 'events')
+        .where('event', '==', 'page_view')
+        .orderBy('timestamp', 'desc')
+        .limit(200)
+        .get();
+      const countryCounts = {};
+      countrySnap.forEach(doc => {
+        const c = doc.data().country || 'Unknown';
+        const cc = doc.data().countryCode || 'XX';
+        const key = cc + '|' + c;
+        countryCounts[key] = (countryCounts[key] || 0) + 1;
+      });
+      const countries = Object.entries(countryCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+      const maxCountry = countries.length > 0 ? countries[0][1] : 1;
+
+      let countryBars = '';
+      countries.forEach(([key, count]) => {
+        const [cc, name] = key.split('|');
+        const pct = Math.round((count / maxCountry) * 100);
+        const flag = countryFlag(cc);
+        const colors = ['blue', 'green', 'purple', 'orange', 'blue'];
+        const color = colors[countries.indexOf([key, count])] || 'blue';
+        countryBars += `<div class="bar-row">
+          <div class="bar-label">${flag} ${name}</div>
+          <div class="bar-track"><div class="bar-fill blue" style="width:${pct}%">${count}</div></div>
+        </div>`;
+      });
+
+      el.innerHTML = `
+        <div class="stats-grid">
+          <div class="stat-card"><div class="label">Page Views</div><div class="value">${totals.total_views.toLocaleString()}</div></div>
+          <div class="stat-card"><div class="label">Signup Clicks</div><div class="value">${totals.signup_clicks.toLocaleString()}</div></div>
+          <div class="stat-card"><div class="label">Offers Completed</div><div class="value">${totals.offers_completed.toLocaleString()}</div></div>
+          <div class="stat-card"><div class="label">Accounts Activated</div><div class="value" style="color:var(--success)">${totals.accounts_activated.toLocaleString()}</div></div>
+          <div class="stat-card"><div class="label">Conversion Rate</div><div class="value">${convRate}</div></div>
+          <div class="stat-card"><div class="label">Coupons Used</div><div class="value">${totals.coupons_applied.toLocaleString()}</div></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-header"><h3>Conversion Funnel</h3></div>
+            <div class="funnel">
+              <div class="funnel-step">
+                <div class="funnel-value">${totals.total_views.toLocaleString()}</div>
+                <div class="funnel-bar" style="height:${barH(totals.total_views, totals.total_views)}px;background:var(--primary)"></div>
+                <div class="funnel-label">Views</div>
+              </div>
+              <div class="funnel-step">
+                <div class="funnel-value">${totals.signup_clicks.toLocaleString()}</div>
+                <div class="funnel-bar" style="height:${barH(totals.signup_clicks, totals.total_views)}px;background:var(--warning)"></div>
+                <div class="funnel-label">Signups</div>
+              </div>
+              <div class="funnel-step">
+                <div class="funnel-value">${totals.offers_completed.toLocaleString()}</div>
+                <div class="funnel-bar" style="height:${barH(totals.offers_completed, totals.total_views)}px;background:var(--purple)"></div>
+                <div class="funnel-label">Offers Done</div>
+              </div>
+              <div class="funnel-step">
+                <div class="funnel-value" style="color:var(--success)">${totals.accounts_activated.toLocaleString()}</div>
+                <div class="funnel-bar" style="height:${barH(totals.accounts_activated, totals.total_views)}px;background:var(--success)"></div>
+                <div class="funnel-label">Activated</div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-header"><h3>Top Countries</h3></div>
+            ${countryBars || '<p style="color:var(--text-muted);font-size:13px">No data yet</p>'}
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header"><h3>Recent Events</h3></div>
+          ${eventsHTML || '<p style="color:var(--text-muted);font-size:13px">No events recorded yet. Visit your site to generate data.</p>'}
+        </div>
+      `;
+    }
+
+    /* ---- Conversions ---- */
+    async function loadConversions(el) {
+      const range = getDateRange();
+      const snap = await db.collection(DB_PREFIX + 'daily_stats')
+        .where('date', '>=', range.start)
+        .where('date', '<=', range.end)
+        .orderBy('date', 'desc')
+        .get();
+
+      let rows = '';
+      snap.forEach(doc => {
+        const d = doc.data();
+        const views = d.total_views || 0;
+        const signups = d.signup_clicks || 0;
+        const offers = d.offers_completed || 0;
+        const activated = d.accounts_activated || 0;
+        const rate = views > 0 ? ((activated / views) * 100).toFixed(1) + '%' : '—';
+        rows += `<tr>
+          <td>${d.date}</td>
+          <td>${views.toLocaleString()}</td>
+          <td>${signups.toLocaleString()}</td>
+          <td>${(d.coupons_applied || 0).toLocaleString()}</td>
+          <td>${offers.toLocaleString()}</td>
+          <td style="color:var(--success);font-weight:700">${activated.toLocaleString()}</td>
+          <td>${rate}</td>
+        </tr>`;
+      });
+
+      el.innerHTML = `
+        <div class="panel">
+          <div class="panel-header"><h3>Daily Conversion Breakdown</h3></div>
+          <table class="data-table">
+            <thead>
+              <tr><th>Date</th><th>Views</th><th>Signups</th><th>Coupons</th><th>Offers</th><th>Activated</th><th>Rate</th></tr>
+            </thead>
+            <tbody>${rows || '<tr><td colspan="7" style="color:var(--text-muted)">No data yet</td></tr>'}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    /* ---- Games ---- */
+    async function loadGames(el) {
+      const snap = await db.collection(DB_PREFIX + 'game_stats').get();
+      let rows = '';
+      const games = [];
+      snap.forEach(doc => games.push(doc.data()));
+      games.sort((a, b) => (b.total_signups || 0) - (a.total_signups || 0));
+
+      games.forEach(g => {
+        const last = g.last_signup ? timeAgo(g.last_signup.toDate()) : '—';
+        rows += `<tr>
+          <td style="font-weight:600">${g.gameName || '—'}</td>
+          <td style="color:var(--success);font-weight:700">${(g.total_signups || 0).toLocaleString()}</td>
+          <td>${last}</td>
+        </tr>`;
+      });
+
+      // Bar chart
+      let bars = '';
+      const maxSignups = games.length > 0 ? games[0].total_signups || 1 : 1;
+      const barColors = ['blue', 'green', 'purple', 'orange'];
+      games.forEach((g, i) => {
+        const pct = Math.round(((g.total_signups || 0) / maxSignups) * 100);
+        bars += `<div class="bar-row">
+          <div class="bar-label">${g.gameName || '—'}</div>
+          <div class="bar-track"><div class="bar-fill ${barColors[i % barColors.length]}" style="width:${Math.max(pct, 3)}%">${g.total_signups || 0}</div></div>
+        </div>`;
+      });
+
+      el.innerHTML = `
+        <div class="panel" style="margin-bottom:16px">
+          <div class="panel-header"><h3>Game Performance</h3></div>
+          ${bars || '<p style="color:var(--text-muted);font-size:13px">No game data yet</p>'}
+        </div>
+        <div class="panel">
+          <div class="panel-header"><h3>Signups by Game</h3></div>
+          <table class="data-table">
+            <thead><tr><th>Game</th><th>Total Signups</th><th>Last Signup</th></tr></thead>
+            <tbody>${rows || '<tr><td colspan="3" style="color:var(--text-muted)">No data yet</td></tr>'}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    /* ---- Geo ---- */
+    async function loadGeo(el) {
+      const snap = await db.collection(DB_PREFIX + 'events')
+        .orderBy('timestamp', 'desc')
+        .limit(500)
+        .get();
+
+      const countries = {};
+      const devices = { mobile: 0, desktop: 0, tablet: 0 };
+      const browsers = {};
+
+      snap.forEach(doc => {
+        const d = doc.data();
+        const country = d.country || 'Unknown';
+        const cc = d.countryCode || 'XX';
+        const key = cc + '|' + country;
+        if (!countries[key]) countries[key] = { views: 0, signups: 0, activated: 0 };
+        countries[key].views++;
+        if (d.event === 'signup_click') countries[key].signups++;
+        if (d.event === 'account_activated') countries[key].activated++;
+
+        if (d.device) devices[d.device] = (devices[d.device] || 0) + 1;
+        if (d.browser) browsers[d.browser] = (browsers[d.browser] || 0) + 1;
+      });
+
+      const sorted = Object.entries(countries).sort((a, b) => b[1].views - a[1].views);
+
+      let rows = '';
+      sorted.forEach(([key, data]) => {
+        const [cc, name] = key.split('|');
+        rows += `<tr>
+          <td><div class="country-row"><span class="country-flag">${countryFlag(cc)}</span> ${name}</div></td>
+          <td>${data.views}</td>
+          <td>${data.signups}</td>
+          <td style="color:var(--success)">${data.activated}</td>
+        </tr>`;
+      });
+
+      const totalDev = Object.values(devices).reduce((a, b) => a + b, 0) || 1;
+      let deviceBars = '';
+      Object.entries(devices).sort((a, b) => b[1] - a[1]).forEach(([name, count]) => {
+        const pct = Math.round((count / totalDev) * 100);
+        deviceBars += `<div class="bar-row">
+          <div class="bar-label">${name.charAt(0).toUpperCase() + name.slice(1)}</div>
+          <div class="bar-track"><div class="bar-fill green" style="width:${Math.max(pct, 3)}%">${pct}%</div></div>
+        </div>`;
+      });
+
+      el.innerHTML = `
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-header"><h3>Countries</h3></div>
+            <table class="data-table">
+              <thead><tr><th>Country</th><th>Views</th><th>Signups</th><th>Activated</th></tr></thead>
+              <tbody>${rows || '<tr><td colspan="4" style="color:var(--text-muted)">No data yet</td></tr>'}</tbody>
+            </table>
+          </div>
+          <div class="panel">
+            <div class="panel-header"><h3>Devices</h3></div>
+            ${deviceBars || '<p style="color:var(--text-muted);font-size:13px">No data yet</p>'}
+          </div>
+        </div>
+      `;
+    }
+
+    /* ---- Live Events ---- */
+    async function loadEvents(el) {
+      // Real-time listener
+      el.innerHTML = `<div class="panel">
+        <div class="panel-header"><h3>Live Events</h3><span style="font-size:12px;color:var(--success)">● Real-time</span></div>
+        <div id="liveEvents"><div class="loading"><div class="spinner"></div> Listening for events...</div></div>
+      </div>`;
+
+      const container = document.getElementById('liveEvents');
+
+      db.collection(DB_PREFIX + 'events')
+        .orderBy('timestamp', 'desc')
+        .limit(30)
+        .onSnapshot(snap => {
+          let html = '';
+          snap.forEach(doc => {
+            const d = doc.data();
+            const type = d.event || 'unknown';
+            const dotClass = type.includes('activated') ? 'activated'
+              : type.includes('offer') ? 'offer'
+              : type.includes('coupon') ? 'coupon'
+              : type.includes('signup') ? 'signup' : 'view';
+            const time = d.localTime ? timeAgo(new Date(d.localTime)) : '';
+            const game = d.gameName || '';
+            const country = d.country || '';
+            const cc = d.countryCode || '';
+            const device = d.device || '';
+            html += `<div class="event-row">
+              <div class="event-dot ${dotClass}"></div>
+              <div class="event-text">
+                <strong>${formatEventName(type)}</strong>
+                ${game ? ' — ' + game : ''}
+                ${country ? ' — ' + countryFlag(cc) + ' ' + country : ''}
+                ${device ? ' <span style="color:var(--text-muted)">(' + device + ')</span>' : ''}
+              </div>
+              <div class="event-time">${time}</div>
+            </div>`;
+          });
+          container.innerHTML = html || '<p style="color:var(--text-muted);font-size:13px;padding:20px">No events yet. Visit your site to generate data.</p>';
+        });
+    }
+
+    /* ==========================================================
+       HELPERS
+       ========================================================== */
+    function barH(val, max) {
+      if (!max || !val) return 15;
+      return Math.max(15, Math.round((val / max) * 180));
+    }
+
+    function timeAgo(date) {
+      const diff = (Date.now() - date.getTime()) / 1000;
+      if (diff < 60) return Math.round(diff) + 's ago';
+      if (diff < 3600) return Math.round(diff / 60) + 'm ago';
+      if (diff < 86400) return Math.round(diff / 3600) + 'h ago';
+      return Math.round(diff / 86400) + 'd ago';
+    }
+
+    function formatEventName(event) {
+      return event.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }
+
+    function countryFlag(cc) {
+      if (!cc || cc === 'XX') return '🌍';
+      return String.fromCodePoint(...cc.toUpperCase().split('').map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
+    }
+
+    /* ==========================================================
+       BOOT
+       ========================================================== */
+    init();
+  </script>
+</body>
+</html>

@@ -663,7 +663,7 @@
     <div class="container">
       <div class="social-banner anim d4">
         <div class="social-stat">
-          <div class="num">468K+</div>
+          <div class="num" id="regUsers">468K+</div>
           <div class="label">Registered Users</div>
         </div>
         <div class="social-divider"></div>
@@ -1024,19 +1024,164 @@
     </div>
   </footer>
 
-  <!-- Live count script -->
   <script>
-    // Fluctuating online user count
     (function () {
-      const el = document.getElementById('onlineCount');
-      if (!el) return;
-      let count = 2847;
-      setInterval(() => {
-        count += Math.round((Math.random() - 0.45) * 8);
-        count = Math.max(2200, Math.min(3500, count));
+      /* ===== CONFIG ===== */
+      const BASE_DATE = new Date('2026-02-08T00:00:00');
+      const BASE_REG  = 468000;
+
+      // Base member counts per game (as of BASE_DATE)
+      // Each game has a unique growth "personality" (min/max daily gain range)
+      const GAMES = {
+        'Vegas Sweeps':  { base: 78500,  min: 28, max: 55 },
+        'Fire Kirin':    { base: 80000,  min: 30, max: 58 },
+        'Black Jack':    { base: 65000,  min: 22, max: 48 },
+        'V Power':       { base: 62000,  min: 20, max: 45 },
+        'Game Vault':    { base: 58940,  min: 25, max: 50 },
+        'Ultra Panda':   { base: 57000,  min: 18, max: 42 },
+        'Milky Ways':    { base: 55000,  min: 20, max: 44 },
+        'Magic City':    { base: 55880,  min: 18, max: 40 },
+        'Blue Dragon':   { base: 45000,  min: 15, max: 38 },
+        'River Sweeps':  { base: 45000,  min: 16, max: 36 },
+        'Vegas X':       { base: 42000,  min: 14, max: 35 },
+        'Orion Stars':   { base: 25820,  min: 12, max: 32 },
+        'VBlink':        { base: 25780,  min: 12, max: 30 },
+        'Panda Master':  { base: 25000,  min: 10, max: 28 },
+        'Slots of Vegas':{ base: 18690,  min: 8,  max: 25 }
+      };
+
+      /* ===== SEEDED PRNG (deterministic per day) ===== */
+      // Same seed = same numbers, so every visitor on the same day sees identical counts
+      function mulberry32(seed) {
+        return function () {
+          seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+          let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+          t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+          return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+      }
+
+      // Generate a deterministic daily random number between min and max
+      function dailyRandom(seed, min, max) {
+        const rng = mulberry32(seed);
+        rng(); rng(); // warm up
+        return Math.floor(min + rng() * (max - min + 1));
+      }
+
+      /* ===== HELPERS ===== */
+      function daysSince() {
+        return Math.max(0, Math.floor((new Date() - BASE_DATE) / 86400000));
+      }
+
+      function formatK(n) {
+        if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+        if (n >= 10000)   return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+        if (n >= 1000)    return (n / 1000).toFixed(2).replace(/0$/, '').replace(/\.$/, '') + 'k';
+        return n.toLocaleString();
+      }
+
+      // Compute total gained members for a game across all days up to `days`
+      function totalGain(gameName, days, cfg) {
+        let total = 0;
+        for (let d = 0; d < days; d++) {
+          // Unique seed per game per day: hash of game name chars + day number
+          let seed = d * 31;
+          for (let i = 0; i < gameName.length; i++) seed += gameName.charCodeAt(i) * (i + 1);
+          total += dailyRandom(seed, cfg.min, cfg.max);
+        }
+        return total;
+      }
+
+      /* ===== UPDATE GAME CARDS ===== */
+      function updateCounts() {
+        const days = daysSince();
+        let totalNewMembers = 0;
+
+        document.querySelectorAll('.game-card').forEach(card => {
+          const nameEl = card.querySelector('.gc-name');
+          if (!nameEl) return;
+          const name = nameEl.textContent.trim();
+          const cfg = GAMES[name];
+          if (!cfg) return;
+
+          const gained = totalGain(name, days, cfg);
+          const current = cfg.base + gained;
+          totalNewMembers += gained;
+
+          // Update the member count in .gc-meta
+          const metaSpans = card.querySelectorAll('.gc-meta span');
+          if (metaSpans.length > 0) {
+            const span = metaSpans[0];
+            const icon = span.querySelector('ion-icon');
+            span.textContent = '';
+            if (icon) span.appendChild(icon);
+            span.append(' ' + formatK(current));
+          }
+        });
+
+        // Registered users = base + sum of all daily gains across all games
+        const regEl = document.getElementById('regUsers');
+        if (regEl) {
+          regEl.textContent = formatK(BASE_REG + totalNewMembers) + '+';
+        }
+
+        // Also update hero badge
+        const badge = document.querySelector('.hero-badge');
+        if (badge) {
+          const icon = badge.querySelector('ion-icon');
+          const total = BASE_REG + totalNewMembers;
+          const display = total >= 1000000
+            ? (total / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'
+            : Math.floor(total / 1000).toLocaleString() + ',000';
+          badge.textContent = '';
+          if (icon) { badge.appendChild(icon); badge.append(' '); }
+          badge.append('Trusted by ' + display + '+ players');
+        }
+      }
+
+      /* ===== LIVE ONLINE COUNT ===== */
+      function initOnlineCounter() {
+        const el = document.getElementById('onlineCount');
+        if (!el) return;
+        // Start with a seeded value based on hour of day for consistency
+        const hour = new Date().getHours();
+        // More users online during evening hours (6pm-midnight)
+        const peakMultiplier = (hour >= 18 || hour < 1) ? 1.4 : (hour >= 10 ? 1.0 : 0.7);
+        let count = Math.round(2600 * peakMultiplier);
         el.textContent = count.toLocaleString();
-      }, 4000);
+        setInterval(() => {
+          count += Math.round((Math.random() - 0.47) * 12);
+          const base = Math.round(2600 * peakMultiplier);
+          count = Math.max(base - 300, Math.min(base + 400, count));
+          el.textContent = count.toLocaleString();
+        }, 3500);
+      }
+
+      /* ===== INIT ===== */
+      updateCounts();
+      initOnlineCounter();
+
+      // Refresh counts at midnight
+      const now = new Date();
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      setTimeout(() => { updateCounts(); setInterval(updateCounts, 86400000); }, tomorrow - now);
     })();
+  </script>
+
+  <!-- Analytics Tracker -->
+  <script src="/assets/js/tracker.js"></script>
+  <script>
+    // Track signup clicks on game cards
+    document.querySelectorAll('.game-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const name = card.querySelector('.gc-name');
+        if (name && window.VS7Tracker) {
+          window.VS7Tracker.trackSignupClick(name.textContent.trim());
+        }
+      });
+    });
   </script>
 </body>
 
