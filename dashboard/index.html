@@ -24,6 +24,33 @@
       --purple: #8b5cf6;
       --radius: 14px;
     }
+
+    /* ---- Password Gate ---- */
+    .pw-gate {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 18px;
+    }
+    .pw-gate.hidden { display: none; }
+    .pw-gate h2 { font-size: 1.5rem; color: var(--text); }
+    .pw-gate p { color: var(--text-muted); font-size: 0.9rem; }
+    .pw-gate input {
+      padding: 12px 18px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text); font-size: 1rem;
+      width: 280px; outline: none; font-family: 'Outfit', sans-serif;
+    }
+    .pw-gate input:focus { border-color: var(--primary); }
+    .pw-gate button {
+      padding: 12px 32px; border-radius: 10px; border: none;
+      background: var(--primary); color: #fff; font-weight: 600;
+      font-size: 1rem; cursor: pointer; font-family: 'Outfit', sans-serif;
+    }
+    .pw-gate button:hover { opacity: 0.9; }
+    .pw-gate .pw-error { color: var(--danger); font-size: 0.85rem; min-height: 20px; }
+    .pw-logo { font-size: 1.6rem; font-weight: 800; }
+    .pw-logo span { color: var(--success); }
+
     body {
       font-family: 'Outfit', sans-serif;
       background: var(--bg);
@@ -367,7 +394,18 @@
 </head>
 
 <body>
-  <div class="app">
+
+  <!-- Password Gate -->
+  <div class="pw-gate" id="pwGate">
+    <div class="pw-logo">VS <span>777</span></div>
+    <h2>Analytics Dashboard</h2>
+    <p>Enter password to continue</p>
+    <input type="password" id="pwInput" placeholder="Password" autocomplete="off" autofocus>
+    <div class="pw-error" id="pwError"></div>
+    <button onclick="checkPw()">Unlock</button>
+  </div>
+
+  <div class="app" id="appMain" style="display:none">
 
     <!-- Sidebar -->
     <nav class="sidebar">
@@ -424,6 +462,42 @@
 
   <script>
     /* ==========================================================
+       PASSWORD GATE
+       ========================================================== */
+    const PW_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // sha256 of 'vs777admin'
+    const PW_SESSION_KEY = 'vs7_dash_auth';
+
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function checkPw() {
+      const val = document.getElementById('pwInput').value;
+      sha256(val).then(hash => {
+        if (hash === PW_HASH) {
+          sessionStorage.setItem(PW_SESSION_KEY, '1');
+          unlockDash();
+        } else {
+          document.getElementById('pwError').textContent = 'Wrong password';
+          document.getElementById('pwInput').value = '';
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('pwInput').addEventListener('keydown', e => {
+        if (e.key === 'Enter') checkPw();
+      });
+      if (sessionStorage.getItem(PW_SESSION_KEY) === '1') unlockDash();
+    });
+
+    function unlockDash() {
+      document.getElementById('pwGate').classList.add('hidden');
+      document.getElementById('appMain').style.display = '';
+      initDashboard();
+    }
+    /* ==========================================================
        FIREBASE CONFIG — Must match tracker.js
        ========================================================== */
     const firebaseConfig = {
@@ -444,7 +518,7 @@
     /* ==========================================================
        INIT
        ========================================================== */
-    function init() {
+    function initDashboard() {
       // Firebase status
       const statusEl = document.getElementById('fbStatus');
       if (!CONFIGURED) {
@@ -1017,9 +1091,8 @@
     }
 
     /* ==========================================================
-       BOOT
+       BOOT — handled by password gate (unlockDash calls initDashboard)
        ========================================================== */
-    init();
   </script>
 </body>
 </html>
