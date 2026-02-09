@@ -890,6 +890,9 @@
         const offers = d.offers_completed || 0;
         const activated = d.accounts_activated || 0;
         const rate = views > 0 ? ((activated / views) * 100).toFixed(1) + '%' : '—';
+        const convCount = d.conversions || 0;
+        const rev = d.revenue || 0;
+        const cb = d.chargebacks || 0;
         rows += `<tr>
           <td>${d.date}</td>
           <td>${views.toLocaleString()}</td>
@@ -898,18 +901,78 @@
           <td>${offers.toLocaleString()}</td>
           <td style="color:var(--success);font-weight:700">${activated.toLocaleString()}</td>
           <td>${rate}</td>
+          <td style="color:#10b981;font-weight:700">${convCount}</td>
+          <td style="color:#f59e0b;font-weight:700">$${rev.toFixed(2)}</td>
+          <td style="color:${cb > 0 ? '#ef4444' : 'var(--text-muted)'}">${cb}</td>
         </tr>`;
       });
 
+      // Load recent postback conversions
+      let postbackRows = '';
+      let totalRevenue = 0;
+      let totalConversions = 0;
+      let totalChargebacks = 0;
+      try {
+        const convSnap = await db.collection(DB_PREFIX + 'conversions')
+          .orderBy('timestamp', 'desc')
+          .limit(50)
+          .get();
+
+        convSnap.forEach(doc => {
+          const c = doc.data();
+          const isChargebk = c.is_chargeback === true;
+          const payout = c.payout || 0;
+          if (!isChargebk) { totalConversions++; totalRevenue += payout; }
+          else { totalChargebacks++; }
+          const time = c.timestamp ? timeAgo(c.timestamp.toDate()) : '—';
+          postbackRows += `<tr>
+            <td>${c.offer_name || c.offer_id || '—'}</td>
+            <td style="color:${isChargebk ? '#ef4444' : '#10b981'};font-weight:700">$${payout.toFixed(2)}</td>
+            <td><span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;${isChargebk ? 'background:rgba(239,68,68,0.1);color:#ef4444' : 'background:rgba(16,185,129,0.1);color:#10b981'}">${isChargebk ? '✕ Chargeback' : '✓ Conversion'}</span></td>
+            <td>${c.country_code || '—'}</td>
+            <td style="font-family:monospace;font-size:12px">${c.lead_id || '—'}</td>
+            <td>${c.ip || '—'}</td>
+            <td>${time}</td>
+          </tr>`;
+        });
+      } catch(e) { console.warn('Failed to load conversions:', e); }
+
       el.innerHTML = `
-        <div class="panel">
-          <div class="panel-header"><h3>Daily Conversion Breakdown</h3></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+          <div class="stat-card">
+            <div class="stat-label">Postback Conversions</div>
+            <div class="stat-value" style="color:#10b981">${totalConversions}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-value" style="color:#f59e0b">$${totalRevenue.toFixed(2)}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Chargebacks</div>
+            <div class="stat-value" style="color:#ef4444">${totalChargebacks}</div>
+          </div>
+        </div>
+        <div class="panel" style="margin-bottom:20px">
+          <div class="panel-header"><h3>Daily Breakdown</h3></div>
+          <div style="overflow-x:auto">
           <table class="data-table">
             <thead>
-              <tr><th>Date</th><th>Views</th><th>Signups</th><th>Coupons</th><th>Offers</th><th>Activated</th><th>Rate</th></tr>
+              <tr><th>Date</th><th>Views</th><th>Signups</th><th>Coupons</th><th>Offers</th><th>Activated</th><th>Rate</th><th>Conv.</th><th>Revenue</th><th>CB</th></tr>
             </thead>
-            <tbody>${rows || '<tr><td colspan="7" style="color:var(--text-muted)">No data yet</td></tr>'}</tbody>
+            <tbody>${rows || '<tr><td colspan="10" style="color:var(--text-muted)">No data yet</td></tr>'}</tbody>
           </table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><h3>Recent Postback Conversions</h3></div>
+          <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr><th>Offer</th><th>Payout</th><th>Status</th><th>Country</th><th>Lead ID</th><th>IP</th><th>Time</th></tr>
+            </thead>
+            <tbody>${postbackRows || '<tr><td colspan="7" style="color:var(--text-muted)">No postback conversions yet. Set your postback URL in the ad network to start receiving data.</td></tr>'}</tbody>
+          </table>
+          </div>
         </div>
       `;
     }
