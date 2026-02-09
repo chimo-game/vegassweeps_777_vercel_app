@@ -37,16 +37,16 @@ def generate_page(game_name, game_slug, image_url):
   <title>Sign Up for {GAME_NAME} | Claim $10 Free Play Bonus</title>
   <meta name="description" content="Create your {GAME_NAME} account in under a minute. Choose your cashout method and claim a $10 Free Play bonus with code CLAIM10." />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-  <link rel="canonical" href="https://vegassweeps777online.com/{GAME_SLUG}/" />
+  <link rel="canonical" href="https://vegassweeps777.vercel.app/{GAME_SLUG}/" />
 
-  <link rel="icon" href="{IMAGE_URL}" type="image/webp" />
-  <link rel="apple-touch-icon" href="{IMAGE_URL}" />
+  <link rel="icon" href="/favicon/icon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/favicon/icon.png" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="{GAME_NAME}" />
+  <meta property="og:site_name" content="Vegas Sweeps 777" />
   <meta property="og:title" content="Sign Up for {GAME_NAME} | Claim $10 Free Play Bonus" />
   <meta property="og:description" content="Fast signup. Pick your cashout method and claim $10 Free Play with code CLAIM10." />
-  <meta property="og:url" content="https://vegassweeps777online.com/{GAME_SLUG}/" />
+  <meta property="og:url" content="https://vegassweeps777.vercel.app/{GAME_SLUG}/" />
   <meta property="og:image" content="{IMAGE_URL}" />
   <meta property="og:image:alt" content="{GAME_NAME} logo" />
 
@@ -65,25 +65,25 @@ def generate_page(game_name, game_slug, image_url):
     "@graph": [
       {{
         "@type": "Organization",
-        "@id": "https://vegassweeps777online.com/#organization",
-        "name": "{GAME_NAME}",
-        "url": "https://vegassweeps777online.com/",
+        "@id": "https://vegassweeps777.vercel.app/#organization",
+        "name": "Vegas Sweeps 777",
+        "url": "https://vegassweeps777.vercel.app/",
         "logo": "{IMAGE_URL}"
       }},
       {{
         "@type": "WebPage",
-        "@id": "https://vegassweeps777online.com/{GAME_SLUG}/#webpage",
-        "url": "https://vegassweeps777online.com/{GAME_SLUG}/",
+        "@id": "https://vegassweeps777.vercel.app/{GAME_SLUG}/#webpage",
+        "url": "https://vegassweeps777.vercel.app/{GAME_SLUG}/",
         "name": "Sign Up for {GAME_NAME}",
         "description": "Create your {GAME_NAME} account, choose your cashout method, and claim a $10 Free Play bonus with code CLAIM10.",
-        "isPartOf": {{ "@id": "https://vegassweeps777online.com/#website" }},
-        "about": {{ "@id": "https://vegassweeps777online.com/#organization" }}
+        "isPartOf": {{ "@id": "https://vegassweeps777.vercel.app/#website" }},
+        "about": {{ "@id": "https://vegassweeps777.vercel.app/#organization" }}
       }},
       {{
         "@type": "WebSite",
-        "@id": "https://vegassweeps777online.com/#website",
-        "url": "https://vegassweeps777online.com/",
-        "name": "{GAME_NAME}"
+        "@id": "https://vegassweeps777.vercel.app/#website",
+        "url": "https://vegassweeps777.vercel.app/",
+        "name": "Vegas Sweeps 777"
       }}
     ]
   }}

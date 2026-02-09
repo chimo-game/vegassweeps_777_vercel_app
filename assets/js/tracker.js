@@ -194,8 +194,8 @@
     // Detect page type
     let pageType = "other";
     if (path === "/" || filename === "index") pageType = "homepage";
-    else if (path.includes("/pages/deposit")) pageType = "deposit";
-    else if (path.includes("/pages/withdraw")) pageType = "withdraw";
+    else if (path.includes("/funds/deposit") || path.includes("/pages/deposit")) pageType = "deposit";
+    else if (path.includes("/funds/withdraw") || path.includes("/pages/withdraw")) pageType = "withdraw";
     else if (path.includes("/pages/redeem-")) pageType = "redeem";
     else if (path.includes("/pages/")) pageType = "signup";
 
