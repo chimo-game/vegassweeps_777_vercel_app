@@ -1141,18 +1141,65 @@
       function initOnlineCounter() {
         const el = document.getElementById('onlineCount');
         if (!el) return;
-        // Start with a seeded value based on hour of day for consistency
-        const hour = new Date().getHours();
-        // More users online during evening hours (6pm-midnight)
-        const peakMultiplier = (hour >= 18 || hour < 1) ? 1.4 : (hour >= 10 ? 1.0 : 0.7);
-        let count = Math.round(2600 * peakMultiplier);
-        el.textContent = count.toLocaleString();
+
+        // Realistic time-of-day curve (24 values, one per hour)
+        // Low 3-7am, ramp up morning, steady afternoon, peak 7-11pm, taper midnight
+        const hourlyCurve = [
+          0.45, 0.35, 0.28, 0.22, 0.20, 0.22, 0.30, 0.48,
+          0.62, 0.72, 0.78, 0.82, 0.85, 0.83, 0.80, 0.82,
+          0.88, 0.93, 1.00, 1.00, 0.97, 0.90, 0.75, 0.58
+        ];
+
+        // Day-of-week multiplier (Sun=0 .. Sat=6) — weekends higher
+        const dayCurve = [1.15, 0.90, 0.88, 0.92, 0.95, 1.05, 1.18];
+
+        const BASE = 2800; // baseline peak users
+
+        function getTarget() {
+          const now = new Date();
+          const h = now.getHours();
+          const m = now.getMinutes();
+          const day = now.getDay();
+          // Smooth interpolation between hours
+          const nextH = (h + 1) % 24;
+          const frac = m / 60;
+          const hourMult = hourlyCurve[h] * (1 - frac) + hourlyCurve[nextH] * frac;
+          const dayMult = dayCurve[day];
+          return Math.round(BASE * hourMult * dayMult);
+        }
+
+        let current = getTarget() + Math.round((Math.random() - 0.5) * 80);
+        let displayed = current;
+        el.textContent = current.toLocaleString();
+
+        // Smooth number animation
+        function animateTo(target) {
+          const diff = target - displayed;
+          if (diff === 0) return;
+          const steps = Math.min(Math.abs(diff), 12);
+          const perStep = diff / steps;
+          let step = 0;
+          const iv = setInterval(() => {
+            step++;
+            displayed = step === steps ? target : Math.round(displayed + perStep);
+            el.textContent = displayed.toLocaleString();
+            if (step >= steps) clearInterval(iv);
+          }, 80);
+        }
+
+        // Main update loop — small drift every 2-4s
         setInterval(() => {
-          count += Math.round((Math.random() - 0.47) * 12);
-          const base = Math.round(2600 * peakMultiplier);
-          count = Math.max(base - 300, Math.min(base + 400, count));
-          el.textContent = count.toLocaleString();
-        }, 3500);
+          const target = getTarget();
+          // Random walk: slight bias toward target
+          const drift = Math.round((Math.random() - 0.5) * 18);
+          const pull = Math.round((target - current) * 0.08);
+          // Occasional micro-spike (someone shared a link, etc.)
+          const spike = Math.random() < 0.03 ? Math.round((Math.random() - 0.3) * 60) : 0;
+          current += drift + pull + spike;
+          // Clamp to reasonable range around target
+          current = Math.max(target - 350, Math.min(target + 350, current));
+          if (current !== displayed) animateTo(current);
+        }, 2000 + Math.random() * 2000);
       }
 
       /* ===== INIT ===== */
