@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /funds/
+Disallow: /api/
+Disallow: /pages/account-activated.html
+
+Sitemap: https://vegassweeps777.vercel.app/sitemap.xml
