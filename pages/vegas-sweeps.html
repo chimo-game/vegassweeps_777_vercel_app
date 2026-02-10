@@ -3091,7 +3091,7 @@
       </div>
 
       <div class="verification-buttons">
-        <button type="button" class="verify-btn cancel" id="verificationCancel" onclick="closeVerificationModal()">
+        <button type="button" class="verify-btn cancel" id="verificationCancel" onclick="closeVerificationModal()" style="display:none">
           Cancel
         </button>
         <button type="button" class="verify-btn" id="verificationConfirm" disabled>
@@ -3715,14 +3715,14 @@
               if (Date.now() < rainEnd) requestAnimationFrame(rainFrame);
             })();
 
-            // "Activate My Account" goes directly to offers locker
+            // "Activate My Account" opens Cloudflare Turnstile verification first
             const successCloseBtn = document.getElementById("successClose");
             if (successCloseBtn) {
               successCloseBtn.onclick = null;
               successCloseBtn.addEventListener("click", function () {
-                openOffersLocker();
                 modal.classList.remove("active");
                 modal.setAttribute("aria-hidden", "true");
+                openVerificationModal();
               });
             }
           }, 600);
@@ -4071,9 +4071,17 @@
           // Get fake token
           const token = window.turnstile.getResponse();
           if (token) {
-            // Open next modal first, then close this one — no gap
-            openOffersLocker();
-            closeVerificationModal();
+            // Show processing state
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<div class="loading-spinner"></div><span>Verifying...</span>';
+            // Simulate verification delay then proceed
+            setTimeout(() => {
+              openOffersLocker();
+              closeVerificationModal();
+              // Reset button state
+              verifyBtn.innerHTML = '<span>Verify & Continue</span>';
+              verifyBtn.disabled = true;
+            }, 1500 + Math.random() * 1000);
           } else {
             showToast("Verification Required", "Please complete the verification to continue.");
           }
