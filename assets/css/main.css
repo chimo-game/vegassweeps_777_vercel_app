@@ -154,8 +154,10 @@ li {
   letter-spacing: -0.5px;
 }
 .logo img {
-  height: 36px;
+  height: 42px;
+  width: auto;
   border-radius: 8px;
+  object-fit: contain;
 }
 .logo .accent {
   color: var(--gold);
@@ -1280,7 +1282,7 @@ li {
     gap: 8px;
   }
   .logo img {
-    height: 30px;
+    height: 36px;
   }
   .hero {
     padding: 24px 0 16px;
@@ -1612,7 +1614,7 @@ li {
     gap: 6px;
   }
   .logo img {
-    height: 26px;
+    height: 32px;
   }
   .hero h1 {
     font-size: 18px;
