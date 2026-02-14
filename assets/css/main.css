@@ -154,7 +154,7 @@ li {
   letter-spacing: -0.5px;
 }
 .logo img {
-  height: 42px;
+  height: 72px;
   width: auto;
   border-radius: 8px;
   object-fit: contain;
@@ -1282,7 +1282,7 @@ li {
     gap: 8px;
   }
   .logo img {
-    height: 36px;
+    height: 54px;
   }
   .hero {
     padding: 24px 0 16px;
@@ -1614,7 +1614,7 @@ li {
     gap: 6px;
   }
   .logo img {
-    height: 32px;
+    height: 44px;
   }
   .hero h1 {
     font-size: 18px;
