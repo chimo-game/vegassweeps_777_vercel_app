@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /Users/tolapao/Documents/GitHub/vegassweeps_777_vercel_app/pages
+cd /Users/tolapao/Documents/GitHub/vegassweeps777_vercel_app/pages
 
 FILES="vegas-sweeps.html black-jack.html blue-dragon.html firekirin.html game-vault.html magic-city.html milkyways.html orionstars.html panda-master.html riversweeps.html slotsofvegas.html ultrapanda.html v-power.html vblink.html vegasx.html"
 
