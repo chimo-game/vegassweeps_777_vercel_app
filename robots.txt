@@ -5,4 +5,4 @@ Disallow: /funds/
 Disallow: /api/
 Disallow: /pages/account-activated.html
 
-Sitemap: https://vegassweeps777.vercel.app/sitemap.xml
+Sitemap: https://gamevault999apk.com/sitemap.xml

@@ -20,41 +20,1002 @@ games = [
     ("vegasx.html", "Vegas X", "vegasx", "https://gameroom777.net/wp-content/uploads/2023/09/vegasx.gif"),
 ]
 
-# Use relative path for pages output
-base_dir = os.path.join(os.path.dirname(__file__), 'pages')
+# Read the template from the current black-jack.html file as reference
+template_path = "/Users/tolapao/Documents/GitHub/vegassweeps_777_vercel_app/pages/black-jack.html"
+
+# Since we're providing the template inline, let's use it directly
+base_dir = "/Users/tolapao/Documents/GitHub/vegassweeps_777_vercel_app/pages/"
 
 def generate_page(game_name, game_slug, image_url):
     """Generate HTML with placeholders replaced"""
-    # Use absolute path to ensure we find the template
-    template_path = os.path.join(os.path.dirname(__file__), 'templates', 'game_page.html')
-    
-    try:
-        with open(template_path, 'r', encoding='utf-8') as f:
-            template = f.read()
-    except FileNotFoundError:
-        print(f"Error: Template not found at {template_path}")
-        return ""
+    template = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    # Replace placeholders manually to avoid bracing issues
-    content = template.replace('{GAME_NAME}', game_name)
-    content = content.replace('{GAME_SLUG}', game_slug)
-    content = content.replace('{IMAGE_URL}', image_url)
+  <title>Sign Up for {GAME_NAME} | Claim $10 Free Play Bonus</title>
+  <meta name="description" content="Create your {GAME_NAME} account in under a minute. Choose your cashout method and claim a $10 Free Play bonus with code CLAIM10." />
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <link rel="canonical" href="https://gamevault999apk.com/{GAME_SLUG}/" />
+
+  <link rel="icon" href="/favicon/icon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/favicon/icon.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Game Vault 999" />
+  <meta property="og:title" content="Sign Up for {GAME_NAME} | Claim $10 Free Play Bonus" />
+  <meta property="og:description" content="Fast signup. Pick your cashout method and claim $10 Free Play with code CLAIM10." />
+  <meta property="og:url" content="https://gamevault999apk.com/{GAME_SLUG}/" />
+  <meta property="og:image" content="{IMAGE_URL}" />
+  <meta property="og:image:alt" content="{GAME_NAME} logo" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Sign Up for {GAME_NAME} | Claim $10 Free Play Bonus" />
+  <meta name="twitter:description" content="Create your account and claim $10 Free Play with promo code CLAIM10." />
+  <meta name="twitter:image" content="{IMAGE_URL}" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {{
+    "@context": "https://schema.org",
+    "@graph": [
+      {{
+        "@type": "Organization",
+        "@id": "https://gamevault999apk.com/#organization",
+        "name": "Game Vault 999",
+        "url": "https://gamevault999apk.com/",
+        "logo": "{IMAGE_URL}"
+      }},
+      {{
+        "@type": "WebPage",
+        "@id": "https://gamevault999apk.com/{GAME_SLUG}/#webpage",
+        "url": "https://gamevault999apk.com/{GAME_SLUG}/",
+        "name": "Sign Up for {GAME_NAME}",
+        "description": "Create your {GAME_NAME} account, choose your cashout method, and claim a $10 Free Play bonus with code CLAIM10.",
+        "isPartOf": {{ "@id": "https://gamevault999apk.com/#website" }},
+        "about": {{ "@id": "https://gamevault999apk.com/#organization" }}
+      }},
+      {{
+        "@type": "WebSite",
+        "@id": "https://gamevault999apk.com/#website",
+        "url": "https://gamevault999apk.com/",
+        "name": "Game Vault 999"
+      }}
+    ]
+  }}
+  </script>
+
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root{{
+      --bg: #0b1220;
+      --card: rgba(255,255,255,100);
+      --card-border: rgba(255,255,255,0.55);
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --field: #f8fafc;
+      --primary: #2563eb;
+      --primary-2: #3b82f6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --shadow: 0 18px 55px -22px rgba(0,0,0,.35);
+      --radius: 18px;
+      --font: "Outfit", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }}
+
+    *{{box-sizing:border-box;margin:0;padding:0;font-family:var(--font);-webkit-tap-highlight-color:transparent;}}
+    body{{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:22px 14px 40px;
+      color:var(--text);
+      background: radial-gradient(1200px 600px at 15% 0%, rgba(59,130,246,0.35), transparent 60%),
+                  radial-gradient(900px 500px at 95% 15%, rgba(139,92,246,0.28), transparent 65%),
+                  radial-gradient(700px 500px at 50% 100%, rgba(0,212,255,0.16), transparent 60%),
+                  var(--bg);
+    }}
+
+    .bg-noise{{
+      position:fixed; inset:0; pointer-events:none; z-index:-1;
+      background-image: radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px);
+      background-size: 22px 22px;
+      opacity: .6;
+    }}
+
+    .offer-bar{{
+      position:fixed;
+      top:14px; left:50%;
+      transform:translateX(-50%);
+      width:min(980px, calc(100% - 24px));
+      background: rgba(255,255,255,0.93);
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: 0 12px 40px rgba(0,0,0,.12);
+      border-radius: 999px;
+      padding: 10px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }}
+    .offer-left{{display:flex;align-items:center;gap:10px;min-width:0;}}
+    .gift{{
+      width:34px;height:34px;border-radius:999px;
+      display:grid;place-items:center;
+      background: linear-gradient(135deg, #ffd54a, #ff9f1a);
+      color:#111827;
+      box-shadow: 0 10px 18px rgba(255,159,26,.22);
+      flex: 0 0 auto;
+      animation: giftPulse 2.2s ease-in-out infinite;
+    }}
+    @keyframes giftPulse{{
+      0%,100%{{ transform: translateY(0) scale(1); }}
+      50%{{ transform: translateY(-1px) scale(1.04); }}
+    }}
+    .offer-text{{
+      font-size:13px;
+      color:#111827;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }}
+    .code{{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:2px 8px;
+      border-radius: 8px;
+      background:#eff6ff;
+      color: var(--primary);
+      font-weight:800;
+      letter-spacing:.4px;
+    }}
+    .offer-actions{{display:flex;align-items:center;gap:8px;flex:0 0 auto;}}
+    .btn-pill{{
+      border:none;
+      cursor:pointer;
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }}
+    .btn-applybar{{
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color:#fff;
+      box-shadow: 0 10px 18px rgba(37,99,235,.22);
+    }}
+    .btn-closebar{{
+      background: transparent;
+      color:#334155;
+      padding:8px 10px;
+    }}
+    .btn-closebar:hover{{ background: rgba(15,23,42,0.06); }}
+
+    .wrap{{
+      width: min(980px, 100%);
+      margin-top: 72px;
+      display:grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+      align-items:start;
+    }}
+
+    .card{{
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      overflow:hidden;
+      animation: in .55s cubic-bezier(.16,1,.3,1) both;
+    }}
+    @keyframes in{{
+      from{{opacity:0; transform: translateY(18px) scale(.985);}}
+      to{{opacity:1; transform: translateY(0) scale(1);}}
+    }}
+
+    .header{{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 16px;
+    }}
+    .title{{display:flex;flex-direction:column;gap:6px;}}
+    .title h1{{font-size:24px;line-height:1.1;letter-spacing:-0.2px;}}
+    .title p{{font-size:14px;color:var(--muted);}}
+    .trust{{display:flex;align-items:center;gap:10px;flex:0 0 auto;color:#0f172a;font-size:12px;font-weight:700;opacity:.9;}}
+    .trust .dot{{width:8px;height:8px;border-radius:999px;background: var(--success);box-shadow: 0 0 0 6px rgba(16,185,129,.12);}}
+
+    .progress{{
+      margin-top: 4px;
+      margin-bottom: 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }}
+    .progress small{{ color: var(--muted); font-weight:700; font-size:12px; }}
+    .track{{
+      flex:1;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow:hidden;
+    }}
+    .fill{{
+      height:100%;
+      width: 25%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      border-radius:999px;
+      transition: width .35s ease;
+    }}
+
+    form{{ display:flex; flex-direction:column; gap: 12px; }}
+    .row{{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }}
+
+    .field{{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }}
+    label{{
+      font-size:12px;
+      font-weight:800;
+      color:#334155;
+      letter-spacing:.2px;
+    }}
+    .input{{
+      width:100%;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1.5px solid var(--line);
+      background: var(--field);
+      outline:none;
+      font-size: 15px;
+      font-weight:600;
+      color: var(--text);
+      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+    }}
+    .input:focus{{
+      background:#fff;
+      border-color: rgba(37,99,235,.65);
+      box-shadow: 0 10px 22px rgba(37,99,235,.12);
+    }}
+    .hint{{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.2;
+      min-height: 14px;
+    }}
+    .state{{
+      position:absolute;
+      right: 12px;
+      top: 39px;
+      font-size: 18px;
+      transform: scale(0);
+      transition: transform .18s ease;
+    }}
+    .field.ok .state{{ transform: scale(1); color: var(--success); }}
+    .field.bad .state{{ transform: scale(1); color: var(--danger); }}
+    .field.bad .input{{
+      border-color: rgba(239,68,68,.65);
+      background: #fef2f2;
+      box-shadow:none;
+    }}
+
+    .choice{{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 6px;
+    }}
+    .opt{{ position:relative; }}
+    .opt input{{ display:none; }}
+    .pill{{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 12px 10px;
+      border-radius: 16px;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      cursor:pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+      user-select:none;
+      min-height: 52px;
+    }}
+    .pill img{{ height: 20px; width:auto; opacity:.9; }}
+    .pill span{{ font-size: 13px; font-weight: 800; color:#0f172a; }}
+    .opt:hover .pill{{ transform: translateY(-1px); box-shadow: 0 10px 18px rgba(2,6,23,.08); }}
+    .opt input:checked + .pill{{
+      border-color: rgba(37,99,235,.7);
+      background: #eff6ff;
+      box-shadow: 0 12px 24px rgba(37,99,235,.16);
+      transform: translateY(-1px);
+    }}
+
+    .coupon-area {{
+        position: relative;
+        height: 60px;
+        perspective: 1000px;
+        margin-bottom: 5px;
+    }}
+
+    .modern-coupon-wrapper {{
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border: 1.5px dashed rgba(37,99,235,.35);
+        border-radius: 16px;
+        padding: 5px;
+        transition: all 0.3s ease;
+        height: 100%;
+        position: absolute;
+        width: 100%;
+        z-index: 2;
+        backface-visibility: hidden;
+    }}
+
+    .modern-coupon-wrapper:focus-within {{
+        border-color: var(--primary);
+        border-style: solid;
+        box-shadow: 0 10px 22px rgba(37,99,235,.12);
+        background: #fff;
+    }}
+
+    .modern-coupon-wrapper.shake {{
+        animation: shake 0.4s ease-in-out;
+        border-color: var(--danger);
+        border-style: solid;
+    }}
+
+    .coupon-icon-box {{
+        padding: 0 14px;
+        color: var(--muted);
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+    }}
+
+    .coupon-input {{
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+        text-transform: uppercase;
+        outline: none;
+        letter-spacing: 1px;
+    }}
+
+    .coupon-input::placeholder {{
+        text-transform: none;
+        letter-spacing: normal;
+        font-weight: 500;
+        color: var(--muted);
+    }}
+
+    .modern-apply-btn {{
+        background: var(--line);
+        color: var(--muted);
+        border: none;
+        padding: 0 20px;
+        height: 46px;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: not-allowed;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex; align-items: center; justify-content: center;
+        min-width: 80px;
+    }}
+
+    .modern-apply-btn.is-ready {{
+        background: #0f172a;
+        color: #fff;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }}
     
-    return content
+    .modern-apply-btn.is-ready:hover {{
+        transform: scale(1.05);
+        background: #000;
+    }}
+
+    .btn-loader {{
+        width: 16px; height: 16px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        display: none;
+    }}
+
+    .modern-apply-btn.loading .btn-text {{ display: none; }}
+    .modern-apply-btn.loading .btn-loader {{ display: block; }}
+
+    .success-ticket {{
+        position: absolute;
+        width: 100%; height: 100%;
+        background: linear-gradient(135deg, #FFD700, #FDB931);
+        border-radius: 16px;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 20px;
+        color: #8a6d3b;
+        z-index: 1;
+        transform: rotateX(-90deg);
+        transform-origin: top;
+        transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        opacity: 0;
+    }}
+
+    .success-ticket.active {{ transform: rotateX(0deg); opacity: 1; z-index: 3; }}
+
+    .ticket-left {{ display: flex; flex-direction: column; }}
+    .ticket-amount {{ font-size: 24px; font-weight: 900; color: #5c4015; line-height: 1; }}
+    .ticket-label {{ font-size: 10px; font-weight: 700; letter-spacing: 1px; opacity: 0.8; }}
+
+    .ticket-right {{
+        display: flex; align-items: center; gap: 6px;
+        font-weight: 700; font-size: 14px;
+        background: rgba(255,255,255,0.3); padding: 6px 12px; border-radius: 20px;
+    }}
+
+    .ticket-punch-top, .ticket-punch-bottom {{
+        position: absolute; width: 16px; height: 16px;
+        background: var(--card);
+        border-radius: 50%; left: 70%;
+    }}
+    .ticket-punch-top {{ top: -8px; }}
+    .ticket-punch-bottom {{ bottom: -8px; }}
+
+    .modern-coupon-wrapper.folded {{ transform: rotateX(90deg); opacity: 0; }}
+
+    @keyframes shake {{ 0%, 100% {{ transform: translateX(0); }} 20%, 60% {{ transform: translateX(-5px); }} 40%, 80% {{ transform: translateX(5px); }} }}
+
+    .cta{{
+      margin-top: 2px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }}
+    .submit{{
+      width:100%;
+      border:none;
+      cursor:pointer;
+      border-radius: 16px;
+      padding: 16px 14px;
+      color:#fff;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing:.2px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 18px 30px rgba(37,99,235,.25);
+      transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+    }}
+    .submit:hover{{
+      transform: translateY(-1px);
+      box-shadow: 0 22px 36px rgba(37,99,235,.30);
+      filter: brightness(1.03);
+    }}
+    .submit:active{{ transform: translateY(0); }}
+
+    .legal{{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.35;
+    }}
+    .legal a{{ color: var(--primary); text-decoration:none; font-weight:800; }}
+    .legal a:hover{{ text-decoration:underline; }}
+
+    .side{{
+      position:sticky;
+      top: 86px;
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }}
+    .benefit{{
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }}
+    .benefit h3{{ font-size: 15px; margin-bottom: 10px; letter-spacing:-0.1px; }}
+    .list{{ display:flex; flex-direction:column; gap: 10px; font-size: 13px; color: rgba(255,255,255,0.82); }}
+    .li{{ display:flex; gap: 10px; align-items:flex-start; }}
+    .tick{{
+      width: 22px; height: 22px;
+      border-radius: 8px;
+      background: rgba(16,185,129,.16);
+      color: #a7f3d0;
+      display:grid;
+      place-items:center;
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }}
+    .mini{{
+      padding: 16px 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.86);
+      font-size: 13px;
+      line-height: 1.35;
+    }}
+
+    .modal-overlay{{
+      position:fixed; inset:0;
+      background: rgba(2,6,23,1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index:2000;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .25s ease;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding: 18px;
+    }}
+    .modal-overlay.active{{ opacity:1; pointer-events:all; }}
+    .process-card{{
+      width:min(420px, 100%);
+      background:#fff;
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 20px 55px rgba(0,0,0,.25);
+      transform: translateY(10px) scale(.99);
+      transition: transform .25s cubic-bezier(.16,1,.3,1);
+      text-align:left;
+    }}
+    .modal-overlay.active .process-card{{ transform: translateY(0) scale(1); }}
+    .pc-head{{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom: 10px; }}
+    .pc-head h2{{ font-size: 16px; }}
+    .pc-head p{{ font-size: 12px; color: var(--muted); margin-top:4px; }}
+    .steps{{ margin-top: 12px; display:flex; flex-direction:column; gap: 10px; }}
+    .step{{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background:#f8fafc;
+      border: 1px solid #eef2f7;
+      color:#0f172a;
+      opacity:.65;
+    }}
+    .step.active{{ opacity:1; }}
+    .step.done{{ opacity:1; border-color: rgba(16,185,129,.25); background: rgba(16,185,129,.08); }}
+    .badge{{
+      width: 26px; height: 26px;
+      border-radius: 999px;
+      border: 2px solid #e2e8f0;
+      display:grid; place-items:center;
+      font-size: 12px;
+      color: transparent;
+      flex: 0 0 auto;
+    }}
+    .spinner{{ border-color: rgba(37,99,235,.6); border-top-color: transparent; animation: spin 1s linear infinite; }}
+    .step.done .badge{{ background: var(--success); border-color: var(--success); color:#fff; animation:none; }}
+    @keyframes spin{{ to{{ transform: rotate(360deg);}} }}
+
+    @media (max-width: 900px){{
+      .wrap{{ grid-template-columns: 1fr; }}
+      .side{{ position:static; top:auto; }}
+    }}
+    @media (max-width: 520px){{
+      .row{{ grid-template-columns: 1fr; }}
+      .choice{{ grid-template-rows: 1fr; }}
+      .offer-text{{ white-space:normal; }}
+    }}
+  </style>
+</head>
+
+<body>
+  <div class="bg-noise"></div>
+
+  <div class="offer-bar" id="offerBar" role="region" aria-label="Promo offer">
+    <div class="offer-left">
+      <div class="gift" aria-hidden="true"><ion-icon name="gift"></ion-icon></div>
+      <div class="offer-text">
+        Claim your <b>$10 Free Play</b> with code <span class="code">CLAIM10</span>
+      </div>
+    </div>
+    <div class="offer-actions">
+      <button class="btn-pill btn-applybar" id="barApply">Apply</button>
+      <button class="btn-pill btn-closebar" id="barClose" aria-label="Dismiss offer">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="processModal" aria-hidden="true">
+    <div class="process-card" role="dialog" aria-modal="true" aria-label="Creating account">
+      <div class="pc-head">
+        <div>
+          <h2>Creating your account</h2>
+          <p>Please wait. This usually takes a few seconds.</p>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step" id="step1"><div class="badge"></div><span>Checking your details</span></div>
+        <div class="step" id="step2"><div class="badge"></div><span>Connecting <b id="payNameDisplay">CashApp</b> cashout method</span></div>
+        <div class="step" id="step3"><div class="badge"></div><span>Applying <b style="color:var(--primary)">$10</b> bonus</span></div>
+        <div class="step" id="step4"><div class="badge"></div><span>Final verification</span></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section class="card" id="mainCard" aria-label="Sign up form">
+      <div class="header">
+        <div class="title">
+          <h1>Welcome To {GAME_NAME}</h1>
+          <p>No credit card needed—claim your bonus now.</p>
+        </div>
+        <div class="trust" title="We do not post to your email.">
+          <span class="dot"></span>
+          <span>Secure signup</span>
+        </div>
+      </div>
+
+      <div class="progress" aria-label="Setup progress">
+        <small>Progress</small>
+        <div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="25">
+          <div class="fill" id="progressFill"></div>
+        </div>
+        <small id="progressText">25%</small>
+      </div>
+
+      <form id="regForm" autocomplete="on" novalidate>
+        <div class="row">
+          <div class="field" id="f-username">
+            <label for="username">Username</label>
+            <input class="input" type="text" id="username" placeholder="Pick Username" autocomplete="username" required />
+            <ion-icon name="checkmark-circle" class="state" aria-hidden="true"></ion-icon>
+            <div class="hint" id="uHint">3+ characters. No spaces recommended.</div>
+          </div>
+
+          <div class="field" id="f-email">
+            <label for="email">Email</label>
+            <input class="input" type="email" id="email" placeholder="you@example.com" autocomplete="email" required />
+            <ion-icon name="checkmark-circle" class="state" aria-hidden="true"></ion-icon>
+            <div class="hint" id="eHint">We'll send your confirmation details here.</div>
+          </div>
+        </div>
+
+        <div class="field" id="f-payment">
+          <label>Select cashout method</label>
+          <div class="choice" role="radiogroup" aria-label="Cashout method">
+            <label class="opt">
+              <input type="radio" name="payment" value="CashApp" checked />
+              <div class="pill">
+                <img src="https://gameroom777.net/wp-content/uploads/2023/09/cash-app-icon.svg" alt="CashApp">
+                <span>CashApp</span>
+              </div>
+            </label>
+
+            <label class="opt">
+              <input type="radio" name="payment" value="Venmo" />
+              <div class="pill">
+                <img src="https://gameroom777.net/wp-content/uploads/2025/03/Venmo_logo.png" alt="Venmo">
+                <span>Venmo</span>
+              </div>
+            </label>
+
+            <label class="opt">
+              <input type="radio" name="payment" value="PayPal" />
+              <div class="pill">
+                <img src="https://gameroom777.net/wp-content/uploads/2023/09/paypal-2.svg" alt="PayPal">
+                <span>PayPal</span>
+              </div>
+            </label>
+          </div>
+          <div class="hint">Choose the method you prefer for future cashouts.</div>
+        </div>
+
+        <div class="field" id="f-coupon">
+            <label>Promo code (optional)</label>
+            
+            <div class="coupon-area">
+                <div class="modern-coupon-wrapper" id="couponInputWrapper">
+                    <div class="coupon-icon-box">
+                        <ion-icon name="ticket-outline"></ion-icon>
+                    </div>
+                    <input class="coupon-input" type="text" id="coupon" placeholder="Code (e.g. CLAIM10)" autocomplete="off">
+                    <button type="button" class="modern-apply-btn" id="btnApply" disabled>
+                        <span class="btn-text">Apply</span>
+                        <div class="btn-loader"></div>
+                    </button>
+                </div>
+
+                <div class="success-ticket" id="successTicket">
+                    <div class="ticket-left">
+                        <div class="ticket-amount">$10</div>
+                        <div class="ticket-label">BONUS ACTIVE</div>
+                    </div>
+                    <div class="ticket-right">
+                        <ion-icon name="checkmark-circle"></ion-icon>
+                        <span>APPLIED</span>
+                    </div>
+                    <div class="ticket-punch-top"></div>
+                    <div class="ticket-punch-bottom"></div>
+                </div>
+            </div>
+            
+            <div class="hint" id="cHint">Recommended: CLAIM10</div>
+        </div>
+
+        <div class="cta">
+          <button type="submit" class="submit" id="submitBtn">
+            <span>Create Account</span>
+            <ion-icon name="arrow-forward"></ion-icon>
+          </button>
+          <div class="legal">
+            By creating an account, you agree to our <a href="#" onclick="return false;">Terms</a> and <a href="#" onclick="return false;">Privacy Policy</a>.
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <aside class="side" aria-label="Benefits">
+      <div class="benefit">
+        <h3>What you get today</h3>
+        <div class="list">
+          <div class="li"><div class="tick"><ion-icon name="checkmark"></ion-icon></div><div><b>$10 Free Play</b> when code is applied</div></div>
+          <div class="li"><div class="tick"><ion-icon name="checkmark"></ion-icon></div><div>Fast signup in under a minute</div></div>
+          <div class="li"><div class="tick"><ion-icon name="checkmark"></ion-icon></div><div>Pick your preferred cashout method now</div></div>
+        </div>
+      </div>
+
+      <div class="mini">
+        Tip: Apply the promo code before creating the account so the bonus is added automatically.
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    const progressFill = document.getElementById("progressFill");
+    const progressText = document.getElementById("progressText");
+    const progressBarWrap = document.querySelector(".track");
+
+    const username = document.getElementById("username");
+    const email = document.getElementById("email");
+    
+    const coupon = document.getElementById("coupon");
+    const btnApply = document.getElementById("btnApply");
+    const wrapper = document.getElementById('couponInputWrapper');
+    const successTicket = document.getElementById('successTicket');
+
+    const offerBar = document.getElementById("offerBar");
+    const barApply = document.getElementById("barApply");
+    const barClose = document.getElementById("barClose");
+
+    const modal = document.getElementById("processModal");
+
+    const fUser = document.getElementById("f-username");
+    const fEmail = document.getElementById("f-email");
+
+    const uHint = document.getElementById("uHint");
+    const eHint = document.getElementById("eHint");
+    const cHint = document.getElementById("cHint");
+
+    const validEmail = (v) => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]{{2,}}$/i.test(v.trim());
+    const validUser = (v) => v.trim().length >= 3;
+
+    function setFieldState(wrapper, state, messageEl, msg) {{
+      wrapper.classList.remove("ok", "bad");
+      if (state) wrapper.classList.add(state);
+      if (messageEl && typeof msg === "string") messageEl.textContent = msg;
+    }}
+
+    function updateProgress() {{
+      let score = 25;
+      if (validUser(username.value)) score += 25;
+      if (validEmail(email.value)) score += 25;
+      if (document.querySelector('input[name="payment"]:checked')) score += 15;
+      if (successTicket.classList.contains("active")) score += 10;
+
+      score = Math.min(100, score);
+      progressFill.style.width = score + "%";
+      progressText.textContent = score + "%";
+      progressBarWrap.setAttribute("aria-valuenow", String(score));
+
+      if (score >= 90) progressFill.style.background = "linear-gradient(135deg, #10b981, #34d399)";
+      else progressFill.style.background = "linear-gradient(135deg, #2563eb, #3b82f6)";
+    }}
+
+    username.addEventListener("input", () => {{
+      if (!username.value.trim()) setFieldState(fUser, "", uHint, "3+ characters. No spaces recommended.");
+      else if (validUser(username.value)) setFieldState(fUser, "ok", uHint, "Looks good.");
+      else setFieldState(fUser, "bad", uHint, "Username must be at least 3 characters.");
+      updateProgress();
+    }});
+
+    email.addEventListener("input", () => {{
+      if (!email.value.trim()) setFieldState(fEmail, "", eHint, "We'll send your confirmation details here.");
+      else if (validEmail(email.value)) setFieldState(fEmail, "ok", eHint, "Email looks valid.");
+      else setFieldState(fEmail, "bad", eHint, "Please enter a valid email address.");
+      updateProgress();
+    }});
+
+    document.querySelectorAll('input[name="payment"]').forEach(r => {{
+      r.addEventListener("change", updateProgress);
+    }});
+
+    barClose.addEventListener("click", () => offerBar.style.display = "none");
+    
+    barApply.addEventListener("click", () => {{
+       coupon.value = "CLAIM10";
+       coupon.dispatchEvent(new Event('input'));
+       btnApply.click();
+    }});
+
+    coupon.addEventListener('input', function() {{
+        this.value = this.value.toUpperCase(); 
+        if(this.value.trim().length > 0) {{
+            btnApply.classList.add('is-ready');
+            btnApply.disabled = false;
+            wrapper.classList.remove('shake');
+            cHint.innerText = 'Recommended: CLAIM10';
+            cHint.style.color = 'var(--muted)';
+        }} else {{
+            btnApply.classList.remove('is-ready');
+            btnApply.disabled = true;
+        }}
+    }});
+
+    btnApply.addEventListener('click', function() {{
+        const val = coupon.value.trim();
+        
+        btnApply.classList.add('loading');
+        
+        setTimeout(() => {{
+            btnApply.classList.remove('loading');
+            
+            const ok = ["CLAIM10", "FREEPLAY", "BONUS"].includes(val);
+            
+            if (ok) {{
+                triggerSuccess();
+            }} else {{
+                triggerError();
+            }}
+        }}, 1200);
+    }});
+
+    function triggerSuccess() {{
+        offerBar.style.display = "none";
+        
+        wrapper.classList.add('folded');
+        successTicket.classList.add('active');
+        
+        cHint.textContent = "Promo locked in! Your bonus will be added automatically.";
+        cHint.style.color = "var(--success)";
+        
+        const rect = successTicket.getBoundingClientRect();
+        const x = (rect.left + rect.width / 2) / window.innerWidth;
+        const y = (rect.top + rect.height / 2) / window.innerHeight;
+        
+        confetti({{
+            particleCount: 60, spread: 70, origin: {{ x: x, y: y }},
+            colors: ['#FFD700', '#FDB931', '#FFFFFF'], zIndex: 1005
+        }});
+        
+        updateProgress();
+    }}
+
+    function triggerError() {{
+        wrapper.classList.add('shake');
+        cHint.textContent = "Invalid code. Try CLAIM10.";
+        cHint.style.color = "var(--danger)";
+        
+        setTimeout(() => {{
+            wrapper.classList.remove('shake');
+        }}, 400);
+    }}
+
+    function processStep(num, delay, cb) {{
+      const step = document.getElementById(`step${{num}}`);
+      const badge = step.querySelector(".badge");
+      step.classList.add("active");
+      badge.classList.add("spinner");
+
+      setTimeout(() => {{
+        badge.classList.remove("spinner");
+        badge.innerHTML = '<ion-icon name="checkmark"></ion-icon>';
+        step.classList.add("done");
+        if (cb) cb();
+      }}, delay);
+    }}
+
+    function startLoadingOnly(num) {{
+      const step = document.getElementById(`step${{num}}`);
+      const badge = step.querySelector(".badge");
+      step.classList.add("active");
+      badge.classList.add("spinner");
+    }}
+
+    document.getElementById("regForm").addEventListener("submit", (e) => {{
+      e.preventDefault();
+
+      const uOk = validUser(username.value);
+      const eOk = validEmail(email.value);
+
+      if (!uOk) setFieldState(fUser, "bad", uHint, "Username must be at least 3 characters.");
+      if (!eOk) setFieldState(fEmail, "bad", eHint, "Please enter a valid email address.");
+
+      if (!uOk || !eOk) {{
+        const card = document.getElementById("mainCard");
+        card.animate(
+          [
+            {{ transform: "translateX(0)" }},
+            {{ transform: "translateX(-8px)" }},
+            {{ transform: "translateX(8px)" }},
+            {{ transform: "translateX(0)" }}
+          ],
+          {{ duration: 320 }}
+        );
+        return;
+      }}
+
+      const payMethod = document.querySelector('input[name="payment"]:checked')?.value || "CashApp";
+      document.getElementById("payNameDisplay").textContent = payMethod;
+
+      modal.classList.add("active");
+      modal.setAttribute("aria-hidden", "false");
+      offerBar.style.display = "none";
+
+      processStep(1, 850, () => {{
+        processStep(2, 1100, () => {{
+          processStep(3, 900, () => {{
+            startLoadingOnly(4);
+            setTimeout(() => {{
+              confetti({{ particleCount: 140, spread: 95, origin: {{ y: 0.65 }} }});
+              window.location.href = "https://gamevault999apk.com/activating/";
+            }}, 1800);
+          }});
+        }});
+      }});
+    }});
+
+    updateProgress();
+  </script>
+</body>
+</html>"""
+    
+    return template.format(GAME_NAME=game_name, GAME_SLUG=game_slug, IMAGE_URL=image_url)
 
 # Generate all 15 pages
-if __name__ == "__main__":
-    if not os.path.exists(base_dir):
-        os.makedirs(base_dir, exist_ok=True)
-        
-    for filename, game_name, slug, image_url in games:
-        content = generate_page(game_name, slug, image_url)
-        if content:
-            filepath = os.path.join(base_dir, filename)
-            with open(filepath, 'w', encoding='utf-8') as f:
-                f.write(content)
-            print(f"✓ Generated: {filename}")
-        else:
-            print(f"✗ Failed to generate: {filename}")
+for filename, game_name, slug, image_url in games:
+    content = generate_page(game_name, slug, image_url)
+    filepath = os.path.join(base_dir, filename)
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(content)
+    print(f"✓ Generated: {filename}")
 
-    print(f"\n✓ Sign up pages updated with external template!")
+print(f"\n✓ All 15 signup pages created with golden ticket promo animation!")

@@ -1,0 +1,476 @@
+/* ═══════════════════════════════════════════════
+   DOWNLOAD PAGE — App Store Style
+   ═══════════════════════════════════════════════ */
+
+:root {
+  --dp-bg: #0a0e1a;
+  --dp-surface: #111827;
+  --dp-surface-2: #1a2236;
+  --dp-border: #1e293b;
+  --dp-text: #e2e8f0;
+  --dp-text-muted: #94a3b8;
+  --dp-primary: #3b82f6;
+  --dp-success: #10b981;
+  --dp-success-light: #34d399;
+  --dp-gold: #facc15;
+  --dp-radius: 16px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Outfit", sans-serif;
+  background: var(--dp-bg);
+  color: var(--dp-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── Container ── */
+.dp-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ── Breadcrumb ── */
+.dp-breadcrumb {
+  padding: 14px 0;
+  font-size: 12.5px;
+  color: var(--dp-text-muted);
+}
+.dp-breadcrumb a {
+  color: var(--dp-primary);
+}
+.dp-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* ── App Header ── */
+.dp-header {
+  display: flex;
+  gap: 16px;
+  padding: 20px 0 24px;
+}
+.dp-icon {
+  width: 88px;
+  height: 88px;
+  border-radius: 20px;
+  object-fit: cover;
+  border: 1px solid var(--dp-border);
+  flex-shrink: 0;
+}
+.dp-info {
+  flex: 1;
+  min-width: 0;
+}
+.dp-name {
+  font-size: clamp(20px, 4vw, 26px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+.dp-developer {
+  font-size: 13px;
+  color: var(--dp-primary);
+  margin-bottom: 8px;
+}
+.dp-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.dp-stars {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.dp-stars ion-icon {
+  color: var(--dp-gold);
+  font-size: 14px;
+}
+.dp-stars .count {
+  color: var(--dp-text-muted);
+  font-weight: 400;
+  font-size: 12px;
+}
+.dp-downloads {
+  font-size: 12px;
+  color: var(--dp-text-muted);
+}
+.dp-downloads ion-icon {
+  font-size: 13px;
+  vertical-align: -2px;
+  margin-right: 2px;
+}
+
+/* ── Install Button ── */
+.dp-install-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--dp-success), #059669);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+  text-decoration: none;
+}
+.dp-install-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+}
+.dp-install-btn ion-icon {
+  font-size: 20px;
+}
+
+.dp-install-note {
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--dp-text-muted);
+  margin-top: 8px;
+}
+.dp-install-note ion-icon {
+  font-size: 12px;
+  vertical-align: -1px;
+  color: var(--dp-success);
+  margin-right: 2px;
+}
+
+/* ── Info Grid ── */
+.dp-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--dp-border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 24px 0;
+}
+.dp-info-cell {
+  background: var(--dp-surface);
+  padding: 14px 8px;
+  text-align: center;
+}
+.dp-info-label {
+  font-size: 10.5px;
+  color: var(--dp-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.dp-info-value {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ── Sections ── */
+.dp-section {
+  padding: 24px 0;
+  border-top: 1px solid var(--dp-border);
+}
+.dp-section-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.dp-section p {
+  font-size: 14px;
+  color: var(--dp-text-muted);
+  line-height: 1.7;
+}
+
+/* ── Tags ── */
+.dp-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.dp-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  background: var(--dp-surface-2);
+  border: 1px solid var(--dp-border);
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--dp-text-muted);
+}
+.dp-tag ion-icon {
+  font-size: 13px;
+}
+
+/* ── What's New ── */
+.dp-changelog {
+  list-style: none;
+  padding: 0;
+}
+.dp-changelog li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 13.5px;
+  color: var(--dp-text-muted);
+  margin-bottom: 6px;
+}
+.dp-changelog li::before {
+  content: "•";
+  position: absolute;
+  left: 4px;
+  color: var(--dp-success);
+  font-weight: 700;
+}
+
+/* ── How to Install ── */
+.dp-steps {
+  counter-reset: step;
+  list-style: none;
+  padding: 0;
+}
+.dp-steps li {
+  counter-increment: step;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  font-size: 14px;
+  color: var(--dp-text-muted);
+}
+.dp-steps li + li {
+  border-top: 1px solid var(--dp-border);
+}
+.dp-steps li::before {
+  content: counter(step);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, var(--dp-success), #059669);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dp-steps li b {
+  color: var(--dp-text);
+}
+
+/* ── Safety ── */
+.dp-safety {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+.dp-safety-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--dp-surface);
+  border: 1px solid var(--dp-border);
+  border-radius: 10px;
+  font-size: 12.5px;
+  color: var(--dp-text-muted);
+}
+.dp-safety-badge ion-icon {
+  font-size: 16px;
+  color: var(--dp-success);
+}
+
+/* ── Sign Up CTA Banner ── */
+.dp-signup-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.12),
+    rgba(59, 130, 246, 0.05)
+  );
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 14px;
+  margin: 24px 0;
+}
+.dp-signup-banner-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--dp-primary), #1d4ed8);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+.dp-signup-banner-icon ion-icon {
+  font-size: 22px;
+  color: #fff;
+}
+.dp-signup-banner-text {
+  flex: 1;
+}
+.dp-signup-banner-text strong {
+  display: block;
+  font-size: 14px;
+  color: var(--dp-text);
+  margin-bottom: 2px;
+}
+.dp-signup-banner-text span {
+  font-size: 12px;
+  color: var(--dp-text-muted);
+}
+.dp-signup-banner-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, var(--dp-primary), #1d4ed8);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.15s;
+}
+.dp-signup-banner-btn:hover {
+  transform: translateY(-1px);
+}
+.dp-signup-banner-btn ion-icon {
+  font-size: 14px;
+}
+
+/* ── More Games ── */
+.dp-more-games {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+.dp-more-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--dp-surface);
+  border: 1px solid var(--dp-border);
+  border-radius: 12px;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.dp-more-card:hover {
+  background: var(--dp-surface-2);
+  border-color: var(--dp-success);
+}
+.dp-more-card img {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.dp-more-card span {
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Footer ── */
+.dp-footer {
+  text-align: center;
+  padding: 28px 0 40px;
+  border-top: 1px solid var(--dp-border);
+}
+.dp-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--dp-primary);
+  font-weight: 500;
+}
+.dp-back:hover {
+  text-decoration: underline;
+}
+.dp-footer-note {
+  font-size: 11px;
+  color: var(--dp-text-muted);
+  margin-top: 8px;
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 600px) {
+  .dp-header {
+    gap: 12px;
+    padding: 16px 0 20px;
+  }
+  .dp-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+  }
+  .dp-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dp-signup-banner {
+    flex-direction: column;
+    text-align: center;
+  }
+  .dp-more-games {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 380px) {
+  .dp-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+  }
+  .dp-install-btn {
+    font-size: 14px;
+    padding: 12px;
+  }
+  .dp-info-cell {
+    padding: 10px 6px;
+  }
+  .dp-info-value {
+    font-size: 13px;
+  }
+  .dp-more-games {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+}
