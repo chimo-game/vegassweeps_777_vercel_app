@@ -1,5 +1,5 @@
 /**
- * Game Vault 999 — Analytics Tracker
+ * Vegas Sweeps 777 — Analytics Tracker
  * Tracks page views, signup events, offer completions, and geo data
  * Stores everything in Firebase Firestore (free tier)
  *

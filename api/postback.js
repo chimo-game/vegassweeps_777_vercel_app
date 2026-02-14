@@ -1,11 +1,11 @@
 /**
- * Game Vault 999 — Postback Handler
+ * Vegas Sweeps 777 — Postback Handler
  * 
  * Receives conversion postbacks from the ad network when a user completes an offer.
  * Stores the conversion data in Firebase Firestore for real-time dashboard tracking.
  * 
  * POSTBACK URL to set in your ad network:
- * https://gamevault999apk.com/api/postback?offer_id={offer_id}&offer_name={offer_name}&payout={payout}&payout_cents={payout_cents}&ip={ip}&status={status}&unix={unix}&s1={s1}&s2={s2}&lead_id={lead_id}&click_id={click_id}&country_code={country_code}
+ * https://vegassweeps777.vercel.app/api/postback?offer_id={offer_id}&offer_name={offer_name}&payout={payout}&payout_cents={payout_cents}&ip={ip}&status={status}&unix={unix}&s1={s1}&s2={s2}&lead_id={lead_id}&click_id={click_id}&country_code={country_code}
  */
 
 // Firebase Admin SDK (lightweight REST approach — no npm needed)

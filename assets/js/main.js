@@ -1,5 +1,5 @@
 /* ================================================================
-   MAIN SCRIPT — Game Vault 999
+   MAIN SCRIPT — Vegas Sweeps 777
    Live counters, member stats, and tracker bindings.
    ================================================================ */
 

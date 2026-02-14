@@ -1,6 +1,6 @@
-# Game Vault 999 — Project Changelog
+# Vegas Sweeps 777 — Project Changelog
 
-> Full history of all changes made to [gamevault999apk.com](https://gamevault999apk.com) from initial build through SEO optimization.
+> Full history of all changes made to [vegassweeps777.vercel.app](https://vegassweeps777.vercel.app) from initial build through SEO optimization.
 
 ---
 
@@ -76,13 +76,13 @@
   - `WebSite` (search action potential)
   - `SoftwareApplication` + `AggregateRating` (4.8★, 2,847 reviews)
   - `FAQPage` with 7 Q&A pairs
-  - `BreadcrumbList` (Home → Game Vault 999 APK Download)
+  - `BreadcrumbList` (Home → Vegas Sweeps 777 Download)
 
 ### Content Optimization
 
-- Keyword-rich `<h1>`: "Download Game Vault 999 APK. Get $10 Free Play Instantly."
+- Keyword-rich `<h1>`: "Download Vegas Sweeps 777. Get $10 Free Play Instantly."
 - Added SEO content section with:
-  - "What is Game Vault 999?" (keyword-rich paragraph)
+  - "What is Vegas Sweeps 777?" (keyword-rich paragraph)
   - "How to Download" step-by-step guide
   - "Available Games" list linking all 16 games
   - "Platform Features" summary
@@ -123,7 +123,7 @@
 
 ### OG Image Fixes
 
-- Changed OG images from old WordPress CDN (`gameroom777.net`) to own domain (`gamevault999apk.com`)
+- Changed OG images from old WordPress CDN (`gameroom777.net`) to own domain (`vegassweeps777.vercel.app`)
 - Fixed 4 OG image filename mismatches:
   - `black-jack` → `blackjack`
   - `game-room777` → `gameroom777`
@@ -160,7 +160,7 @@
 
 ### Breadcrumb Navigation
 
-- Added visible breadcrumb nav to homepage (Home → Game Vault 999 APK Download)
+- Added visible breadcrumb nav to homepage (Home → Vegas Sweeps 777 Download)
 - Added visible breadcrumb nav to all 16 game pages (Home → [Game Name])
 - Schema.org BreadcrumbList on all pages
 
@@ -189,11 +189,11 @@
   - Schema.org: WebPage, BreadcrumbList, CollectionPage
   - 3 article preview cards with tags, read times, emoji icons
 
-### Article 1 — "How to Download Game Vault 999 APK on Android in 2026"
+### Article 1 — "How to Download Vegas Sweeps 777 on Android in 2026"
 
 - **File:** `blog/how-to-download-game-vault-999-apk.html`
 - **Words:** ~1,050
-- **Target keywords:** "game vault 999 apk download", "how to download game vault", "install game vault apk"
+- **Target keywords:** "vegas sweeps 777 download", "how to download game vault", "install vegas sweeps apk"
 - **Content:** Requirements, 5-step install guide, troubleshooting (App Not Installed, Parse Error, Won't Open), update instructions, 4 FAQs
 - **Schema:** Article + BreadcrumbList + FAQPage (3 questions)
 
@@ -206,7 +206,7 @@
 - **Schema:** Article + BreadcrumbList + ItemList (10 items)
 - **Internal links:** Links to all 10 game sign-up pages
 
-### Article 3 — "Game Vault 999 vs Fire Kirin: Which Sweepstakes App Is Better?"
+### Article 3 — "Vegas Sweeps 777 vs Fire Kirin: Which Sweepstakes App Is Better?"
 
 - **File:** `blog/game-vault-vs-fire-kirin.html`
 - **Words:** ~1,000
@@ -226,7 +226,7 @@
 ## Current Site Structure
 
 ```
-gamevault999apk.com/
+vegassweeps777.vercel.app/
 ├── index.html                          # Homepage (main landing page)
 ├── 404.html                            # Custom 404 page
 ├── sitemap.xml                         # 21 URLs
