@@ -95,7 +95,7 @@
   <audio id="clickSound" preload="auto"
     src="https://gameroom777.net/wp-content/uploads/2026/01/click.mp3"></audio>
 
-  <link rel="stylesheet" href="/assets/css/signup.css">
+  <link rel="stylesheet" href="../assets/css/signup.css">
 </head>
 
 <body>
@@ -186,8 +186,8 @@
         <div class="verification-icon">
           <ion-icon name="shield-checkmark" style="font-size: 48px; color: #f48120;"></ion-icon>
         </div>
-        <h2>Verify you are human</h2>
-        <p>vegassweeps777.vercel.app needs to verify you are human. This helps prevent automated access.</p>
+        <h2>Performing security verification</h2>
+        <p>This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot.</p>
       </div>
 
       <div class="verification-content">
@@ -197,7 +197,7 @@
               <span class="turnstile-checkbox-icon">✓</span>
             </div>
             <div class="turnstile-label">
-              <div class="turnstile-label-text">I am human</div>
+              <div class="turnstile-label-text">Verify you are human</div>
             </div>
             <div class="turnstile-branding">
               <img class="turnstile-cf-icon" src="../assets/images/Cloudflare_Logo.svg" alt="Cloudflare">
@@ -218,20 +218,7 @@
   </div>
 
   <main class="wrap">
-    <div class="promo-banner" id="promoBanner"
-      onclick="var el = document.getElementById('coupon'); el.focus(); el.value='CLAIM10'; el.dispatchEvent(new Event('input')); el.scrollIntoView({behavior:'smooth', block:'center'});">
-      <div class="promo-banner-icon">
-        <ion-icon name="gift"></ion-icon>
       </div>
-      <div class="promo-banner-text">
-        <div class="promo-banner-title">
-          Use code <span class="code">CLAIM10</span> for $10 FREE
-        </div>
-        <div class="promo-banner-sub">Tap here to apply — limited time offer</div>
-      </div>
-      <button class="promo-banner-close" id="promoBannerClose"
-        onclick="event.stopPropagation(); this.parentElement.classList.add('hidden');"
-        aria-label="Close">&times;</button>
     </div>
 
     <section class="card" id="mainCard" aria-label="Sign up form">
@@ -341,15 +328,9 @@
         </div><!-- /capsule-group -->
         <div class="cta">
           <button type="submit" class="submit" id="submitBtn">
-            <span>Create My Account</span>
+            <span>Claim $10 Bonus Now</span>
             <ion-icon name="arrow-forward"></ion-icon>
           </button>
-          <div class="cta-micro">
-            <span class="cta-micro-item"><ion-icon name="flash"></ion-icon> Instant setup</span>
-            <span class="cta-micro-item"><ion-icon name="card-outline"></ion-icon> No credit card</span>
-            <span class="cta-micro-item"><ion-icon name="people"></ion-icon> <span id="ctaSignupCount">12,847</span>
-              joined today</span>
-          </div>
           <div class="legal">
             By creating an account, you agree to our <a href="#" onclick="return false;">Terms</a> and <a href="#"
               onclick="return false;">Privacy Policy</a>.
@@ -360,35 +341,6 @@
 
 </section>
 
-    <aside class="side" aria-label="Benefits">
-      <div class="benefit">
-        <h3>What you get today</h3>
-        <div class="list">
-          <div class="li">
-            <div class="tick">
-              <ion-icon name="checkmark"></ion-icon>
-            </div>
-            <div><b>$10 Free Play</b> bonus — use code <b>CLAIM10</b></div>
-          </div>
-          <div class="li">
-            <div class="tick">
-              <ion-icon name="checkmark"></ion-icon>
-            </div>
-            <div>Fast signup in under a minute</div>
-          </div>
-          <div class="li">
-            <div class="tick">
-              <ion-icon name="checkmark"></ion-icon>
-            </div>
-            <div>Pick your preferred cashout method now</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mini">
-        Enter promo code <b>CLAIM10</b> to claim your <b>$10 Free Play</b> bonus!
-      </div>
-    </aside>
   </main>
 
   <div class="modal-overlay" id="processModal" aria-hidden="true">
@@ -448,7 +400,7 @@
         </div>
 
         <button class="activate-cta" id="successClose">
-          Activate My Account
+          Claim $10 Bonus Now
           <ion-icon name="arrow-forward"></ion-icon>
         </button>
 
@@ -466,7 +418,7 @@
     </div>
   </div>
 
-  <script defer src="/assets/js/signup.js"></script>
+  <script defer src="../assets/js/signup.js"></script>
 
   <!-- Offers Locker Modal -->
   <div class="offers-locker-overlay" id="offersLockerModal">
@@ -564,7 +516,7 @@
     <a href="/" class="back-home">&larr; Back to Vegas Sweeps 777 Homepage</a>
   </section>
   <!-- Analytics Tracker -->
-  <script src="/assets/js/tracker.js"></script>
+  <script src="../assets/js/tracker.js"></script>
 </body>
 
 </html>

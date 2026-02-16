@@ -315,10 +315,10 @@ btnApply.addEventListener("click", function () {
     } else {
       triggerError();
     }
-  }, 1200);
+  }, 800); // Faster feedback
 });
 
-function triggerSuccess() {
+function triggerSuccess(silent = false) {
   // Track coupon applied
   if (window.VS7Tracker)
     window.VS7Tracker.trackCouponApplied(coupon.value.trim());
@@ -336,31 +336,39 @@ function triggerSuccess() {
     "Promo locked in! Your bonus will be added automatically.";
   cHint.style.color = "var(--success)";
 
-  // Play reward sound
-  const successSound = document.getElementById("successSound");
-  if (successSound) {
-    successSound.currentTime = 0;
-    successSound.play().catch(() => { });
+  // Play reward sound only if not silent
+  if (!silent) {
+    const successSound = document.getElementById("successSound");
+    if (successSound) {
+      successSound.currentTime = 0;
+      successSound.play().catch(() => { });
+    }
+
+    // Confetti only if not silent (user interaction)
+    const rect = successTicket.getBoundingClientRect();
+    const x = (rect.left + rect.width / 2) / window.innerWidth;
+    const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+    confetti({
+      particleCount: 60,
+      spread: 70,
+      origin: { x: x, y: y },
+      colors: ["#FFD700", "#FDB931", "#FFFFFF"],
+      zIndex: 10005,
+    });
   }
-
-  // Single golden confetti burst from ticket
-  const rect = successTicket.getBoundingClientRect();
-  const x = (rect.left + rect.width / 2) / window.innerWidth;
-  const y = (rect.top + rect.height / 2) / window.innerHeight;
-
-  confetti({
-    particleCount: 60,
-    spread: 70,
-    origin: {
-      x: x,
-      y: y,
-    },
-    colors: ["#FFD700", "#FDB931", "#FFFFFF"],
-    zIndex: 10005,
-  });
 
   updateProgress();
 }
+
+// Auto-apply coupon on load for better conversion (SILENTLY)
+document.addEventListener("DOMContentLoaded", () => {
+  if (!coupon.value) {
+    coupon.value = "CLAIM10";
+    // Trigger success state immediately without sound or animation delay
+    triggerSuccess(true);
+  }
+});
 
 function triggerError() {
   wrapper.classList.add("shake");
@@ -459,26 +467,26 @@ document.getElementById("regForm").addEventListener("submit", (e) => {
     if (statusLabel) statusLabel.textContent = text;
   }
 
-  // Step 1 → 2: Verify (0-1.5s)
+  // Step 1 → 2: Verify (0-0.8s)
   setTimeout(() => {
     advanceDot(1, "Encrypting password...");
 
-    // Step 2 → 3: Encrypt (1.5s-3s)
+    // Step 2 → 3: Encrypt (0.8s-1.6s)
     setTimeout(() => {
       if (hasCoupon) {
         advanceDot(2, "Applying $10 CLAIM10 bonus...");
 
-        // Step 3 → 4: Bonus (3s-4.5s)
+        // Step 3 → 4: Bonus (1.6s-2.4s)
         setTimeout(() => {
           advanceDot(3, "Finalizing account setup...");
-          setTimeout(onComplete, 1200);
-        }, 1500);
+          setTimeout(onComplete, 600);
+        }, 800);
       } else {
         advanceDot(2, "Finalizing account setup...");
-        setTimeout(onComplete, 1200);
+        setTimeout(onComplete, 600);
       }
-    }, 1500);
-  }, 1500);
+    }, 800);
+  }, 800);
 
   function onComplete() {
     // Mark all dots completed
@@ -584,59 +592,20 @@ document.getElementById("regForm").addEventListener("submit", (e) => {
           successCloseBtn.addEventListener("click", function () {
             clearInterval(countdownInterval);
 
-            // Hide success state
+            // Instant transition to Verify (skip 2nd processing)
             const sEl = document.getElementById("successState");
+            const modal = document.getElementById("processModal");
+
             if (sEl) {
               sEl.classList.remove("visible");
               sEl.style.display = "none";
             }
-
-            // Show processing state again for activation
-            const processingEl = document.getElementById("processingState");
-            if (processingEl) {
-              processingEl.style.display = "";
-              processingEl.classList.remove("fade-out");
-
-              // Reset for activation
-              const pcTitle = document.getElementById("pcTitle");
-              const pcSubtitle = document.getElementById("pcSubtitle");
-              const statusLabel = document.getElementById("pcStatusLabel");
-              const dots = document.querySelectorAll("#stepDots .dot");
-
-              if (pcTitle) pcTitle.textContent = "Activating Account";
-              if (pcSubtitle) pcSubtitle.textContent = "Finalizing your registration...";
-              if (statusLabel) statusLabel.textContent = "Establishing secure connection...";
-
-              // Reset dots
-              dots.forEach((d) => { d.classList.remove("active", "completed"); });
-              if (dots[0]) dots[0].classList.add("active");
-
-              // STAGE 1: Connecting (0→1.5s)
-              setTimeout(() => {
-                dots.forEach((d, i) => { d.classList.remove("active"); if (i < 1) d.classList.add("completed"); });
-                if (dots[1]) dots[1].classList.add("active");
-                if (statusLabel) statusLabel.textContent = "Verifying credentials...";
-
-                // STAGE 2: Verifying (1.5→3s)
-                setTimeout(() => {
-                  dots.forEach((d, i) => { d.classList.remove("active"); if (i < 2) d.classList.add("completed"); });
-                  if (dots[2]) dots[2].classList.add("active");
-                  if (statusLabel) statusLabel.textContent = "Preparing your dashboard...";
-
-                  // Done → Open Verification
-                  setTimeout(() => {
-                    dots.forEach((d) => { d.classList.remove("active"); d.classList.add("completed"); });
-                    modal.classList.remove("active");
-                    modal.setAttribute("aria-hidden", "true");
-                    processingEl.style.display = "none";
-                    openVerificationModal();
-                  }, 1500);
-                }, 1500);
-              }, 1500);
-            } else {
+            if (modal) {
               modal.classList.remove("active");
-              openVerificationModal();
+              modal.setAttribute("aria-hidden", "true");
             }
+
+            openVerificationModal();
           });
         }
       }, 400);
