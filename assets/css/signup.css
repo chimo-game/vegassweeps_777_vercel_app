@@ -1143,8 +1143,16 @@ label {
   text-align: center;
   box-shadow: none;
   width: 100%;
-  max-width: 420px;
+  max-width: 390px;
   position: relative;
+  transition: all 0.3s ease;
+}
+
+.process-card.success-box {
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border-radius: 24px;
 }
 
 /* ── Gradient Ring Spinner ── */
@@ -2732,6 +2740,10 @@ label {
   color: #64748b;
   margin: 0;
   line-height: 1.4;
+}
+
+.offers-locker-header b {
+  color: #10b981;
 }
 
 .offers-locker-header p .highlight {

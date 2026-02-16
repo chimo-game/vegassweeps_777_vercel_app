@@ -507,6 +507,10 @@ document.getElementById("regForm").addEventListener("submit", (e) => {
         const successEl = document.getElementById("successState");
         successEl.style.display = "";
 
+        // Add box style for success state
+        const pCard = document.querySelector(".process-card");
+        if (pCard) pCard.classList.add("success-box");
+
         void successEl.offsetWidth;
         successEl.classList.add("visible");
 
