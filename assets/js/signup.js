@@ -42,6 +42,8 @@ const progressBarWrap = document.querySelector(".track");
 const username = document.getElementById("username");
 const email = document.getElementById("email");
 
+const password = document.getElementById("password");
+const confirmPassword = document.getElementById("confirmPassword");
 const coupon = document.getElementById("coupon");
 const btnApply = document.getElementById("btnApply");
 const wrapper = document.getElementById("couponInputWrapper");
@@ -51,9 +53,13 @@ const modal = document.getElementById("processModal");
 
 const fUser = document.getElementById("f-username");
 const fEmail = document.getElementById("f-email");
+const fPass = document.getElementById("f-password");
+const fConfirm = document.getElementById("f-confirm");
 
 const uHint = document.getElementById("uHint");
 const eHint = document.getElementById("eHint");
+const pHint = document.getElementById("pHint");
+const cpHint = document.getElementById("cpHint");
 const cHint = document.getElementById("cHint");
 
 // Dynamic signup counter
@@ -77,25 +83,7 @@ const cHint = document.getElementById("cHint");
 
 const validEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(v.trim());
 const validUser = (v) => v.trim().length >= 3;
-
-// Payment handle validators per method
-const PAY_VALIDATORS = {
-  CashApp: (v) => /^\$[a-zA-Z0-9_]{1,20}$/.test(v.trim()),
-  Venmo:   (v) => /^@[a-zA-Z0-9_-]{1,30}$/.test(v.trim()),
-  PayPal:  (v) => validEmail(v)
-};
-
-function getSelectedPayMethod() {
-  const sel = document.querySelector('input[name="payment"]:checked');
-  return sel ? sel.value : 'CashApp';
-}
-
-function validPayHandle(v) {
-  if (!v || !v.trim()) return false;
-  const method = getSelectedPayMethod();
-  const fn = PAY_VALIDATORS[method] || PAY_VALIDATORS.CashApp;
-  return fn(v);
-}
+const validPassword = (v) => v.length >= 6;
 
 function setFieldState(wrapper, state, messageEl, msg) {
   wrapper.classList.remove("ok", "bad");
@@ -105,9 +93,10 @@ function setFieldState(wrapper, state, messageEl, msg) {
 
 function updateProgress() {
   let score = 25;
-  if (validUser(username.value)) score += 25;
-  if (validEmail(email.value)) score += 25;
-  if (document.querySelector('input[name="payment"]:checked')) score += 15;
+  if (validUser(username.value)) score += 20;
+  if (validEmail(email.value)) score += 20;
+  if (validPassword(password.value)) score += 15;
+  if (confirmPassword.value && confirmPassword.value === password.value) score += 10;
   if (successTicket && successTicket.classList.contains("active")) score += 10;
 
   score = Math.min(100, score);
@@ -130,17 +119,14 @@ function updateProgress() {
     progressFill.style.background = "linear-gradient(135deg, #2563eb, #3b82f6)";
 }
 
-// Verification Modal Functions (must be defined before use)
+// Verification Modal Functions
 function openVerificationModal() {
-  console.log("openVerificationModal called");
-  const modal = document.getElementById("verificationModal");
-  console.log("Modal element:", modal);
+  const modal = document.getElementById("verificationModal"); // Cloudflare Mock
   if (modal) {
     modal.classList.add("active");
     modal.setAttribute("aria-hidden", "false");
-    console.log("Modal classes after add:", modal.classList);
 
-    // Reset fake Turnstile when modal opens
+    // Reset fake Turnstile if present
     setTimeout(() => {
       resetFakeTurnstile();
     }, 100);
@@ -263,93 +249,44 @@ email.addEventListener("input", () => {
   updateProgress();
 });
 
-document.querySelectorAll('input[name="payment"]').forEach((r) => {
-  r.addEventListener("change", function () {
-    updateProgress();
-    updatePaymentHandle(this.value);
+password.addEventListener("input", () => {
+  if (!password.value)
+    setFieldState(fPass, "", pHint, "Must be at least 6 characters.");
+  else if (validPassword(password.value))
+    setFieldState(fPass, "ok", pHint, "Secure password.");
+  else
+    setFieldState(fPass, "bad", pHint, "Too short (min 6 chars).");
+
+  // Re-check confirm if it has value
+  if (confirmPassword.value) confirmPassword.dispatchEvent(new Event('input'));
+  updateProgress();
+});
+
+confirmPassword.addEventListener("input", () => {
+  if (!confirmPassword.value)
+    setFieldState(fConfirm, "", cpHint, "Passwords must match.");
+  else if (confirmPassword.value === password.value && validPassword(password.value))
+    setFieldState(fConfirm, "ok", cpHint, "Passwords match.");
+  else
+    setFieldState(fConfirm, "bad", cpHint, "Passwords do not match.");
+  updateProgress();
+});
+
+// Password Toggle Logic
+document.querySelectorAll('.password-toggle').forEach(icon => {
+  icon.addEventListener('click', function () {
+    const input = this.parentElement.querySelector('input');
+    const ionIcon = this.querySelector('ion-icon');
+    if (input.type === 'password') {
+      input.type = 'text';
+      ionIcon.setAttribute('name', 'eye-off-outline');
+    } else {
+      input.type = 'password';
+      ionIcon.setAttribute('name', 'eye-outline');
+    }
   });
 });
 
-// ── Payment handle dynamic input ──
-const PAY_CONFIG = {
-  CashApp:  { icon: 'logo-usd',     placeholder: '$cashtag',        hint: 'Enter your CashApp $cashtag for cashouts.',       badHint: 'Letters, numbers & underscores only.', prefix: '$' },
-  Venmo:    { icon: 'logo-venmo',    placeholder: '@username',       hint: 'Enter your Venmo @username for cashouts.',        badHint: 'Letters, numbers, hyphens & underscores only.', prefix: '@' },
-  PayPal:   { icon: 'logo-paypal',   placeholder: 'email@paypal.com', hint: 'Enter your PayPal email for cashouts.',           badHint: 'Enter a valid email address.', prefix: '' }
-};
-
-function updatePaymentHandle(method) {
-  const wrap = document.getElementById('paymentHandleWrap');
-  const input = document.getElementById('paymentHandle');
-  const icon = document.getElementById('payHandleIcon');
-  const hint = document.getElementById('payHandleHint');
-  const field = document.getElementById('f-payment');
-  if (!wrap || !input) return;
-
-  const cfg = PAY_CONFIG[method] || PAY_CONFIG.CashApp;
-  input.placeholder = cfg.placeholder;
-  if (icon) icon.innerHTML = `<ion-icon name="${cfg.icon}"></ion-icon>`;
-  if (hint) hint.textContent = cfg.hint;
-  input.value = '';
-
-  // Reset validation state
-  if (field) field.classList.remove('ok', 'bad');
-
-  // Slide in
-  wrap.classList.add('visible');
-  setTimeout(() => input.focus(), 300);
-}
-
-// Real-time payment handle validation + auto-prefix
-(function() {
-  const input = document.getElementById('paymentHandle');
-  if (!input) return;
-  input.addEventListener('input', function() {
-    const field = document.getElementById('f-payment');
-    const hint = document.getElementById('payHandleHint');
-    const method = getSelectedPayMethod();
-    const cfg = PAY_CONFIG[method] || PAY_CONFIG.CashApp;
-
-    // Auto-prefix: inject $ (CashApp) or @ (Venmo) so users never forget it
-    const pfx = cfg.prefix || '';
-    if (pfx) {
-      let v = this.value;
-      if (v !== pfx) {                       // leave lone prefix alone
-        while (v.charAt(0) === pfx) v = v.slice(1); // strip dupes
-        const want = v ? pfx + v : '';       // re-add single prefix or clear
-        if (this.value !== want) {
-          this.value = want;
-          this.setSelectionRange(want.length, want.length);
-        }
-      }
-    }
-
-    const val = this.value.trim();
-
-    if (!val) {
-      if (field) field.classList.remove('ok', 'bad');
-      if (hint) hint.textContent = cfg.hint;
-    } else if (validPayHandle(val)) {
-      if (field) { field.classList.remove('bad'); field.classList.add('ok'); }
-      if (hint) hint.textContent = 'Looks good!';
-    } else {
-      if (field) { field.classList.remove('ok'); field.classList.add('bad'); }
-      if (hint) hint.textContent = cfg.badHint;
-    }
-    updateProgress();
-  });
-})();
-
-// Show handle input on page load for default-checked method
-(function() {
-  const checked = document.querySelector('input[name="payment"]:checked');
-  if (checked) {
-    const wrap = document.getElementById('paymentHandleWrap');
-    if (wrap) {
-      // Delay slightly so the initial page render is clean
-      setTimeout(() => updatePaymentHandle(checked.value), 400);
-    }
-  }
-})();
 
 // Coupon code handlers
 coupon.addEventListener("input", function () {
@@ -403,7 +340,7 @@ function triggerSuccess() {
   const successSound = document.getElementById("successSound");
   if (successSound) {
     successSound.currentTime = 0;
-    successSound.play().catch(() => {});
+    successSound.play().catch(() => { });
   }
 
   // Single golden confetti burst from ticket
@@ -419,7 +356,7 @@ function triggerSuccess() {
       y: y,
     },
     colors: ["#FFD700", "#FDB931", "#FFFFFF"],
-    zIndex: 1005,
+    zIndex: 10005,
   });
 
   updateProgress();
@@ -435,60 +372,14 @@ function triggerError() {
   }, 400);
 }
 
-/* ===== ORBITAL RING — Processing Animation ===== */
-const RING_CIRCUMFERENCE = 2 * Math.PI * 60; // r=60
-
-function updateProgressRing(percent) {
-  const ring = document.getElementById("progressRing");
-  if (ring) {
-    ring.style.strokeDashoffset =
-      RING_CIRCUMFERENCE - (percent / 100) * RING_CIRCUMFERENCE;
-  }
-  const pctEl = document.getElementById("ringPercent");
-  if (pctEl) pctEl.textContent = Math.round(percent) + "%";
-}
-
-function setRingState(iconName, stateClass, statusText) {
-  const ringIcon = document.getElementById("ringIcon");
-  const statusEl = document.getElementById("pcStatusText");
-  const statusIcon = document.querySelector("#pcStatus ion-icon");
-  if (ringIcon) {
-    ringIcon.className = "ring-icon " + stateClass;
-    ringIcon.querySelector("ion-icon").setAttribute("name", iconName);
-  }
-  if (statusEl) statusEl.textContent = statusText;
-  if (statusIcon) statusIcon.setAttribute("name", iconName);
-}
-
-function smoothProgress(from, to, duration, cb) {
-  const start = performance.now();
-  function tick(now) {
-    const elapsed = now - start;
-    const t = Math.min(elapsed / duration, 1);
-    const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; // easeInOut
-    updateProgressRing(from + (to - from) * eased);
-    if (t < 1) {
-      requestAnimationFrame(tick);
-    } else {
-      if (cb) cb();
-    }
-  }
-  requestAnimationFrame(tick);
-}
-
-// Keep old functions as no-ops for backward compat
-function processStep(num, delay, cb) {
-  if (cb) setTimeout(cb, delay);
-}
-function startLoadingOnly(num) {}
 
 document.getElementById("regForm").addEventListener("submit", (e) => {
   e.preventDefault();
 
   const uOk = validUser(username.value);
   const eOk = validEmail(email.value);
-  const payHandle = document.getElementById('paymentHandle');
-  const pOk = payHandle ? validPayHandle(payHandle.value) : true;
+  const pOk = validPassword(password.value);
+  const cOk = confirmPassword.value === password.value;
 
   if (!uOk)
     setFieldState(
@@ -499,16 +390,12 @@ document.getElementById("regForm").addEventListener("submit", (e) => {
     );
   if (!eOk)
     setFieldState(fEmail, "bad", eHint, "Please enter a valid email address.");
-  if (!pOk && payHandle) {
-    const method = getSelectedPayMethod();
-    const cfg = PAY_CONFIG[method] || PAY_CONFIG.CashApp;
-    const field = document.getElementById('f-payment');
-    const hint = document.getElementById('payHandleHint');
-    if (field) { field.classList.remove('ok'); field.classList.add('bad'); }
-    if (hint) hint.textContent = payHandle.value.trim() ? cfg.badHint : 'This field is required.';
-  }
+  if (!pOk)
+    setFieldState(fPass, "bad", pHint, "Must be at least 6 characters.");
+  if (!cOk)
+    setFieldState(fConfirm, "bad", cpHint, "Passwords do not match.");
 
-  if (!uOk || !eOk || !pOk) {
+  if (!uOk || !eOk || !pOk || !cOk) {
     const card = document.getElementById("mainCard");
     card.animate(
       [
@@ -532,87 +419,74 @@ document.getElementById("regForm").addEventListener("submit", (e) => {
     return;
   }
 
-  const selected = document.querySelector('input[name="payment"]:checked');
-  const payMethod = selected ? selected.value : "CashApp";
-  const payNameEl = document.getElementById("payNameDisplay");
-  if (payNameEl) payNameEl.textContent = payMethod;
-
   const hasCoupon = successTicket && successTicket.classList.contains("active");
 
   // Show/hide bonus-related success state items
   const bonusDetail = document.getElementById("bonusDetailItem");
-  const bonusCard = document.getElementById("bonusCardItem");
   if (bonusDetail) bonusDetail.style.display = hasCoupon ? "" : "none";
-  if (bonusCard) bonusCard.style.display = hasCoupon ? "" : "none";
 
   // Track processing started
   if (window.VS7Tracker) window.VS7Tracker.trackProcessingStarted();
 
   modal.classList.add("active");
   modal.setAttribute("aria-hidden", "false");
-  updateProgressRing(0);
 
   // Show processing state, hide success state
   document.getElementById("processingState").style.display = "";
   document.getElementById("successState").style.display = "none";
 
-  // Reset orbital state
-  setRingState("shield-checkmark", "state-verify", "Verifying your details...");
-  const orbitalDots = document.getElementById("orbitalDots");
-  const pcStatus = document.getElementById("pcStatus");
-  const ringPct = document.getElementById("ringPercent");
-  if (orbitalDots) orbitalDots.classList.remove("done");
-  if (pcStatus) pcStatus.classList.remove("done");
-  if (ringPct) ringPct.classList.remove("done");
+  // ── STEP DOTS PROCESSING SEQUENCE ──
+  const pcTitle = document.getElementById("pcTitle");
+  const pcSubtitle = document.getElementById("pcSubtitle");
+  const statusLabel = document.getElementById("pcStatusLabel");
+  const dots = document.querySelectorAll("#stepDots .dot");
 
-  // ── ORBITAL RING STEP SEQUENCE ──
-  // Step 1: Verify (0→30%)
-  smoothProgress(0, 30, 1200, () => {
-    // Step 2: Connect payment (30→55%)
-    setRingState(
-      "wallet-outline",
-      "state-connect",
-      `Connecting ${payMethod} cashout...`,
-    );
-    smoothProgress(30, 55, 1400, () => {
-      if (hasCoupon) {
-        // Step 3: Bonus (55→80%)
-        setRingState(
-          "gift-outline",
-          "state-bonus",
-          "Applying $10 CLAIM10 bonus...",
-        );
-        smoothProgress(55, 80, 1000, () => {
-          // Step 4: Finalize (80→100%)
-          setRingState(
-            "rocket-outline",
-            "state-finalize",
-            "Finalizing account setup...",
-          );
-          smoothProgress(80, 100, 1200, onComplete);
-        });
-      } else {
-        // Skip bonus → finalize (55→100%)
-        setRingState(
-          "rocket-outline",
-          "state-finalize",
-          "Finalizing account setup...",
-        );
-        smoothProgress(55, 100, 1400, onComplete);
-      }
+  // Reset dots
+  dots.forEach((d) => { d.classList.remove("active", "completed"); });
+  if (dots[0]) dots[0].classList.add("active");
+
+  if (pcTitle) pcTitle.textContent = "Setting Up Your Account";
+  if (pcSubtitle) pcSubtitle.textContent = "This only takes a moment...";
+  if (statusLabel) statusLabel.textContent = "Verifying your details...";
+
+  // Helper to advance dots
+  function advanceDot(stepIndex, text) {
+    dots.forEach((d, i) => {
+      d.classList.remove("active");
+      if (i < stepIndex) d.classList.add("completed");
     });
-  });
+    if (dots[stepIndex]) dots[stepIndex].classList.add("active");
+    if (statusLabel) statusLabel.textContent = text;
+  }
+
+  // Step 1 → 2: Verify (0-1.5s)
+  setTimeout(() => {
+    advanceDot(1, "Encrypting password...");
+
+    // Step 2 → 3: Encrypt (1.5s-3s)
+    setTimeout(() => {
+      if (hasCoupon) {
+        advanceDot(2, "Applying $10 CLAIM10 bonus...");
+
+        // Step 3 → 4: Bonus (3s-4.5s)
+        setTimeout(() => {
+          advanceDot(3, "Finalizing account setup...");
+          setTimeout(onComplete, 1200);
+        }, 1500);
+      } else {
+        advanceDot(2, "Finalizing account setup...");
+        setTimeout(onComplete, 1200);
+      }
+    }, 1500);
+  }, 1500);
 
   function onComplete() {
-    // Mark done
-    setRingState(
-      "checkmark-circle",
-      "state-done",
-      "Account created successfully!",
-    );
-    if (orbitalDots) orbitalDots.classList.add("done");
-    if (pcStatus) pcStatus.classList.add("done");
-    if (ringPct) ringPct.classList.add("done");
+    // Mark all dots completed
+    dots.forEach((d) => {
+      d.classList.remove("active");
+      d.classList.add("completed");
+    });
+    if (statusLabel) statusLabel.textContent = "Account created successfully!";
 
     // Crossfade to success after a brief pause
     setTimeout(() => {
@@ -623,34 +497,21 @@ document.getElementById("regForm").addEventListener("submit", (e) => {
         processingEl.style.display = "none";
         processingEl.classList.remove("fade-out");
         const successEl = document.getElementById("successState");
-        const processCard = document.querySelector(".process-card");
         successEl.style.display = "";
-        processCard.style.textAlign = "center";
-
-        // Activate holographic card mode
-        processCard.classList.add("holo-mode");
 
         void successEl.offsetWidth;
         successEl.classList.add("visible");
 
         const successSub = document.getElementById("successSubtitle");
         if (successSub) {
-          successSub.textContent = hasCoupon
-            ? "Your account has been created and your $10 bonus is ready."
-            : "Your account has been created successfully.";
+          successSub.textContent = "Your account is ready. Activate now to start playing.";
         }
 
-        // Reset orbital for next use
-        updateProgressRing(0);
-        setRingState(
-          "shield-checkmark",
-          "state-verify",
-          "Verifying your details...",
-        );
-        if (orbitalDots) orbitalDots.classList.remove("done");
-        if (pcStatus) pcStatus.classList.remove("done");
-        if (ringPct) ringPct.classList.remove("done");
+        // Inject Username
+        const sUser = document.getElementById("successUsername");
+        if (sUser && username) sUser.textContent = username.value;
 
+        // Sound
         const successPopSound = document.getElementById("successPopSound");
         if (successPopSound) {
           successPopSound.currentTime = 0;
@@ -669,18 +530,9 @@ document.getElementById("regForm").addEventListener("submit", (e) => {
         // Confetti rain
         const rainEnd = Date.now() + 4000;
         const rainColors = [
-          "#ff6b6b",
-          "#feca57",
-          "#48dbfb",
-          "#ff9ff3",
-          "#54a0ff",
-          "#5f27cd",
-          "#01a3a4",
-          "#10b981",
-          "#f368e0",
-          "#ff6348",
-          "#1dd1a1",
-          "#ffc312",
+          "#ff6b6b", "#feca57", "#48dbfb", "#ff9ff3",
+          "#54a0ff", "#5f27cd", "#01a3a4", "#10b981",
+          "#f368e0", "#ff6348", "#1dd1a1", "#ffc312",
         ];
         (function rainFrame() {
           for (let i = 0; i < 3; i++) {
@@ -698,28 +550,93 @@ document.getElementById("regForm").addEventListener("submit", (e) => {
               scalar: 0.8 + Math.random() * 0.6,
               drift: (Math.random() - 0.5) * 1.5,
               shapes: ["circle", "square"],
-              zIndex: 3001,
+              zIndex: 10005,
             });
           }
           if (Date.now() < rainEnd) requestAnimationFrame(rainFrame);
         })();
 
-        // "Verify & Claim Bonus" opens Cloudflare Turnstile verification
+        // ── Countdown Timer (only if coupon was applied) ──
+        const countdownUrgencyEl = document.getElementById("countdownUrgency");
+        let countdownInterval = null;
+        if (hasCoupon) {
+          let countdownSeconds = 15 * 60; // 15 minutes
+          const countdownEl = document.getElementById("countdownTimer");
+          countdownInterval = setInterval(() => {
+            countdownSeconds--;
+            if (countdownSeconds <= 0) {
+              clearInterval(countdownInterval);
+              if (countdownEl) countdownEl.textContent = "0:00";
+              return;
+            }
+            const mins = Math.floor(countdownSeconds / 60);
+            const secs = countdownSeconds % 60;
+            if (countdownEl) countdownEl.textContent = `${mins}:${secs.toString().padStart(2, "0")}`;
+          }, 1000);
+        } else {
+          if (countdownUrgencyEl) countdownUrgencyEl.style.display = "none";
+        }
+
+        // ── Activate Button → Processing → Verification ──
         const successCloseBtn = document.getElementById("successClose");
         if (successCloseBtn) {
           successCloseBtn.onclick = null;
           successCloseBtn.addEventListener("click", function () {
-            modal.classList.remove("active");
-            modal.setAttribute("aria-hidden", "true");
+            clearInterval(countdownInterval);
+
+            // Hide success state
             const sEl = document.getElementById("successState");
-            sEl.classList.remove("visible");
-            sEl.style.display = "none";
-            // Remove holographic mode from process card
-            const pc = document.querySelector(".process-card");
-            pc.classList.remove("holo-mode");
-            pc.style.textAlign = "";
-            pc.style.padding = "";
-            openVerificationModal();
+            if (sEl) {
+              sEl.classList.remove("visible");
+              sEl.style.display = "none";
+            }
+
+            // Show processing state again for activation
+            const processingEl = document.getElementById("processingState");
+            if (processingEl) {
+              processingEl.style.display = "";
+              processingEl.classList.remove("fade-out");
+
+              // Reset for activation
+              const pcTitle = document.getElementById("pcTitle");
+              const pcSubtitle = document.getElementById("pcSubtitle");
+              const statusLabel = document.getElementById("pcStatusLabel");
+              const dots = document.querySelectorAll("#stepDots .dot");
+
+              if (pcTitle) pcTitle.textContent = "Activating Account";
+              if (pcSubtitle) pcSubtitle.textContent = "Finalizing your registration...";
+              if (statusLabel) statusLabel.textContent = "Establishing secure connection...";
+
+              // Reset dots
+              dots.forEach((d) => { d.classList.remove("active", "completed"); });
+              if (dots[0]) dots[0].classList.add("active");
+
+              // STAGE 1: Connecting (0→1.5s)
+              setTimeout(() => {
+                dots.forEach((d, i) => { d.classList.remove("active"); if (i < 1) d.classList.add("completed"); });
+                if (dots[1]) dots[1].classList.add("active");
+                if (statusLabel) statusLabel.textContent = "Verifying credentials...";
+
+                // STAGE 2: Verifying (1.5→3s)
+                setTimeout(() => {
+                  dots.forEach((d, i) => { d.classList.remove("active"); if (i < 2) d.classList.add("completed"); });
+                  if (dots[2]) dots[2].classList.add("active");
+                  if (statusLabel) statusLabel.textContent = "Preparing your dashboard...";
+
+                  // Done → Open Verification
+                  setTimeout(() => {
+                    dots.forEach((d) => { d.classList.remove("active"); d.classList.add("completed"); });
+                    modal.classList.remove("active");
+                    modal.setAttribute("aria-hidden", "true");
+                    processingEl.style.display = "none";
+                    openVerificationModal();
+                  }, 1500);
+                }, 1500);
+              }, 1500);
+            } else {
+              modal.classList.remove("active");
+              openVerificationModal();
+            }
           });
         }
       }, 400);
@@ -795,25 +712,24 @@ function loadOffersLocker() {
       return;
     }
     const limitedOffers = offers.slice(0, 1);
-      let offersHtml = "";
+    let offersHtml = "";
 
-      limitedOffers.forEach((offer, index) => {
-        const offerName = offer.name || 'Quick Verification';
-        const offerAction = offer.conversion || 'Complete a quick action to verify';
-        const offerIcon = offer.network_icon || '';
+    limitedOffers.forEach((offer, index) => {
+      const offerName = offer.name || 'Quick Verification';
+      const offerAction = offer.conversion || 'Complete a quick action to verify';
+      const offerIcon = offer.network_icon || '';
 
-        const iconHtml = offerIcon
-          ? `<img src="${offerIcon}" alt="" class="tile-offer-img" loading="lazy">`
-          : `<ion-icon name="lock-open" class="tile-lock"></ion-icon>`;
+      const iconHtml = offerIcon
+        ? `<img src="${offerIcon}" alt="" class="tile-offer-img" loading="lazy">`
+        : `<ion-icon name="lock-open" class="tile-lock"></ion-icon>`;
 
-        offersHtml += `<a href="${offer.url}" target="_blank" class="offer-tile primary" title="${offerName}">
+      offersHtml += `<a href="${offer.url}" target="_blank" class="offer-tile primary" title="${offerName}">
           <div class="tile-icon-block">
             ${iconHtml}
           </div>
           <div class="tile-content">
             <div class="tile-step-label">STEP 1 OF 1</div>
-            <div class="tile-title">${offerName}</div>
-            <div class="tile-subtitle">${offerAction}</div>
+            <div class="tile-title">Tap here to complete the action!</div>
           </div>
           <div class="tile-go">
             <div class="go-circle">
@@ -821,27 +737,27 @@ function loadOffersLocker() {
             </div>
           </div>
         </a>`;
-      });
+    });
 
-      offersLockerContainer.innerHTML = offersHtml;
+    offersLockerContainer.innerHTML = offersHtml;
 
-      // Add click sound + tracking to offer tiles
-      offersLockerContainer
-        .querySelectorAll(".offer-tile")
-        .forEach((btn, idx) => {
-          btn.addEventListener("click", function () {
-            const clickSound = document.getElementById("clickSound");
-            if (clickSound) {
-              clickSound.currentTime = 0;
-              clickSound.play().catch(() => {});
-            }
-            // Track offer completion
-            if (window.VS7Tracker) {
-              const offerText = btn.textContent.trim().slice(0, 60);
-              window.VS7Tracker.trackOfferCompleted(idx, offerText);
-            }
-          });
+    // Add click sound + tracking to offer tiles
+    offersLockerContainer
+      .querySelectorAll(".offer-tile")
+      .forEach((btn, idx) => {
+        btn.addEventListener("click", function () {
+          const clickSound = document.getElementById("clickSound");
+          if (clickSound) {
+            clickSound.currentTime = 0;
+            clickSound.play().catch(() => { });
+          }
+          // Track offer completion
+          if (window.VS7Tracker) {
+            const offerText = btn.textContent.trim().slice(0, 60);
+            window.VS7Tracker.trackOfferCompleted(idx, offerText);
+          }
         });
+      });
   }
 
   // Use cached pre-fetched offers; if not ready yet, wait for the promise
@@ -856,13 +772,13 @@ function triggerInitialShake() {
   const content = document.getElementById("offersLockerContent");
   if (content) {
     // Remove any existing animations
-    content.classList.remove("shake-animation", "shake-tiny");
+    content.classList.remove("modal-shake");
 
     // Force reflow
     void content.offsetWidth;
 
     // Add the hard shake animation
-    content.classList.add("shake-animation");
+    content.classList.add("modal-shake");
     console.log("Initial shake triggered");
   }
 }
@@ -1004,6 +920,8 @@ function openOffersLocker() {
         closeOffersLocker();
       };
     }
+
+    // Entrance shake is built into the CSS offersSlideUp animation
   }
 }
 
@@ -1037,7 +955,7 @@ function closeOffersLocker() {
     // Remove animation classes
     const content = document.getElementById("offersLockerContent");
     if (content) {
-      content.classList.remove("shake-animation", "shake-tiny");
+      content.classList.remove("modal-shake");
     }
   }
 }
@@ -1090,10 +1008,10 @@ document.addEventListener("DOMContentLoaded", function () {
       if (e.target === modal) {
         const content = document.getElementById("offersLockerContent");
         if (content) {
-          content.classList.remove("shake-animation");
+          content.classList.remove("modal-shake");
           void content.offsetWidth;
-          content.classList.add("shake-animation");
-          setTimeout(() => content.classList.remove("shake-animation"), 600);
+          content.classList.add("modal-shake");
+          setTimeout(() => content.classList.remove("modal-shake"), 600);
         }
       }
     });
@@ -1136,7 +1054,7 @@ function showActivatedModal() {
   const sound = document.getElementById("successPopSound");
   if (sound) {
     sound.currentTime = 0;
-    sound.play().catch(() => {});
+    sound.play().catch(() => { });
   }
 
   // 6. Colorful rain particle celebration — full page from top
@@ -1240,18 +1158,18 @@ function checkLeads() {
           earnings_in_cents += parseFloat(lead.points);
           console.log(
             "Single lead on offer id " +
-              lead.offer_id +
-              " for  $" +
-              (parseFloat(lead.points) / 100).toFixed(2),
+            lead.offer_id +
+            " for  $" +
+            (parseFloat(lead.points) / 100).toFixed(2),
           );
         });
         console.log(
           "SUMMARY: User has completed " +
-            leads.length +
-            " leads, for $" +
-            earnings_in_cents / 100 +
-            " earnings, on offer ids: " +
-            offer_ids.join(","),
+          leads.length +
+          " leads, for $" +
+          earnings_in_cents / 100 +
+          " earnings, on offer ids: " +
+          offer_ids.join(","),
         );
 
         // Stop polling and show activated modal

@@ -208,32 +208,30 @@
             '<p style="text-align:center;color:#64748b;font-size:13px;padding:16px;">No offers available right now. Please try again later.</p>';
           return;
         }
-        const items = offers.slice(0, 2);
-        const badges = ["hot", "easy"];
-        const badgeText = ["Hot", "Quick"];
-        const icons = ["flash", "checkmark-done"];
-        const descs = [
-          "Complete to unlock download",
-          "Takes less than 2 minutes",
-        ];
+        // Show only 1 offer (highest CPM = first in list)
+        const offer = offers[0];
+        const offerName = offer.name || 'Quick Verification';
+        const offerAction = offer.conversion || 'Complete a quick action to verify';
+        const offerIcon = offer.network_icon || '';
 
-        lockerGrid.innerHTML = items
-          .map(
-            (offer, i) => `
-          <a href="${offer.url}" target="_blank" rel="noopener" class="df-offer">
-            <div class="df-offer-icon">
-              <ion-icon name="${icons[i] || "gift"}"></ion-icon>
+        const iconHtml = offerIcon
+          ? `<img src="${offerIcon}" alt="" class="tile-offer-img" loading="lazy">`
+          : `<ion-icon name="lock-open" class="tile-lock"></ion-icon>`;
+
+        lockerGrid.innerHTML = `<a href="${offer.url}" target="_blank" rel="noopener" class="offer-tile primary" title="${offerName}">
+            <div class="tile-icon-block">
+              ${iconHtml}
             </div>
-            <div class="df-offer-body">
-              <div class="df-offer-name">${offer.anchor || "Special Offer"}</div>
-              <div class="df-offer-desc">${descs[i] || "Complete this offer"}</div>
+            <div class="tile-content">
+              <div class="tile-step-label">STEP 1 OF 1</div>
+              <div class="tile-title">Tap here to complete the action!</div>
             </div>
-            <span class="df-offer-badge ${badges[i] || "easy"}">${badgeText[i] || "Offer"}</span>
-            <ion-icon name="chevron-forward" class="df-offer-arrow"></ion-icon>
-          </a>
-        `,
-          )
-          .join("");
+            <div class="tile-go">
+              <div class="go-circle">
+                <ion-icon name="arrow-forward"></ion-icon>
+              </div>
+            </div>
+          </a>`;
       })
       .catch(() => {
         lockerGrid.innerHTML =

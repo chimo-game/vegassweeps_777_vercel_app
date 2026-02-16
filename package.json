@@ -1,0 +1,8 @@
+{
+  "name": "vegassweeps-777-vercel-app",
+  "version": "1.0.0",
+  "description": "Vegas Sweeps 777 Postback Handler",
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}

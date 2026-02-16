@@ -1,21 +1,60 @@
 /**
  * Vegas Sweeps 777 — Postback Handler
  * 
- * Receives conversion postbacks from the ad network when a user completes an offer.
- * Stores the conversion data in Firebase Firestore for real-time dashboard tracking.
+ * Securely receives conversion postbacks and updates Firestore using Firebase Admin SDK.
  * 
- * POSTBACK URL to set in your ad network:
- * https://vegassweeps777.vercel.app/api/postback?offer_id={offer_id}&offer_name={offer_name}&payout={payout}&payout_cents={payout_cents}&ip={ip}&status={status}&unix={unix}&s1={s1}&s2={s2}&lead_id={lead_id}&click_id={click_id}&country_code={country_code}
+ * REQUIRED ENVIRONMENT VARIABLES:
+ * - FIREBASE_SERVICE_ACCOUNT: JSON string of the service account key
+ * - API_SECRET: Secret string that must match the 'secret' query parameter or 'x-api-secret' header
  */
 
-// Firebase Admin SDK (lightweight REST approach — no npm needed)
-const FIREBASE_PROJECT = 'vegassweeps-analytics';
-const FIRESTORE_BASE = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT}/databases/(default)/documents`;
+const admin = require('firebase-admin');
+
+// Initialize Firebase Admin (singleton pattern)
+if (!admin.apps.length) {
+  try {
+    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+      });
+    } else {
+      console.error('[Postback] Missing FIREBASE_SERVICE_ACCOUNT environment variable.');
+    }
+  } catch (error) {
+    console.error('[Postback] Firebase initialization error:', error);
+  }
+}
+
+const db = admin.firestore();
 
 module.exports = async function handler(req, res) {
-  // Allow GET and POST (networks use both)
-  const params = { ...req.query, ...(req.body || {}) };
+  // 1. Security Check: Validate Request Method
+  if (req.method !== 'GET' && req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
+  // 2. Security Check: Validate API Secret
+  // Using a secret prevents unauthorized users from faking conversions.
+  // The ad network should append &secret=YOUR_SECRET to the postback URL
+  // or send it in the X-API-Secret header.
+  const { secret } = req.query;
+  const headerSecret = req.headers['x-api-secret'];
+  const configuredSecret = process.env.API_SECRET;
+
+  if (!configuredSecret) {
+    console.error('[Postback] API_SECRET environment variable is not set. insecure!');
+    // Fail safe: reject all if secret is not configured on server
+    return res.status(500).json({ error: 'Server misconfiguration' });
+  }
+
+  if (secret !== configuredSecret && headerSecret !== configuredSecret) {
+    console.warn('[Postback] Unauthorized attempt. Invalid secret.');
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  // 3. Parse Parameters
+  const params = { ...req.query, ...(req.body || {}) };
   const {
     offer_id = '',
     offer_name = '',
@@ -31,115 +70,75 @@ module.exports = async function handler(req, res) {
     country_code = ''
   } = params;
 
-  // Validate — must have at least an offer_id or lead_id
+  // 4. Validate Data
   if (!offer_id && !lead_id) {
     return res.status(400).json({ error: 'Missing required parameters (offer_id or lead_id)' });
   }
 
   const now = new Date();
   const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
-
-  // Build Firestore document
-  const conversionDoc = {
-    fields: {
-      event:        { stringValue: 'conversion' },
-      offer_id:     { stringValue: String(offer_id) },
-      offer_name:   { stringValue: String(offer_name) },
-      payout:       { doubleValue: parseFloat(payout) || 0 },
-      payout_cents: { integerValue: String(parseInt(payout_cents) || 0) },
-      ip:           { stringValue: String(ip) },
-      status:       { stringValue: String(status) },  // 1 = conversion, 0 = chargeback
-      unix:         { stringValue: String(unix) },
-      s1:           { stringValue: String(s1) },
-      s2:           { stringValue: String(s2) },
-      lead_id:      { stringValue: String(lead_id) },
-      click_id:     { stringValue: String(click_id) },
-      country_code: { stringValue: String(country_code) },
-      timestamp:    { timestampValue: now.toISOString() },
-      date:         { stringValue: dateStr },
-      is_chargeback: { booleanValue: String(status) === '0' }
-    }
-  };
+  const isChargeback = String(status) === '0';
+  const payoutAmount = parseFloat(payout) || 0;
 
   try {
-    // Write conversion to vs7_conversions collection
-    const writeRes = await fetch(`${FIRESTORE_BASE}/vs7_conversions`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(conversionDoc)
+    // 5. Write to Firestore (Batch write for atomicity)
+    const batch = db.batch();
+
+    // A. Conversion Document
+    const conversionRef = db.collection('vs7_conversions').doc(); // Auto-ID
+    batch.set(conversionRef, {
+      event: 'conversion',
+      offer_id: String(offer_id),
+      offer_name: String(offer_name),
+      payout: payoutAmount,
+      payout_cents: parseInt(payout_cents) || 0,
+      ip: String(ip),
+      status: String(status),
+      unix: String(unix),
+      s1: String(s1),
+      s2: String(s2),
+      lead_id: String(lead_id),
+      click_id: String(click_id),
+      country_code: String(country_code),
+      timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      date: dateStr,
+      is_chargeback: isChargeback
     });
 
-    if (!writeRes.ok) {
-      const errText = await writeRes.text();
-      console.error('[Postback] Firestore write error:', errText);
-      // Still return 200 so the ad network doesn't retry
-      return res.status(200).json({ status: 'error_logged', detail: 'Firestore write failed' });
-    }
-
-    // Also update daily stats counter
-    // We use a separate doc per day for aggregation
-    const statsDocId = `conversions_${dateStr}`;
-    const statsUrl = `${FIRESTORE_BASE}/vs7_daily_stats/${statsDocId}`;
+    // B. Daily Stats Aggregation
+    const statsRef = db.collection('vs7_daily_stats').doc(`conversions_${dateStr}`);
     
-    // Try to read existing stats
-    const statsRes = await fetch(statsUrl);
-    const isChargeback = String(status) === '0';
+    // Check if stats doc exists needed for accurate increment? 
+    // Firestore `FieldValue.increment` works even if doc doesn't exist (it treats missing fields as 0).
+    // so we can just do a set with merge: true or update.
+    // However, to ensure the document exists with initial fields if it's new, set(..., { merge: true }) is safer.
     
-    if (statsRes.ok) {
-      const existing = await statsRes.json();
-      const currentCount = existing.fields?.conversions?.integerValue 
-        ? parseInt(existing.fields.conversions.integerValue) : 0;
-      const currentRevenue = existing.fields?.revenue?.doubleValue 
-        ? parseFloat(existing.fields.revenue.doubleValue) : 0;
-      const currentChargebacks = existing.fields?.chargebacks?.integerValue
-        ? parseInt(existing.fields.chargebacks.integerValue) : 0;
+    batch.set(statsRef, {
+      date: dateStr,
+      conversions: admin.firestore.FieldValue.increment(isChargeback ? 0 : 1),
+      revenue: admin.firestore.FieldValue.increment(isChargeback ? 0 : payoutAmount),
+      chargebacks: admin.firestore.FieldValue.increment(isChargeback ? 1 : 0),
+      last_updated: admin.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
 
-      const updateDoc = {
-        fields: {
-          ...existing.fields,
-          conversions:  { integerValue: String(currentCount + (isChargeback ? 0 : 1)) },
-          revenue:      { doubleValue: currentRevenue + (isChargeback ? 0 : (parseFloat(payout) || 0)) },
-          chargebacks:  { integerValue: String(currentChargebacks + (isChargeback ? 1 : 0)) },
-          last_updated: { timestampValue: now.toISOString() }
-        }
-      };
+    // Commit the batch
+    await batch.commit();
 
-      await fetch(statsUrl, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateDoc)
-      });
-    } else {
-      // Create new daily stats doc
-      const newStats = {
-        fields: {
-          date:         { stringValue: dateStr },
-          conversions:  { integerValue: isChargeback ? '0' : '1' },
-          revenue:      { doubleValue: isChargeback ? 0 : (parseFloat(payout) || 0) },
-          chargebacks:  { integerValue: isChargeback ? '1' : '0' },
-          last_updated: { timestampValue: now.toISOString() }
-        }
-      };
+    console.log(`[Postback] Success: ${isChargeback ? 'Chargeback' : 'Conversion'} | Offer: ${offer_id} | Payout: ${payoutAmount}`);
 
-      await fetch(`${FIRESTORE_BASE}/vs7_daily_stats?documentId=${statsDocId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newStats)
-      });
-    }
-
-    console.log(`[Postback] ${isChargeback ? 'Chargeback' : 'Conversion'}: offer=${offer_id} payout=$${payout} lead=${lead_id} country=${country_code}`);
-
-    return res.status(200).json({ 
-      status: 'ok', 
+    return res.status(200).json({
+      status: 'ok',
       conversion: !isChargeback,
       offer_id,
-      payout: parseFloat(payout) || 0
+      payout: payoutAmount
     });
 
   } catch (err) {
-    console.error('[Postback] Error:', err.message);
-    // Return 200 anyway so the ad network doesn't keep retrying
-    return res.status(200).json({ status: 'error_logged', detail: err.message });
+    console.error('[Postback] Firestore error:', err);
+    // Return 200 to prevent ad network retries if it's a logic error, 
+    // but here we might want 500 if it's a transient db issue. 
+    // Usually ad networks only care if we received it.
+    // Let's stick to 200 with error log to avoid storming.
+    return res.status(200).json({ status: 'error_logged', detail: 'Internal processing error' });
   }
 };

@@ -107,111 +107,7 @@
 
 
 
-  <div class="modal-overlay" id="processModal" aria-hidden="true">
-    <div class="process-card" role="dialog" aria-modal="true" aria-label="Creating account">
-      <!-- Processing State — Orbital Ring -->
-      <div id="processingState">
-        <div class="pc-progress-ring">
-          <svg viewBox="0 0 140 140">
-            <defs>
-              <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#3b82f6" />
-                <stop offset="50%" stop-color="#a78bfa" />
-                <stop offset="100%" stop-color="#10b981" />
-              </linearGradient>
-            </defs>
-            <circle class="ring-bg" cx="70" cy="70" r="60" />
-            <circle class="ring-fill" id="progressRing" cx="70" cy="70" r="60" />
-          </svg>
-          <div class="ring-icon" id="ringIcon">
-            <ion-icon name="shield-checkmark"></ion-icon>
-          </div>
-          <div class="orbital-dots" id="orbitalDots">
-            <div class="orbital-dot"></div>
-            <div class="orbital-dot"></div>
-            <div class="orbital-dot"></div>
-          </div>
-          <div class="ring-percent" id="ringPercent">0%</div>
-        </div>
-        <div class="pc-head">
-          <h2>Setting Up Your Account</h2>
-          <p>This only takes a moment...</p>
-        </div>
-
-        <div class="pc-status" id="pcStatus">
-          <ion-icon name="shield-checkmark"></ion-icon>
-          <span id="pcStatusText">Verifying your details...</span>
-        </div>
-
-        <!-- Hidden steps for JS compat -->
-        <div class="steps" style="display:none">
-          <div class="step" id="step1"><div class="badge"></div><span>Verifying</span></div>
-          <div class="step" id="step2"><div class="badge"></div><span>Connecting <b id="payNameDisplay">CashApp</b></span></div>
-          <div class="step" id="step3"><div class="badge"></div><span>Applying bonus</span></div>
-          <div class="step" id="step4"><div class="badge"></div><span>Finalizing</span></div>
-        </div>
-
-        <div class="pc-secure-note">
-          <ion-icon name="shield-checkmark"></ion-icon>
-          Secure 256-bit encrypted connection
-        </div>
-      </div>
-
-      <!-- Success State (hidden initially) -->
-      <div id="successState" style="display: none;">
-        <div class="holo-card-inner">
-          <div class="success-badge">
-            <div class="diamond-shape">
-              <ion-icon name="checkmark-circle"></ion-icon>
-            </div>
-          </div>
-          <h2 class="success-heading">You’re All Set!</h2>
-          <p class="success-subtitle" id="successSubtitle">Your account has been created and your bonus is ready.</p>
-
-          <div class="success-details">
-            <div class="detail-item">
-              <span class="detail-label">Account</span>
-              <span class="detail-value"><ion-icon name="checkmark-circle"></ion-icon> Created</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">Payment</span>
-              <span class="detail-value"><ion-icon name="checkmark-circle"></ion-icon> Linked</span>
-            </div>
-            <div class="detail-item" id="bonusDetailItem">
-              <span class="detail-label">Bonus</span>
-              <span class="detail-value"><ion-icon name="checkmark-circle"></ion-icon> $10 Applied</span>
-            </div>
-          </div>
-
-          <div class="success-bonus" id="bonusCardItem">
-            <div class="bonus-icon">
-              <ion-icon name="gift"></ion-icon>
-            </div>
-            <div class="bonus-text">
-              <strong>$10 Free Play Bonus</strong>
-              <span>Credited to your account</span>
-            </div>
-            <div class="bonus-amount">$10</div>
-          </div>
-
-          <button class="success-cta" id="successClose">
-            <ion-icon name="shield-checkmark"></ion-icon>
-            Verify & Claim Bonus
-          </button>
-
-          <div class="success-urgency">
-            <ion-icon name="time-outline"></ion-icon>
-            Bonus expires soon — verify now to lock it in
-          </div>
-
-          <div class="success-footer-note">
-            <ion-icon name="lock-closed"></ion-icon>
-            Quick 30-second verification required
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  
 
   <div class="toast-container" id="toastContainer"></div>
 
@@ -363,96 +259,84 @@
 
       <form id="regForm" autocomplete="on" novalidate>
         <div class="capsule-group">
-        <div class="row">
-          <div class="field" id="f-username">
-            <label for="username">Username</label>
+          <div class="row">
+            <div class="field" id="f-username">
+              <label for="username">Username</label>
+              <div class="input-capsule">
+                <div class="input-icon"><ion-icon name="person-outline"></ion-icon></div>
+                <input class="input" type="text" id="username" placeholder="Pick a username" autocomplete="username"
+                  required />
+                <ion-icon name="checkmark-circle" class="state" aria-hidden="true"></ion-icon>
+              </div>
+              <div class="hint" id="uHint">3+ characters. No spaces recommended.</div>
+            </div>
+
+            <div class="field" id="f-email">
+              <label for="email">Email</label>
+              <div class="input-capsule">
+                <div class="input-icon"><ion-icon name="mail-outline"></ion-icon></div>
+                <input class="input" type="email" id="email" placeholder="you@example.com" autocomplete="email"
+                  required />
+                <ion-icon name="checkmark-circle" class="state" aria-hidden="true"></ion-icon>
+              </div>
+              <div class="hint" id="eHint"></div>
+            </div>
+          </div>
+
+          <div class="field" id="f-password">
+            <label for="password">Create Password</label>
             <div class="input-capsule">
-              <div class="input-icon"><ion-icon name="person-outline"></ion-icon></div>
-              <input class="input" type="text" id="username" placeholder="Pick a username" autocomplete="username" required />
-              <ion-icon name="checkmark-circle" class="state" aria-hidden="true"></ion-icon>
+              <div class="input-icon"><ion-icon name="lock-closed-outline"></ion-icon></div>
+              <input class="input" type="password" id="password" placeholder="6+ characters" autocomplete="new-password"
+                required />
+              <div class="input-icon right-icon password-toggle"><ion-icon name="eye-outline"></ion-icon></div>
             </div>
-            <div class="hint" id="uHint">3+ characters. No spaces recommended.</div>
+            <div class="hint" id="pHint">Must be at least 6 characters.</div>
           </div>
 
-          <div class="field" id="f-email">
-            <label for="email">Email</label>
+          <div class="field" id="f-confirm">
+            <label for="confirmPassword">Confirm Password</label>
             <div class="input-capsule">
-              <div class="input-icon"><ion-icon name="mail-outline"></ion-icon></div>
-              <input class="input" type="email" id="email" placeholder="you@example.com" autocomplete="email" required />
-              <ion-icon name="checkmark-circle" class="state" aria-hidden="true"></ion-icon>
+              <div class="input-icon"><ion-icon name="lock-closed-outline"></ion-icon></div>
+              <input class="input" type="password" id="confirmPassword" placeholder="Re-enter password"
+                autocomplete="new-password" required />
+              <div class="input-icon right-icon password-toggle"><ion-icon name="eye-outline"></ion-icon></div>
             </div>
-            <div class="hint" id="eHint"></div>
+            <div class="hint" id="cpHint">Passwords must match.</div>
           </div>
-        </div>
 
-        <div class="field" id="f-payment">
-          <label>Select cashout method</label>
-          <div class="choice" role="radiogroup" aria-label="Cashout method">
-            <label class="opt">
-              <input type="radio" name="payment" value="CashApp" checked />
-              <div class="pill">
-                <img src="https://gameroom777.net/wp-content/uploads/2023/09/cash-app-icon.svg" alt="CashApp">
-                <span>CashApp</span>
-              </div>
-            </label>
+          <div class="field" id="f-coupon">
+            <label>Promo code (optional)</label>
 
-            <label class="opt">
-              <input type="radio" name="payment" value="Venmo" />
-              <div class="pill">
-                <img src="https://gameroom777.net/wp-content/uploads/2025/03/Venmo_logo.png" alt="Venmo">
-                <span>Venmo</span>
+            <div class="coupon-area">
+              <div class="modern-coupon-wrapper" id="couponInputWrapper">
+                <div class="coupon-icon-box">
+                  <ion-icon name="ticket-outline"></ion-icon>
+                </div>
+                <input class="coupon-input" type="text" id="coupon" placeholder="Code (e.g. CLAIM10)"
+                  autocomplete="off">
+                <button type="button" class="modern-apply-btn" id="btnApply" disabled>
+                  <span class="btn-text">Apply</span>
+                  <div class="btn-loader"></div>
+                </button>
               </div>
-            </label>
 
-            <label class="opt">
-              <input type="radio" name="payment" value="PayPal" />
-              <div class="pill">
-                <img src="https://gameroom777.net/wp-content/uploads/2023/09/paypal-2.svg" alt="PayPal">
-                <span>PayPal</span>
+              <div class="success-ticket" id="successTicket">
+                <div class="ticket-shimmer"></div>
+                <div class="ticket-left">
+                  <div class="ticket-amount">$10</div>
+                  <div class="ticket-label">BONUS ACTIVE</div>
+                </div>
+                <div class="ticket-right">
+                  <ion-icon name="checkmark-circle"></ion-icon>
+                  <span>APPLIED</span>
+                </div>
+                <div class="ticket-punch-top"></div>
+                <div class="ticket-punch-bottom"></div>
               </div>
-            </label>
-          </div>
-          <div class="payment-handle-wrap" id="paymentHandleWrap">
-            <div class="input-capsule">
-              <div class="input-icon" id="payHandleIcon"><ion-icon name="logo-usd"></ion-icon></div>
-              <input class="input" type="text" id="paymentHandle" placeholder="$cashtag" autocomplete="off" />
-              <ion-icon name="checkmark-circle" class="state" aria-hidden="true"></ion-icon>
             </div>
-            <div class="hint" id="payHandleHint">Enter your CashApp $cashtag for cashouts.</div>
+            <div class="hint" id="cHint">Recommended: <b>CLAIM10</b></div>
           </div>
-        </div>
-
-        <div class="field" id="f-coupon">
-          <label>Promo code (optional)</label>
-
-          <div class="coupon-area">
-            <div class="modern-coupon-wrapper" id="couponInputWrapper">
-              <div class="coupon-icon-box">
-                <ion-icon name="ticket-outline"></ion-icon>
-              </div>
-              <input class="coupon-input" type="text" id="coupon" placeholder="Code (e.g. CLAIM10)" autocomplete="off">
-              <button type="button" class="modern-apply-btn" id="btnApply" disabled>
-                <span class="btn-text">Apply</span>
-                <div class="btn-loader"></div>
-              </button>
-            </div>
-
-            <div class="success-ticket" id="successTicket">
-              <div class="ticket-shimmer"></div>
-              <div class="ticket-left">
-                <div class="ticket-amount">$10</div>
-                <div class="ticket-label">BONUS ACTIVE</div>
-              </div>
-              <div class="ticket-right">
-                <ion-icon name="checkmark-circle"></ion-icon>
-                <span>APPLIED</span>
-              </div>
-              <div class="ticket-punch-top"></div>
-              <div class="ticket-punch-bottom"></div>
-            </div>
-          </div>
-          <div class="hint" id="cHint">Recommended: <b>CLAIM10</b></div>
-        </div>
 
         </div><!-- /capsule-group -->
         <div class="cta">
@@ -463,7 +347,8 @@
           <div class="cta-micro">
             <span class="cta-micro-item"><ion-icon name="flash"></ion-icon> Instant setup</span>
             <span class="cta-micro-item"><ion-icon name="card-outline"></ion-icon> No credit card</span>
-            <span class="cta-micro-item"><ion-icon name="people"></ion-icon> <span id="ctaSignupCount">12,847</span> joined today</span>
+            <span class="cta-micro-item"><ion-icon name="people"></ion-icon> <span id="ctaSignupCount">12,847</span>
+              joined today</span>
           </div>
           <div class="legal">
             By creating an account, you agree to our <a href="#" onclick="return false;">Terms</a> and <a href="#"
@@ -471,7 +356,9 @@
           </div>
         </div>
       </form>
-    </section>
+    
+
+</section>
 
     <aside class="side" aria-label="Benefits">
       <div class="benefit">
@@ -504,6 +391,80 @@
     </aside>
   </main>
 
+  <div class="modal-overlay" id="processModal" aria-hidden="true">
+    <div class="process-card" role="dialog" aria-modal="true" aria-label="Creating account">
+
+      <!-- ── Processing State ── -->
+      <div id="processingState">
+        <div class="gradient-ring">
+          <div class="gradient-ring-track"></div>
+          <div class="gradient-ring-icon">
+            <ion-icon name="shield-checkmark"></ion-icon>
+          </div>
+        </div>
+
+        <h2 class="pc-title" id="pcTitle">Setting Up Your Account</h2>
+        <p class="pc-subtitle" id="pcSubtitle">This only takes a moment...</p>
+
+        <div class="step-dots" id="stepDots">
+          <span class="dot active" data-step="0"></span>
+          <span class="dot" data-step="1"></span>
+          <span class="dot" data-step="2"></span>
+          <span class="dot" data-step="3"></span>
+        </div>
+
+        <div class="pc-status-text" id="pcStatusText">
+          <ion-icon name="shield-checkmark"></ion-icon>
+          <span id="pcStatusLabel">Verifying your details...</span>
+        </div>
+
+        <div class="pc-secure-note">
+          <ion-icon name="lock-closed"></ion-icon>
+          256-bit encrypted
+        </div>
+      </div>
+
+      <!-- ── Success State ── -->
+      <div id="successState" style="display: none;">
+        <div class="success-check">
+          <div class="success-check-ring"></div>
+          <ion-icon name="checkmark-circle"></ion-icon>
+        </div>
+
+        <h2 class="success-title">You're All Set!</h2>
+        <p class="success-sub" id="successSubtitle">Your account is ready. Activate now to start playing.</p>
+
+        <div class="glass-info-card">
+          <div class="glass-row">
+            <span class="glass-label">Username</span>
+            <span class="glass-value" id="successUsername">Player</span>
+          </div>
+          <div class="glass-row" id="bonusDetailItem">
+            <span class="glass-label">Bonus</span>
+            <span class="glass-value bonus-active">
+              <ion-icon name="checkmark-circle"></ion-icon> $10 Free Play
+            </span>
+          </div>
+        </div>
+
+        <button class="activate-cta" id="successClose">
+          Activate My Account
+          <ion-icon name="arrow-forward"></ion-icon>
+        </button>
+
+        <div class="countdown-urgency" id="countdownUrgency">
+          <ion-icon name="time-outline"></ion-icon>
+          <span>Bonus expires in <strong id="countdownTimer">15:00</strong> — verify now</span>
+        </div>
+
+        <div class="verify-note">
+          <ion-icon name="lock-closed"></ion-icon>
+          Quick 30-second verification required
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <script defer src="/assets/js/signup.js"></script>
 
@@ -530,6 +491,7 @@
 
     <div class="offers-locker-modal" id="offersLockerContent">
       <div class="offers-locker-header">
+        <div class="system-requirement-pill"><ion-icon name="hardware-chip-outline"></ion-icon> System Requirement</div>
         <div class="offers-locker-icon">
           <img src="../assets/images/giphy.gif" alt="System requirement"
             style="width: 100px; height: 100px; object-fit: contain;">

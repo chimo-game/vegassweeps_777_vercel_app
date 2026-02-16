@@ -1048,3 +1048,222 @@
     height: 34px;
   }
 }
+
+/* ══════════════════════════════════════════
+   LOCKER ENHANCEMENTS (Match Signup Flow)
+   ══════════════════════════════════════════ */
+
+/* ── System Requirement Pill ── */
+.system-requirement-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  font-size: 11px;
+  font-weight: 600;
+  color: #10b981;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.system-requirement-pill ion-icon {
+  font-size: 14px;
+  color: #10b981;
+}
+
+/* ── Locker Card Dark Theme Override ── */
+.df-locker-card {
+  background: rgba(15, 23, 42, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+  color: #f1f5f9 !important;
+}
+
+.df-locker-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.df-locker-header h2 {
+  color: #f1f5f9 !important;
+}
+
+.df-locker-header p {
+  color: #94a3b8 !important;
+}
+
+.df-locker-header p b {
+  color: #f8fafc !important;
+}
+
+/* ── Glassmorphism Offer Tile (Copied from signup.css) ── */
+.offer-tile {
+  text-decoration: none;
+  color: white;
+  border: 1.5px solid rgba(16, 185, 129, 0.25);
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: 14px;
+  gap: 14px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(13, 148, 136, 0.04) 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.25s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.offer-tile:hover {
+  transform: translateY(-2px);
+  border-color: rgba(16, 185, 129, 0.45);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(13, 148, 136, 0.08) 100%);
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.15), 0 0 0 1px rgba(16, 185, 129, 0.1);
+}
+
+.offer-tile:active {
+  transform: scale(.97) !important;
+}
+
+.offer-tile.primary {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(13, 148, 136, 0.05) 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(16, 185, 129, 0.08);
+}
+
+.offer-tile.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.2), 0 0 0 1px rgba(16, 185, 129, 0.15);
+}
+
+.offer-tile.primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+  animation: tileSweep 4s 1s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes tileSweep {
+  0% { left: -60%; }
+  30% { left: 120%; }
+  100% { left: 120%; }
+}
+
+.tile-icon-block {
+  width: 52px;
+  min-width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  border-radius: 14px;
+}
+
+.tile-icon-block .tile-lock {
+  font-size: 24px;
+  color: #10b981;
+  transition: transform .3s ease;
+  filter: drop-shadow(0 1px 3px rgba(16, 185, 129, 0.3));
+}
+
+.tile-icon-block .tile-offer-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  object-fit: cover;
+  transition: transform .3s ease;
+}
+
+.offer-tile:hover .tile-offer-img {
+  transform: scale(1.06);
+}
+
+.offer-tile:hover .tile-lock {
+  transform: scale(1.1);
+}
+
+.tile-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.tile-step-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #10b981;
+  line-height: 1;
+}
+
+.tile-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -.1px;
+  line-height: 1.3;
+  color: #f1f5f9;
+}
+
+.tile-go {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.go-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all .25s ease;
+}
+
+.offer-tile:hover .go-circle {
+  transform: scale(1.06);
+}
+
+.offer-tile.primary .go-circle {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  animation: goPulse 2.5s ease infinite;
+}
+
+.go-circle ion-icon {
+  font-size: 18px;
+  color: white;
+  transition: transform .2s ease;
+}
+
+.offer-tile:hover .go-circle ion-icon {
+  transform: translateX(2px);
+}
+
+@keyframes goPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, .25); }
+  50% { box-shadow: 0 0 0 8px rgba(255, 255, 255, 0); }
+}
