@@ -3298,6 +3298,10 @@ label {
     font-size: 17px;
   }
 
+  .offers-locker-header b {
+    color: #10b981;
+  }
+
   .offer-tile {
     min-height: 68px;
     border-radius: 16px;
