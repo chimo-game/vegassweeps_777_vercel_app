@@ -1621,6 +1621,17 @@ label {
     gap: 6px;
   }
 
+  .app-store-card {
+    padding: 12px 14px;
+    gap: 10px;
+    border-radius: 12px;
+  }
+
+  .asc-title {
+    font-size: 13px;
+    /* Slightly smaller for mobile fit */
+  }
+
   .offer-left {
     gap: 8px;
   }
