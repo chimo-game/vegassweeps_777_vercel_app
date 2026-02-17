@@ -1628,7 +1628,7 @@ label {
   }
 
   .asc-title {
-    font-size: 13px;
+    font-size: 13px !important;
     /* Slightly smaller for mobile fit */
   }
 
