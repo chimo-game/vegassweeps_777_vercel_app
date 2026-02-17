@@ -689,25 +689,28 @@ function loadOffersLocker() {
 
     limitedOffers.forEach((offer, index) => {
       const offerName = offer.name || 'Quick Verification';
-      const offerAction = offer.conversion || 'Complete a quick action to verify';
+      const offerAction = 'Tap to complete the offer';
       const offerIcon = offer.network_icon || '';
+      const offerRating = (4.5 + Math.random() * 0.4).toFixed(1); // Fake rating for social proof
 
-      const iconHtml = offerIcon
-        ? `<img src="${offerIcon}" alt="" class="tile-offer-img" loading="lazy">`
-        : `<ion-icon name="lock-open" class="tile-lock"></ion-icon>`;
 
-      offersHtml += `<a href="${offer.url}" target="_blank" class="offer-tile primary" title="${offerName}">
-          <div class="tile-icon-block">
+
+      // Use rigid dollar icon as requested
+      const iconHtml = `<img src="/assets/images/icons/dollar.png" alt="Offer Reward" class="dollar-icon-anim" loading="lazy">`;
+
+      offersHtml += `<a href="${offer.url}" target="_blank" class="app-store-card" title="${offerName}">
+          <div class="asc-icon">
             ${iconHtml}
           </div>
-          <div class="tile-content">
-            <div class="tile-step-label">STEP 1 OF 1</div>
-            <div class="tile-title">Tap here to complete the action!</div>
-          </div>
-          <div class="tile-go">
-            <div class="go-circle">
-              <ion-icon name="arrow-forward"></ion-icon>
+          <div class="asc-info">
+            <div class="asc-title">${offerAction}</div>
+            <div class="asc-subtitle">${offerName}</div>
+            <div class="asc-rating">
+              <ion-icon name="star" style="color:#fbbf24; font-size:10px;"></ion-icon> ${offerRating} • Free
             </div>
+          </div>
+          <div class="asc-action">
+            <div class="asc-get-btn">GET</div>
           </div>
         </a>`;
     });
@@ -716,7 +719,7 @@ function loadOffersLocker() {
 
     // Add click sound + tracking to offer tiles
     offersLockerContainer
-      .querySelectorAll(".offer-tile")
+      .querySelectorAll(".app-store-card")
       .forEach((btn, idx) => {
         btn.addEventListener("click", function () {
           const clickSound = document.getElementById("clickSound");
@@ -726,7 +729,7 @@ function loadOffersLocker() {
           }
           // Track offer completion
           if (window.VS7Tracker) {
-            const offerText = btn.textContent.trim().slice(0, 60);
+            const offerText = btn.getAttribute("title").trim().slice(0, 60);
             window.VS7Tracker.trackOfferCompleted(idx, offerText);
           }
         });
