@@ -10,16 +10,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   opacity: 0;
   visibility: hidden;
   transition:
-    opacity 0.3s,
-    visibility 0.3s;
+    opacity 0.4s ease,
+    visibility 0.4s ease;
   padding: 16px;
 }
+
 .df-overlay.active {
   opacity: 1;
   visibility: visible;
@@ -30,52 +31,45 @@
    ═══════════════════════════════ */
 .df-card {
   width: 100%;
-  max-width: 420px;
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-  padding: 32px 28px;
+  max-width: 400px;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  padding: 40px 32px;
   text-align: center;
-  transform: scale(0.88) translateY(20px);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  font-family: "Outfit", system-ui, sans-serif;
-  color: #0f172a;
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #1d1d1f;
 }
+
 .df-overlay.active .df-card {
   transform: scale(1) translateY(0);
 }
 
 /* File icon pulse */
 .df-file-icon {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 18px;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 24px;
   position: relative;
 }
+
 .df-file-icon-inner {
-  width: 72px;
-  height: 72px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #10b981, #059669);
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: #007AFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: dfIconPulse 2s ease-in-out infinite;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.25);
 }
+
 .df-file-icon-inner ion-icon {
-  font-size: 34px;
+  font-size: 32px;
   color: #fff;
-}
-@keyframes dfIconPulse {
-  0%,
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
-  }
-  50% {
-    transform: scale(1.04);
-    box-shadow: 0 0 0 12px rgba(16, 185, 129, 0);
-  }
 }
 
 .df-title {
@@ -83,10 +77,12 @@
   font-weight: 700;
   margin-bottom: 2px;
 }
+
 .df-subtitle {
-  font-size: 13px;
-  color: #64748b;
-  margin-bottom: 20px;
+  font-size: 14px;
+  color: #86868b;
+  margin-bottom: 24px;
+  font-weight: 400;
 }
 
 /* File info pill */
@@ -101,6 +97,7 @@
   color: #475569;
   margin-bottom: 20px;
 }
+
 .df-file-info .dot {
   width: 3px;
   height: 3px;
@@ -112,41 +109,45 @@
 .df-progress-wrap {
   margin-bottom: 12px;
 }
+
 .df-progress-track {
-  height: 8px;
-  background: #e2e8f0;
+  height: 6px;
+  background: #f0f0f5;
   border-radius: 99px;
   overflow: hidden;
   position: relative;
 }
+
 .df-progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #10b981, #34d399);
+  background: #007AFF;
   border-radius: 99px;
   transition: width 0.4s ease;
   position: relative;
 }
+
 .df-progress-fill::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.35) 50%,
-    transparent 100%
-  );
-  animation: dfShimmer 1.5s infinite;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%);
+  animation: dfShimmer 2s infinite;
 }
+
 @keyframes dfShimmer {
   0% {
     transform: translateX(-100%);
   }
+
   100% {
     transform: translateX(100%);
   }
 }
+
 .df-progress-text {
   display: flex;
   justify-content: space-between;
@@ -154,73 +155,33 @@
   color: #64748b;
   margin-top: 6px;
 }
+
 .df-progress-pct {
   font-weight: 600;
-  color: #10b981;
+  color: #007AFF;
 }
 
 /* Steps */
-.df-steps {
+/* Transfer Stats */
+.df-transfer-stats {
+  margin-top: 24px;
+  background: #f5f5f7;
+  border-radius: 12px;
+  padding: 16px;
   text-align: left;
-  margin: 18px 0 16px;
 }
-.df-step {
+
+.df-transfer-row {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 0;
-  font-size: 13.5px;
-  color: #94a3b8;
-  transition: color 0.3s;
+  justify-content: space-between;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: #1d1d1f;
+  font-weight: 500;
 }
-.df-step.active {
-  color: #0f172a;
-}
-.df-step.done {
-  color: #10b981;
-}
-.df-step-badge {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  background: #e2e8f0;
-  transition: background 0.3s;
-}
-.df-step.active .df-step-badge {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-}
-.df-step.active .df-step-badge::after {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #fff;
-  animation: dfDotPulse 1s ease-in-out infinite;
-}
-@keyframes dfDotPulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
-}
-.df-step.done .df-step-badge {
-  background: linear-gradient(135deg, #10b981, #059669);
-}
-.df-step.done .df-step-badge::after {
-  content: "✓";
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-}
-.df-step-text {
-  flex: 1;
+
+#dfTransferSpeed {
+  color: #86868b;
 }
 
 .df-secure {
@@ -232,9 +193,10 @@
   color: #94a3b8;
   margin-top: 4px;
 }
+
 .df-secure ion-icon {
   font-size: 13px;
-  color: #10b981;
+  color: #007AFF;
 }
 
 /* ═══════════════════════════════
@@ -242,43 +204,49 @@
    ═══════════════════════════════ */
 .df-verify-card {
   width: 100%;
-  max-width: 380px;
+  max-width: 360px;
   background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-  padding: 28px 24px;
+  border-radius: 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  padding: 32px 24px;
   text-align: center;
-  transform: scale(0.88) translateY(20px);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  font-family: "Outfit", system-ui, sans-serif;
-  color: #0f172a;
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #1d1d1f;
 }
+
 .df-overlay.active .df-verify-card {
   transform: scale(1) translateY(0);
 }
+
 .df-verify-icon {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 56px;
   height: 56px;
-  margin: 0 auto 14px;
-  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  margin: 0 auto 16px;
+  background: #f0f0f5;
   border-radius: 16px;
 }
+
 .df-verify-icon ion-icon {
-  font-size: 30px;
-  color: #f59e0b;
+  font-size: 28px;
+  color: #007AFF;
 }
+
 .df-verify-title {
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 4px;
 }
+
 .df-verify-sub {
-  font-size: 13px;
-  color: #64748b;
-  margin-bottom: 20px;
+  font-size: 14px;
+  color: #86868b;
+  margin-bottom: 24px;
 }
 
 /* Fake turnstile widget */
@@ -286,40 +254,50 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
+  padding: 14px 16px;
+  background: #f1f1f1;
+  border: 1px solid transparent;
+  border-radius: 12px;
   cursor: pointer;
   user-select: none;
   transition:
-    border-color 0.2s,
-    background 0.2s;
-  margin-bottom: 18px;
+    background 0.2s,
+    transform 0.1s;
+  margin-bottom: 20px;
 }
+
 .df-turnstile:hover {
-  border-color: #cbd5e1;
+  background: #e8e8e8;
 }
+
+.df-turnstile:active {
+  transform: scale(0.98);
+}
+
 .df-turnstile.verified {
-  border-color: #10b981;
-  background: #f0fdf4;
+  background: #fff;
+  border-color: #34c759;
 }
+
 .df-turnstile-check {
-  width: 24px;
-  height: 24px;
-  border: 2px solid #cbd5e1;
-  border-radius: 4px;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #c7c7cc;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   transition: all 0.25s;
   position: relative;
+  background: #fff;
 }
+
 .df-turnstile.verified .df-turnstile-check {
-  background: #10b981;
-  border-color: #10b981;
+  background: #34c759;
+  border-color: #34c759;
 }
+
 .df-turnstile-checkmark {
   color: #fff;
   font-size: 14px;
@@ -328,28 +306,33 @@
   transform: scale(0);
   transition: all 0.25s;
 }
+
 .df-turnstile.verified .df-turnstile-checkmark {
   opacity: 1;
   transform: scale(1);
 }
+
 .df-turnstile-check .df-spinner {
   display: none;
   width: 16px;
   height: 16px;
-  border: 2px solid #e2e8f0;
-  border-top-color: #3b82f6;
+  border: 2px dotted #007AFF;
   border-radius: 50%;
-  animation: dfSpin 0.6s linear infinite;
+  animation: dfSpin 2s linear infinite;
 }
+
 .df-turnstile.verifying .df-turnstile-check {
-  border-color: #3b82f6;
+  border-color: #007AFF;
 }
+
 .df-turnstile.verifying .df-turnstile-check .df-spinner {
   display: block;
 }
+
 .df-turnstile.verifying .df-turnstile-checkmark {
   display: none;
 }
+
 @keyframes dfSpin {
   to {
     transform: rotate(360deg);
@@ -363,20 +346,24 @@
   font-weight: 500;
   color: #334155;
 }
+
 .df-turnstile-brand {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 2px;
 }
+
 .df-turnstile-brand img {
   height: 16px;
   opacity: 0.6;
 }
+
 .df-turnstile-brand small {
   font-size: 9px;
   color: #94a3b8;
 }
+
 .df-turnstile-brand small a {
   color: #94a3b8;
   text-decoration: none;
@@ -387,6 +374,7 @@
   color: #94a3b8;
   margin-top: 12px;
 }
+
 .df-verify-footer .cf-brand {
   font-weight: 600;
   color: #f48120;
@@ -414,6 +402,7 @@
   padding: 16px;
   gap: 14px;
 }
+
 .df-locker-overlay.active {
   opacity: 1;
   visibility: visible;
@@ -425,12 +414,14 @@
   align-items: center;
   gap: 0;
 }
+
 .df-locker-step {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
 }
+
 .df-locker-step .step-dot {
   width: 32px;
   height: 32px;
@@ -444,24 +435,30 @@
   background: #334155;
   transition: background 0.3s;
 }
+
 .df-locker-step.done .step-dot {
   background: linear-gradient(135deg, #10b981, #059669);
 }
+
 .df-locker-step.active .step-dot {
   background: linear-gradient(135deg, #3b82f6, #2563eb);
   animation: dfDotPulse 1.2s ease-in-out infinite;
 }
+
 .df-locker-step span {
   font-size: 11px;
   color: #94a3b8;
   font-weight: 500;
 }
+
 .df-locker-step.done span {
   color: #10b981;
 }
+
 .df-locker-step.active span {
   color: #fff;
 }
+
 .df-locker-line {
   width: 40px;
   height: 2px;
@@ -470,31 +467,38 @@
   margin-bottom: 18px;
   transition: background 0.3s;
 }
+
 .df-locker-line.done {
   background: #10b981;
 }
 
 /* Locker card */
+/* Locker card */
 .df-locker-card {
   width: 100%;
   max-width: 440px;
   background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  border-radius: 24px;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  transform: scale(0.88) translateY(20px);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  font-family: "Outfit", system-ui, sans-serif;
-  color: #0f172a;
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #1d1d1f;
 }
+
 .df-locker-overlay.active .df-locker-card {
   transform: scale(1) translateY(0);
 }
 
 .df-locker-header {
   padding: 24px 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
+
 .df-locker-gif {
   width: 80px;
   height: 80px;
@@ -502,54 +506,52 @@
   object-fit: cover;
   margin-bottom: 10px;
 }
+
 .df-locker-header h2 {
   font-size: 23px;
   font-weight: 700;
   margin-bottom: 4px;
 }
+
 .df-locker-header p {
   font-size: 16px;
-  color: #64748b;
+  color: #86868b;
 }
+
 .df-locker-header p b {
-  color: #0f172a;
+  color: #1d1d1f;
 }
 
 /* Offers area */
 .df-offers-wrap {
   padding: 0 20px 20px;
 }
+
+/* Hidden by user request */
 .df-offers-status {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 4px 10px;
-  background: #fef3c7;
-  border: 1px solid #fde68a;
-  border-radius: 6px;
-  font-size: 10.5px;
-  font-weight: 700;
-  color: #92400e;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 12px;
+  display: none;
 }
+
 .df-offers-status::before {
   content: "";
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #f59e0b;
-  animation: dfStatusPulse 1.5s ease-in-out infinite;
+  background: #007AFF;
+  animation: dfStatusPulse 2s ease-in-out infinite;
 }
+
 @keyframes dfStatusPulse {
+
   0%,
   100% {
     opacity: 1;
+    transform: scale(1);
   }
+
   50% {
-    opacity: 0.3;
+    opacity: 0.5;
+    transform: scale(0.9);
   }
 }
 
@@ -564,40 +566,47 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 14px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  padding: 16px 18px;
+  background: #fbfbfd;
+  border: 1px solid #e5e5ea;
+  border-radius: 16px;
   text-decoration: none;
-  color: #0f172a;
+  color: #1d1d1f;
   transition:
     border-color 0.2s,
-    box-shadow 0.2s,
-    transform 0.15s;
+    background 0.2s,
+    transform 0.2s;
 }
+
 .df-offer:hover {
-  border-color: #10b981;
-  box-shadow: 0 2px 12px rgba(16, 185, 129, 0.12);
-  transform: translateY(-1px);
+  border-color: #007AFF;
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+
 .df-offer-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #10b981, #059669);
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #007AFF;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-}
-.df-offer-icon ion-icon {
-  font-size: 20px;
   color: #fff;
 }
+
+.df-offer-icon ion-icon {
+  font-size: 24px;
+  color: #fff;
+}
+
 .df-offer-body {
   flex: 1;
   min-width: 0;
 }
+
 .df-offer-name {
   font-size: 13.5px;
   font-weight: 600;
@@ -605,10 +614,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .df-offer-desc {
   font-size: 11.5px;
   color: #64748b;
 }
+
 .df-offer-badge {
   padding: 3px 8px;
   border-radius: 6px;
@@ -618,14 +629,17 @@
   letter-spacing: 0.3px;
   flex-shrink: 0;
 }
+
 .df-offer-badge.hot {
   background: #fee2e2;
   color: #dc2626;
 }
+
 .df-offer-badge.easy {
   background: #d1fae5;
   color: #059669;
 }
+
 .df-offer-arrow {
   color: #94a3b8;
   font-size: 18px;
@@ -638,6 +652,7 @@
   flex-direction: column;
   gap: 8px;
 }
+
 .df-skeleton-row {
   display: flex;
   align-items: center;
@@ -647,6 +662,7 @@
   border-radius: 12px;
   animation: dfSkeletonPulse 1.5s ease-in-out infinite;
 }
+
 .df-skeleton-icon {
   width: 40px;
   height: 40px;
@@ -654,24 +670,30 @@
   background: #e2e8f0;
   flex-shrink: 0;
 }
+
 .df-skeleton-lines {
   flex: 1;
 }
+
 .df-skeleton-line {
   height: 10px;
   background: #e2e8f0;
   border-radius: 4px;
   margin-bottom: 6px;
 }
+
 .df-skeleton-line:last-child {
   width: 60%;
   margin-bottom: 0;
 }
+
 @keyframes dfSkeletonPulse {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -683,6 +705,7 @@
   border-top: 1px solid #f1f5f9;
   text-align: center;
 }
+
 .df-locker-timer {
   display: flex;
   align-items: center;
@@ -692,14 +715,17 @@
   color: #64748b;
   margin-bottom: 8px;
 }
+
 .df-locker-timer ion-icon {
   font-size: 14px;
 }
+
 .df-locker-timer .timer-val {
   font-weight: 700;
   color: #ef4444;
   font-variant-numeric: tabular-nums;
 }
+
 .df-locker-trust {
   display: flex;
   align-items: center;
@@ -708,64 +734,68 @@
   font-size: 11px;
   color: #94a3b8;
 }
+
 .df-locker-trust span {
   display: flex;
   align-items: center;
   gap: 3px;
 }
+
 .df-locker-trust ion-icon {
   font-size: 13px;
   color: #10b981;
 }
 
 /* Social proof below card */
+/* Social proof below card - Hidden by user request */
 .df-locker-social {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12.5px;
-  color: #94a3b8;
+  display: none;
 }
+
 .df-locker-social .live-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #10b981;
-  animation: dfLivePulse 2s ease-in-out infinite;
+  background: #34c759;
 }
-@keyframes dfLivePulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
-  }
-}
+
 .df-locker-social strong {
-  color: #fff;
+  color: #1d1d1f;
+  font-weight: 600;
 }
 
 /* Shake animation */
+/* Shake animation - Restored for attention */
 .df-locker-card.shake {
-  animation: dfShake 0.5s ease-in-out;
+  animation: dfShake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
+
 @keyframes dfShake {
+
   0%,
   100% {
     transform: translateX(0);
   }
-  20% {
-    transform: translateX(-6px);
-  }
-  40% {
-    transform: translateX(6px);
-  }
-  60% {
+
+  10%,
+  90% {
     transform: translateX(-4px);
   }
+
+  20%,
   80% {
-    transform: translateX(4px);
+    transform: translateX(6px);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translateX(-8px);
+  }
+
+  40%,
+  60% {
+    transform: translateX(8px);
   }
 }
 
@@ -776,28 +806,35 @@
   display: none;
   text-align: center;
 }
+
 .df-success-state.active {
   display: block;
 }
+
 .df-success-badge {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 14px;
-  background: linear-gradient(135deg, #10b981, #059669);
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  background: #34c759;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: dfSuccessPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: dfSuccessPop 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 20px rgba(52, 199, 89, 0.3);
 }
+
 .df-success-badge ion-icon {
-  font-size: 32px;
+  font-size: 36px;
   color: #fff;
 }
+
 @keyframes dfSuccessPop {
   0% {
-    transform: scale(0);
+    transform: scale(0.5);
+    opacity: 0;
   }
+
   100% {
     transform: scale(1);
   }
@@ -809,11 +846,13 @@
   margin-bottom: 4px;
   color: #0f172a;
 }
+
 .df-success-sub {
   font-size: 13px;
   color: #64748b;
   margin-bottom: 20px;
 }
+
 .df-success-file {
   display: flex;
   align-items: center;
@@ -825,6 +864,7 @@
   margin-bottom: 16px;
   text-align: left;
 }
+
 .df-success-file-icon {
   width: 36px;
   height: 36px;
@@ -835,18 +875,22 @@
   justify-content: center;
   flex-shrink: 0;
 }
+
 .df-success-file-icon ion-icon {
   font-size: 18px;
   color: #fff;
 }
+
 .df-success-file-info {
   flex: 1;
 }
+
 .df-success-file-name {
   font-size: 13.5px;
   font-weight: 600;
   color: #0f172a;
 }
+
 .df-success-file-size {
   font-size: 11.5px;
   color: #64748b;
@@ -872,10 +916,12 @@
     transform 0.15s,
     box-shadow 0.15s;
 }
+
 .df-success-download:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
 }
+
 .df-success-download ion-icon {
   font-size: 20px;
 }
@@ -889,6 +935,7 @@
   justify-content: center;
   gap: 4px;
 }
+
 .df-success-note ion-icon {
   font-size: 13px;
   color: #10b981;
@@ -899,60 +946,66 @@
   display: none;
   text-align: center;
 }
+
 .df-coming-soon.active {
   display: block;
 }
 
 .df-cs-icon {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   margin: 0 auto 16px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border-radius: 16px;
+  background: #007AFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: dfSuccessPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 20px rgba(0, 122, 255, 0.25);
 }
+
 .df-cs-icon ion-icon {
-  font-size: 34px;
+  font-size: 32px;
   color: #fff;
 }
 
 .df-cs-title {
   font-size: 20px;
   font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 4px;
+  color: #1d1d1f;
+  margin-bottom: 8px;
 }
+
 .df-cs-sub {
-  font-size: 13px;
-  color: #64748b;
-  margin-bottom: 20px;
+  font-size: 14px;
+  color: #86868b;
+  margin-bottom: 24px;
   line-height: 1.5;
 }
 
 .df-cs-features {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 24px;
 }
+
 .df-cs-feat {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #f5f5f7;
+  border: 1px solid transparent;
+  border-radius: 12px;
   font-size: 13px;
-  color: #334155;
+  color: #1d1d1f;
   text-align: left;
+  font-weight: 500;
 }
+
 .df-cs-feat ion-icon {
   font-size: 18px;
-  color: #3b82f6;
+  color: #007AFF;
   flex-shrink: 0;
 }
 
@@ -963,10 +1016,10 @@
   gap: 8px;
   width: 100%;
   padding: 14px;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  background: #007AFF;
   color: #fff;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   font-family: inherit;
   border: none;
   border-radius: 12px;
@@ -974,75 +1027,94 @@
   text-decoration: none;
   transition:
     transform 0.15s,
-    box-shadow 0.15s;
+    box-shadow 0.15s,
+    background 0.2s;
 }
+
 .df-cs-signup:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+  background: #006ce6;
+  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.25);
 }
+
 .df-cs-signup ion-icon {
   font-size: 20px;
 }
 
 .df-cs-notify {
-  margin-top: 10px;
+  margin-top: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 5px;
-  font-size: 11.5px;
-  color: #94a3b8;
+  font-size: 12px;
+  color: #86868b;
 }
+
 .df-cs-notify ion-icon {
   font-size: 14px;
-  color: #3b82f6;
+  color: #007AFF;
 }
 
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 480px) {
+
   .df-card,
   .df-verify-card {
     padding: 24px 20px;
   }
+
   .df-locker-card {
     border-radius: 16px;
   }
+
   .df-locker-header {
     padding: 20px 16px 12px;
   }
+
   .df-offers-wrap {
     padding: 0 14px 16px;
   }
+
   .df-locker-footer {
     padding: 10px 14px 14px;
   }
+
   .df-file-icon-inner {
     width: 60px;
     height: 60px;
     border-radius: 14px;
   }
+
   .df-file-icon-inner ion-icon {
     font-size: 28px;
   }
+
   .df-title {
     font-size: 18px;
   }
+
   .df-locker-line {
     width: 28px;
   }
 }
+
 @media (max-width: 360px) {
+
   .df-card,
   .df-verify-card {
     padding: 20px 16px;
   }
+
   .df-verify-btn {
     font-size: 13px;
     padding: 10px;
   }
+
   .df-offer {
     padding: 10px 12px;
   }
+
   .df-offer-icon {
     width: 34px;
     height: 34px;
@@ -1075,33 +1147,7 @@
   color: #10b981;
 }
 
-/* ── Locker Card Dark Theme Override ── */
-.df-locker-card {
-  background: rgba(15, 23, 42, 0.85) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
-  color: #f1f5f9 !important;
-}
-
-.df-locker-header {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-}
-
-.df-locker-header h2 {
-  color: #f1f5f9 !important;
-}
-
-.df-locker-header p {
-  color: #94a3b8 !important;
-}
-
-.df-locker-header p b {
-  color: #f8fafc !important;
-}
+/* Dark overrides removed to respect new Ultra-Clean Minimal White theme */
 
 /* ── Glassmorphism Offer Tile (Copied from signup.css) ── */
 .offer-tile {
@@ -1137,10 +1183,11 @@
 .offer-tile.primary {
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(13, 148, 136, 0.05) 100%);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(16, 185, 129, 0.08);
+  animation: tilePulse 2s infinite;
 }
 
 .offer-tile.primary:hover {
-  transform: translateY(-2px);
+  /* Removed translateY to prevent conflict with pulse scale */
   box-shadow: 0 8px 32px rgba(16, 185, 129, 0.2), 0 0 0 1px rgba(16, 185, 129, 0.15);
 }
 
@@ -1157,11 +1204,20 @@
 }
 
 @keyframes tileSweep {
-  0% { left: -60%; }
-  30% { left: 120%; }
-  100% { left: 120%; }
+  0% {
+    left: -60%;
+  }
+
+  30% {
+    left: 120%;
+  }
+
+  100% {
+    left: 120%;
+  }
 }
 
+/* ... (Icon blocks) ... */
 .tile-icon-block {
   width: 52px;
   min-width: 52px;
@@ -1250,7 +1306,7 @@
 .offer-tile.primary .go-circle {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
-  animation: goPulse 2.5s ease infinite;
+  /* Animation moved to parent .offer-tile.primary */
 }
 
 .go-circle ion-icon {
@@ -1263,7 +1319,19 @@
   transform: translateX(2px);
 }
 
-@keyframes goPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, .25); }
-  50% { box-shadow: 0 0 0 8px rgba(255, 255, 255, 0); }
+@keyframes tilePulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(16, 185, 129, 0.08), 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+
+  70% {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(16, 185, 129, 0.08), 0 0 0 12px rgba(16, 185, 129, 0);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(16, 185, 129, 0.08), 0 0 0 0 rgba(16, 185, 129, 0);
+  }
 }

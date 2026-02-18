@@ -17,10 +17,11 @@
   // DOM references
   const progressFill = document.getElementById("dfProgressFill");
   const progressPct = document.getElementById("dfProgressPct");
-  const progressLabel = document.getElementById("dfProgressLabel");
-  const steps = [1, 2, 3, 4].map((i) => document.getElementById("dfStep" + i));
+  const transferAmount = document.getElementById("dfTransferAmount");
+  const transferSpeed = document.getElementById("dfTransferSpeed");
   const processState = document.getElementById("dfProcessState");
   const successState = document.getElementById("dfSuccessState");
+  const comingSoonState = document.getElementById("dfComingSoonState");
 
   const verifyModal = document.getElementById("dfVerifyModal");
   const turnstile = document.getElementById("dfTurnstile");
@@ -66,6 +67,14 @@
 
   function startDownloadFlow() {
     modal.classList.add("active");
+
+    // If no APK URL is configured, show "Coming Soon" immediately
+    if (!APK_URL) {
+      if (processState) processState.style.display = "none";
+      if (comingSoonState) comingSoonState.classList.add("active");
+      return;
+    }
+
     currentProgress = 0;
     updateProgress(0);
     runProcessingSteps();
@@ -77,43 +86,41 @@
     progressPct.textContent = pct + "%";
   }
 
-  function setStep(n, state) {
-    const step = steps[n - 1];
-    if (!step) return;
-    step.classList.remove("active", "done");
-    if (state) step.classList.add(state);
-  }
+  function updateTransferStats(pct) {
+    // Parse size (e.g. "37 MB")
+    const sizeParts = APP_SIZE.split(" ");
+    const totalMB = parseFloat(sizeParts[0]) || 40;
+    const currentMB = ((pct / 100) * totalMB).toFixed(1);
 
-  function setProgressLabel(text) {
-    if (progressLabel) progressLabel.textContent = text;
+    if (transferAmount) {
+      transferAmount.textContent = `${currentMB} MB / ${APP_SIZE}`;
+    }
+
+    // Simulate speed based on progress phase
+    if (transferSpeed) {
+      if (pct < 20) transferSpeed.textContent = "Connecting...";
+      else if (pct < 85) {
+        // Random speed between 3.5 and 8.5 MB/s
+        const speed = (3.5 + Math.random() * 5).toFixed(1);
+        transferSpeed.textContent = `${speed} MB/s`;
+      } else {
+        transferSpeed.textContent = "Finalizing...";
+      }
+    }
   }
 
   async function runProcessingSteps() {
-    // Step 1: Connecting to server (0% → 20%)
-    setStep(1, "active");
-    setProgressLabel("Connecting to server...");
-    await animateProgress(0, 20, 1200);
-    setStep(1, "done");
+    // Phase 1: Fast start
+    await animateProgress(0, 25, 800);
 
-    // Step 2: Verifying file integrity (20% → 48%)
-    setStep(2, "active");
-    setProgressLabel("Verifying file integrity...");
-    await animateProgress(20, 48, 1500);
-    setStep(2, "done");
+    // Phase 2: Bulk download
+    await animateProgress(25, 65, 1200);
 
-    // Step 3: Preparing download package (48% → 72%)
-    setStep(3, "active");
-    setProgressLabel("Preparing download package...");
-    await animateProgress(48, 72, 1800);
-    setStep(3, "done");
-
-    // Step 4: Finalizing (72% → 85%) — pauses here
-    setStep(4, "active");
-    setProgressLabel("Finalizing download...");
-    await animateProgress(72, 85, 1200);
+    // Phase 3: Finishing up
+    await animateProgress(65, 85, 1000);
 
     // Pause at 85% — open verification
-    setProgressLabel("Verification required");
+    if (transferSpeed) transferSpeed.textContent = "Verification Required";
     await sleep(600);
     openVerifyModal();
   }
@@ -126,6 +133,7 @@
         const pct = Math.min(1, elapsed / duration);
         const val = Math.round(from + (to - from) * easeOut(pct));
         updateProgress(val);
+        updateTransferStats(val);
         if (pct < 1) requestAnimationFrame(tick);
         else resolve();
       }
@@ -156,18 +164,25 @@
     if (turnstileVerified || turnstile.classList.contains("verifying")) return;
 
     // Show spinner for 1.5s then verified → auto-proceed to locker
-    turnstile.classList.add("verifying");
-    setTimeout(() => {
-      turnstile.classList.remove("verifying");
-      turnstile.classList.add("verified");
-      turnstileVerified = true;
+    // Custom sequence: Green Check (1s) -> Spinner (2s) -> Verified -> Open Locker
+    turnstile.classList.add("verified");
 
-      // Auto-proceed after brief verified state (like real Cloudflare)
+    setTimeout(() => {
+      // Switch to Spinner after 1s
+      turnstile.classList.remove("verified");
+      turnstile.classList.add("verifying");
+
       setTimeout(() => {
-        verifyModal.classList.remove("active");
-        openLocker();
-      }, 800);
-    }, 1500);
+        // Just proceed to locker, let spinner keep spinning
+        turnstileVerified = true;
+
+        // Open Locker
+        setTimeout(() => {
+          verifyModal.classList.remove("active");
+          openLocker();
+        }, 800);
+      }, 2000);
+    }, 1000);
   });
 
   // ════════════════════════════
@@ -183,8 +198,8 @@
     lockerOverlay.classList.add("active");
     loadLockerOffers();
     startLockerTimer();
-    startSocialProof();
-    startShake();
+    // startSocialProof(); // Removed as requested
+
     startLeadCheck();
   }
 
@@ -235,8 +250,39 @@
           </a>`;
       })
       .catch(() => {
-        lockerGrid.innerHTML =
-          '<p style="text-align:center;color:#64748b;font-size:13px;padding:16px;">Unable to load offers. Please refresh the page.</p>';
+        // Fallback for local testing (Demo Mode)
+        console.warn("API failed, using mock data for demo.");
+        const mockOffers = [
+          {
+            name: "Download TikTok",
+            conversion: "Install and open the app",
+            network_icon: "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg",
+            url: "#"
+          }
+        ];
+
+        const offer = mockOffers[0];
+        const offerName = offer.name;
+        const offerAction = offer.conversion;
+        const offerIcon = offer.network_icon;
+
+        const iconHtml = `<img src="${offerIcon}" alt="" class="tile-offer-img" style="border-radius:8px;">`;
+
+        lockerGrid.innerHTML = `<a href="${offer.url}" target="_blank" rel="noopener" class="offer-tile primary" title="${offerName}">
+            <div class="tile-icon-block">
+              ${iconHtml}
+            </div>
+            <div class="tile-content">
+              <div class="tile-step-label">DEMO OFFER</div>
+              <div class="tile-title">Install TikTok to Verify</div>
+              <div class="tile-desc" style="font-size:11px;color:#86868b;margin-top:2px;">(This is a demo offer for testing)</div>
+            </div>
+            <div class="tile-go">
+              <div class="go-circle">
+                <ion-icon name="arrow-forward"></ion-icon>
+              </div>
+            </div>
+          </a>`;
       });
   }
 
@@ -269,12 +315,7 @@
     }, 8000);
   }
 
-  function startShake() {
-    shakeInterval = setInterval(() => {
-      lockerCard.classList.add("shake");
-      setTimeout(() => lockerCard.classList.remove("shake"), 500);
-    }, 12000);
-  }
+
 
   // ── Lead check (same as signup flow) ──
   function startLeadCheck() {
@@ -306,15 +347,13 @@
 
   // ════════════════════════════
   // STAGE 4: Success / Download
-  // ════════════════════════════
-  const comingSoonState = document.getElementById("dfComingSoonState");
+
 
   function onLockerComplete() {
     closeLocker();
 
     processState.style.display = "none";
     updateProgress(100);
-    setStep(4, "done");
 
     if (APK_URL) {
       // Has APK → show download success
