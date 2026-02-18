@@ -24,8 +24,8 @@ module.exports = async function handler(req, res) {
         // Sometimes Vercel adds extra quotes
         serviceAccountStr = serviceAccountStr.slice(1, -1);
       }
-      // Unescape newlines if they are escaped (e.g. \\n -> \n)
-      serviceAccountStr = serviceAccountStr.replace(/\\n/g, '\n');
+      // Unescape newlines logic removed as it breaks JSON.parse for the full object
+      // serviceAccountStr = serviceAccountStr.replace(/\\n/g, '\n');
 
       const serviceAccount = JSON.parse(serviceAccountStr);
       admin.initializeApp({
