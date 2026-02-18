@@ -661,8 +661,10 @@ function loadOffers() {
     })
     .catch((error) => {
       console.error("Error loading offers:", error);
-      offersContainer.innerHTML =
-        '<div class="offer-loading">Unable to load offers. Please try again.</div>';
+      if (offersContainer) {
+        offersContainer.innerHTML =
+          '<div class="offer-loading">Unable to load offers. Please try again.</div>';
+      }
     });
 }
 

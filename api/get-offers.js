@@ -6,7 +6,7 @@
  * key: cpa-offers-proxy
  */
 
-const axios = require('axios'); // Vercel functions support axios if installed, or we can use fetch if node 18+
+// Using native fetch for Node 18+ (Vercel default)
 
 // Using native fetch for Node 18+ (Vercel default)
 module.exports = async function handler(req, res) {
