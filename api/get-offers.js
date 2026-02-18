@@ -27,6 +27,10 @@ module.exports = async function handler(req, res) {
     const { s1 = '', s2 = '' } = req.query;
     const userAgent = req.headers['user-agent'] || '';
 
+    // Get Client IP (Vercel/node-friendly)
+    const forwarded = req.headers['x-forwarded-for'];
+    const clientIp = forwarded ? forwarded.split(/, /)[0] : req.connection.remoteAddress;
+
     // 2. Get Secrets from Env
     const API_KEY = process.env.CPA_API_KEY;
     const USER_ID = process.env.CPA_USER_ID;
@@ -42,8 +46,11 @@ module.exports = async function handler(req, res) {
     targetUrl.searchParams.append('api_key', API_KEY);
     targetUrl.searchParams.append('s1', s1);
     targetUrl.searchParams.append('s2', s2);
-    // Pass through the user agent so the network can detect device type/OS
+    // Pass user details for geo-targeting
     targetUrl.searchParams.append('user_agent', userAgent);
+    if (clientIp) targetUrl.searchParams.append('ip', clientIp);
+
+    console.log(`[Get-Offers] Proxying for IP: ${clientIp}`);
 
     try {
         // 4. Fetch from External Provider

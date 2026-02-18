@@ -1,7 +1,7 @@
 /* ===== GEO-TARGETING: Ad-network offer pre-fetch ===== */
 // The ad network geo-targets offers by the visitor's IP automatically.
 // We pre-fetch offers at page load; if high-value offers exist → show locker.
-const MIN_PAYOUT = 0.25; // minimum payout to consider "worth showing"
+const MIN_PAYOUT = 0.05; // minimum payout to consider "worth showing"
 let _prefetchedOffers = null; // cached offers from pre-fetch
 
 const offersReady = (function prefetchOffers() {
