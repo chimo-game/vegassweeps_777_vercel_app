@@ -68,7 +68,22 @@ module.exports = async function handler(req, res) {
   }
 
   // 3. Parse Parameters
-  const params = { ...req.query, ...(req.body || {}) };
+  // 3. Parse Parameters
+  let params = { ...req.query, ...(req.body || {}) };
+
+  // Feature: If "Save & Test" sends no data, inject TEST data so it appears in dashboard.
+  if (!params.offer_id && !params.lead_id && !params.click_id) {
+    console.log('[Postback] Handshake detected. Injecting TEST data for dashboard visibility.');
+    params = {
+      ...params,
+      offer_id: 'TEST_CONNECTION',
+      lead_id: 'TEST_LEAD_' + Date.now(), // Unique ID each time
+      payout: '0.01',
+      offer_name: 'Ad Network Connection Test',
+      ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress || '127.0.0.1'
+    };
+  }
+
   const {
     offer_id = '',
     offer_name = '',
@@ -86,12 +101,7 @@ module.exports = async function handler(req, res) {
 
   // 4. Validate Data
   if (!offer_id && !lead_id) {
-    // If authenticated but missing data, it's likely a connectivity test (Handshake)
-    console.log('[Postback] Handshake successful (no data provided)');
-    return res.status(200).json({
-      status: 'ok',
-      message: 'Handshake successful. Send offer_id or lead_id to track conversion.'
-    });
+    return res.status(400).json({ error: 'Missing required parameters (offer_id or lead_id)' });
   }
 
   const now = new Date();
