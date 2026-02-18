@@ -69,21 +69,7 @@ module.exports = async function handler(req, res) {
 
   // 3. Parse Parameters
   // 3. Parse Parameters
-  let params = { ...req.query, ...(req.body || {}) };
-
-  // Feature: If "Save & Test" sends no data, inject TEST data so it appears in dashboard.
-  if (!params.offer_id && !params.lead_id && !params.click_id) {
-    console.log('[Postback] Handshake detected. Injecting TEST data for dashboard visibility.');
-    params = {
-      ...params,
-      offer_id: 'TEST_CONNECTION',
-      lead_id: 'TEST_LEAD_' + Date.now(), // Unique ID each time
-      payout: '0.01',
-      offer_name: 'Ad Network Connection Test',
-      ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress || '127.0.0.1'
-    };
-  }
-
+  const params = { ...req.query, ...(req.body || {}) };
   const {
     offer_id = '',
     offer_name = '',
