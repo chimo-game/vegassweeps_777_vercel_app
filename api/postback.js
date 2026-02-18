@@ -86,7 +86,12 @@ module.exports = async function handler(req, res) {
 
   // 4. Validate Data
   if (!offer_id && !lead_id) {
-    return res.status(400).json({ error: 'Missing required parameters (offer_id or lead_id)' });
+    // If authenticated but missing data, it's likely a connectivity test (Handshake)
+    console.log('[Postback] Handshake successful (no data provided)');
+    return res.status(200).json({
+      status: 'ok',
+      message: 'Handshake successful. Send offer_id or lead_id to track conversion.'
+    });
   }
 
   const now = new Date();
