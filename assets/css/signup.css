@@ -3047,12 +3047,13 @@ label {
   width: 100%;
   position: relative;
   overflow: hidden;
+  animation: tilePulse 2s infinite;
 }
 
 .app-store-card:hover {
   background: rgba(30, 41, 59, 0.9);
   border-color: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+  /* Removed translateY to prevent conflict with pulse scale */
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
