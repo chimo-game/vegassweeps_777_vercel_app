@@ -10,25 +10,39 @@
 
 const admin = require('firebase-admin');
 
-// Initialize Firebase Admin (singleton pattern)
-if (!admin.apps.length) {
-  try {
-    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+module.exports = async function handler(req, res) {
+  // 0. Initialize Firebase (Lazy Load)
+  // We do this inside the handler to catch config errors gracefully instead of crashing the function
+  if (!admin.apps.length) {
+    try {
+      if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
+        throw new Error('Missing FIREBASE_SERVICE_ACCOUNT env var');
+      }
+      // Handle potential newline issues in Vercel env vars
+      let serviceAccountStr = process.env.FIREBASE_SERVICE_ACCOUNT;
+      if (serviceAccountStr.startsWith('"') && serviceAccountStr.endsWith('"')) {
+        // Sometimes Vercel adds extra quotes
+        serviceAccountStr = serviceAccountStr.slice(1, -1);
+      }
+      // Unescape newlines if they are escaped (e.g. \\n -> \n)
+      serviceAccountStr = serviceAccountStr.replace(/\\n/g, '\n');
+
+      const serviceAccount = JSON.parse(serviceAccountStr);
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount)
       });
-    } else {
-      console.error('[Postback] Missing FIREBASE_SERVICE_ACCOUNT environment variable.');
+    } catch (error) {
+      console.error('[Postback] Firebase Init Error:', error.message);
+      return res.status(500).json({
+        error: 'Firebase Configuration Error',
+        details: error.message
+      });
     }
-  } catch (error) {
-    console.error('[Postback] Firebase initialization error:', error);
   }
-}
 
-const db = admin.firestore();
+  const db = admin.firestore();
 
-module.exports = async function handler(req, res) {
+  // 1. Security Check: Validate Request Method
   // 1. Security Check: Validate Request Method
   if (req.method !== 'GET' && req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
