@@ -1628,7 +1628,7 @@ label {
   }
 
   .asc-title {
-    font-size: 13px !important;
+    font-size: 11px !important;
     text-transform: uppercase !important;
     /* Slightly smaller for mobile fit */
   }
