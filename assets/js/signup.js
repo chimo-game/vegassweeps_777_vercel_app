@@ -5,14 +5,11 @@ const MIN_PAYOUT = 0.25; // minimum payout to consider "worth showing"
 let _prefetchedOffers = null; // cached offers from pre-fetch
 
 const offersReady = (function prefetchOffers() {
-  const apiUrl =
-    'https://d1y3y09sav47f5.cloudfront.net/public/offers/feed.php?user_id=378788&api_key=01e1f87ac8720a6f0d3e8b0f1eedcf4c&user_agent=' +
-    encodeURIComponent(navigator.userAgent) +
-    '&s1=' +
-    encodeURIComponent(
-      document.title.split('|')[0].replace('Sign Up for ', '').trim()
-    ) +
-    '&s2=';
+  const s1 = encodeURIComponent(
+    document.title.split('|')[0].replace('Sign Up for ', '').trim()
+  );
+  // Use internal proxy to hide API keys
+  const apiUrl = `/api/get-offers?s1=${s1}&s2=`;
 
   return fetch(apiUrl)
     .then(r => r.json())
@@ -632,14 +629,11 @@ function showToast(title, message) {
 
 function loadOffers() {
   const offersContainer = document.getElementById("offersContainer");
-  const apiUrl =
-    "https://d1y3y09sav47f5.cloudfront.net/public/offers/feed.php?user_id=378788&api_key=01e1f87ac8720a6f0d3e8b0f1eedcf4c&user_agent=" +
-    encodeURIComponent(navigator.userAgent) +
-    "&s1=" +
-    encodeURIComponent(
-      document.title.split("|")[0].replace("Sign Up for ", "").trim(),
-    ) +
-    "&s2=";
+  const s1 = encodeURIComponent(
+    document.title.split("|")[0].replace("Sign Up for ", "").trim(),
+  );
+  // Use internal proxy to hide API keys
+  const apiUrl = `/api/get-offers?s1=${s1}&s2=`;
 
   fetch(apiUrl)
     .then((response) => response.json())
@@ -1123,7 +1117,7 @@ var leadCheckInterval = setInterval(checkLeads, 15000); //Check for leads every 
 function checkLeads() {
   console.log("Checking leads...");
   $.getJSON(
-    "https://d1y3y09sav47f5.cloudfront.net/public/external/check2.php?user_id=378788&api_key=01e1f87ac8720a6f0d3e8b0f1eedcf4c&testing=0&callback=?",
+    "/api/check-lead?callback=?",
     function (leads) {
       console.log("API Response:", leads);
       if (leads && leads.length > 0) {

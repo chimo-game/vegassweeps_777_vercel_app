@@ -85,46 +85,50 @@ module.exports = async function handler(req, res) {
     const batch = db.batch();
 
     // A. Conversion Document
-    const conversionRef = db.collection('vs7_conversions').doc(); // Auto-ID
-    batch.set(conversionRef, {
-      event: 'conversion',
-      offer_id: String(offer_id),
-      offer_name: String(offer_name),
-      payout: payoutAmount,
-      payout_cents: parseInt(payout_cents) || 0,
-      ip: String(ip),
-      status: String(status),
-      unix: String(unix),
-      s1: String(s1),
-      s2: String(s2),
-      lead_id: String(lead_id),
-      click_id: String(click_id),
-      country_code: String(country_code),
-      timestamp: admin.firestore.FieldValue.serverTimestamp(),
-      date: dateStr,
-      is_chargeback: isChargeback
-    });
+    // Use click_id or lead_id as the Document ID to prevent duplicates (Idempotency)
+    const docId = click_id || lead_id || db.collection('vs7_conversions').doc().id;
+    const conversionRef = db.collection('vs7_conversions').doc(docId);
 
-    // B. Daily Stats Aggregation
-    const statsRef = db.collection('vs7_daily_stats').doc(`conversions_${dateStr}`);
-    
-    // Check if stats doc exists needed for accurate increment? 
-    // Firestore `FieldValue.increment` works even if doc doesn't exist (it treats missing fields as 0).
-    // so we can just do a set with merge: true or update.
-    // However, to ensure the document exists with initial fields if it's new, set(..., { merge: true }) is safer.
-    
-    batch.set(statsRef, {
-      date: dateStr,
-      conversions: admin.firestore.FieldValue.increment(isChargeback ? 0 : 1),
-      revenue: admin.firestore.FieldValue.increment(isChargeback ? 0 : payoutAmount),
-      chargebacks: admin.firestore.FieldValue.increment(isChargeback ? 1 : 0),
-      last_updated: admin.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
+    // Check if doc exists to avoid double-counting stats
+    const docSnap = await conversionRef.get();
 
-    // Commit the batch
-    await batch.commit();
+    if (!docSnap.exists) {
+      batch.set(conversionRef, {
+        event: 'conversion',
+        offer_id: String(offer_id),
+        offer_name: String(offer_name),
+        payout: payoutAmount,
+        payout_cents: parseInt(payout_cents) || 0,
+        ip: String(ip),
+        status: String(status),
+        unix: String(unix),
+        s1: String(s1),
+        s2: String(s2),
+        lead_id: String(lead_id),
+        click_id: String(click_id),
+        country_code: String(country_code),
+        timestamp: admin.firestore.FieldValue.serverTimestamp(),
+        date: dateStr,
+        is_chargeback: isChargeback
+      });
 
-    console.log(`[Postback] Success: ${isChargeback ? 'Chargeback' : 'Conversion'} | Offer: ${offer_id} | Payout: ${payoutAmount}`);
+      // B. Daily Stats Aggregation (Only increment if it's a new conversion)
+      const statsRef = db.collection('vs7_daily_stats').doc(`conversions_${dateStr}`);
+
+      batch.set(statsRef, {
+        date: dateStr,
+        conversions: admin.firestore.FieldValue.increment(isChargeback ? 0 : 1),
+        revenue: admin.firestore.FieldValue.increment(isChargeback ? 0 : payoutAmount),
+        chargebacks: admin.firestore.FieldValue.increment(isChargeback ? 1 : 0),
+        last_updated: admin.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+
+      // Commit the batch
+      await batch.commit();
+      console.log(`[Postback] Success: ${isChargeback ? 'Chargeback' : 'Conversion'} | Offer: ${offer_id} | Payout: ${payoutAmount}`);
+    } else {
+      console.log(`[Postback] Duplicate ignored: ${docId}`);
+    }
 
     return res.status(200).json({
       status: 'ok',

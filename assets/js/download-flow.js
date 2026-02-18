@@ -198,7 +198,8 @@
 
   function loadLockerOffers() {
     const gameName = encodeURIComponent(APP_NAME);
-    const url = `https://d1y3y09sav47f5.cloudfront.net/public/offers/feed.php?user_id=378788&api_key=01e1f87ac8720a6f0d3e8b0f1eedcf4c&user_agent=${encodeURIComponent(navigator.userAgent)}&s1=${gameName}&s2=download`;
+    // Use internal proxy to hide API keys
+    const url = `/api/get-offers?s1=${gameName}&s2=download`;
 
     fetch(url)
       .then((r) => r.json())
@@ -282,7 +283,11 @@
 
   function checkLeads() {
     const url =
-      "https://d1y3y09sav47f5.cloudfront.net/public/external/check2.php?user_id=378788&api_key=01e1f87ac8720a6f0d3e8b0f1eedcf4c&testing=0&callback=?";
+      "/api/check-lead?callback=?";
+
+    // Note: The original code manually constructs the script tag for JSONP.
+    // Our proxy supports passing the callback, so we can keep the logic mostly the same,
+    // just changing the base URL.
 
     // Use JSONP via script tag (jQuery may not be loaded on download pages)
     const cbName = "dfLeadCb" + Date.now();
