@@ -3107,9 +3107,9 @@ label {
   background: #2563eb;
   /* App Store Blue */
   color: #fff;
-  font-size: 13px;
+  font-size: 9px !important;
   font-weight: 700;
-  padding: 6px 18px;
+  padding: 6px 14px;
   border-radius: 20px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
