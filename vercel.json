@@ -74,6 +74,11 @@
       "source": "/:path*.php",
       "destination": "/",
       "statusCode": 301
+    },
+    {
+      "source": "/blog/vegas-sweeps-777-login-signup-guide.html",
+      "destination": "/blog/vegas-sweeps-777-login-sign-up-guide-10-dollar-free-play.html",
+      "statusCode": 301
     }
   ],
   "rewrites": [

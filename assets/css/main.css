@@ -32,18 +32,23 @@
 :root {
   --bg: #0a0e1a;
   --surface: #111827;
-  --surface-2: #1e293b;
-  --border: rgba(255, 255, 255, 0.08);
-  --text: #f1f5f9;
+  --surface-2: #1a2236;
+  /* Updated to match download-page.css */
+  --border: #1e293b;
+  /* Updated to solid color for cleaner borders */
+  --text: #e2e8f0;
+  /* Updated to slightly softer white */
   --text-muted: #94a3b8;
-  --primary: #2563eb;
-  --primary-light: #3b82f6;
+  --primary: #3b82f6;
+  --primary-light: #60a5fa;
   --success: #10b981;
   --success-light: #34d399;
-  --gold: #f59e0b;
-  --gold-light: #fbbf24;
+  --gold: #facc15;
+  /* Updated to brighter gold */
+  --gold-light: #fde047;
   --radius: 16px;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  /* Cleaner shadow */
 }
 
 html {
@@ -314,22 +319,26 @@ li {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(37, 99, 235, 0.12);
-  border: 1px solid rgba(37, 99, 235, 0.25);
+  background: rgba(37, 99, 235, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(59, 130, 246, 0.3);
   color: var(--primary-light);
-  padding: 5px 14px;
+  padding: 6px 14px;
   border-radius: 100px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
 }
 
 .hero h1 {
-  font-size: clamp(28px, 4.5vw, 44px);
-  font-weight: 800;
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700;
   line-height: 1.1;
-  letter-spacing: -1.2px;
-  margin-bottom: 10px;
+  letter-spacing: -1.0px;
+  margin-bottom: 16px;
+  color: var(--text);
 }
 
 .hero .gradient {
@@ -517,16 +526,16 @@ li {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   text-decoration: none;
   color: inherit;
 }
 
 .game-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  border-color: var(--primary);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
 }
 
 .gc-banner {
@@ -540,29 +549,35 @@ li {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .game-card:hover .gc-banner img {
-  transform: scale(1.06);
+  transform: scale(1.08);
 }
 
 .gc-badge {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: linear-gradient(135deg, var(--gold), #f97316);
-  color: #000;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
   font-size: 11px;
   font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 6px;
+  padding: 4px 10px;
+  border-radius: 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Specific badge colors via modifier classes if needed, for now standardizing */
+
 .gc-body {
-  padding: 14px 16px 18px;
+  padding: 16px;
 }
 
 .gc-top {
@@ -578,12 +593,16 @@ li {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--text);
 }
 
 .gc-bonus {
   font-size: 13px;
   font-weight: 700;
-  color: var(--success);
+  color: var(--success-light);
+  background: rgba(16, 185, 129, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
   white-space: nowrap;
 }
 
@@ -591,8 +610,8 @@ li {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
-  font-size: 12px;
+  margin-bottom: 16px;
+  font-size: 12.5px;
   color: var(--text-muted);
 }
 
@@ -604,6 +623,12 @@ li {
 
 .gc-meta ion-icon {
   font-size: 14px;
+  color: var(--primary);
+  /* Accent icon color */
+}
+
+.gc-meta ion-icon[name="star"] {
+  color: var(--gold);
 }
 
 .gc-cta {
@@ -611,38 +636,54 @@ li {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 16px;
-  background: linear-gradient(135deg, var(--primary), #1d4ed8);
+  padding: 12px 16px;
+  background: linear-gradient(135deg, var(--primary), #2563eb);
   color: white;
-  border-radius: 10px;
-  font-size: 13px;
+  border-radius: 12px;
+  font-size: 14px;
   font-weight: 700;
   transition: all 0.2s ease;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
   font-family: inherit;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .gc-cta:hover {
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
 }
 
 .gc-cta ion-icon {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 /* Featured card */
 .game-card.featured {
-  border-color: rgba(245, 158, 11, 0.25);
+  border-color: rgba(250, 204, 21, 0.3);
+  box-shadow: 0 10px 40px -10px rgba(250, 204, 21, 0.15);
+}
+
+.game-card.featured:hover {
+  border-color: var(--gold);
+  box-shadow: 0 20px 50px -10px rgba(250, 204, 21, 0.25);
+}
+
+.game-card.featured .gc-badge {
+  background: linear-gradient(135deg, var(--gold), #eab308);
+  color: #000;
+  border: none;
+  text-shadow: none;
 }
 
 .game-card.featured .gc-cta {
   background: linear-gradient(135deg, var(--success), #059669);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
 }
 
 .game-card.featured .gc-cta:hover {
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
 }
 
 /* Show All Games Toggle */
@@ -984,30 +1025,32 @@ li {
 .hero-cta {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .btn-hero-primary {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 12px 26px;
-  background: linear-gradient(135deg, var(--success), #059669);
+  gap: 8px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--primary), #2563eb);
   color: white;
-  border-radius: 10px;
+  border-radius: 50px;
+  /* Pill shape for hero */
   font-size: 15px;
   font-weight: 700;
   font-family: inherit;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .btn-hero-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
 }
 
 .btn-hero-primary ion-icon {
@@ -1017,12 +1060,15 @@ li {
 .btn-hero-secondary {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 12px 22px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  gap: 8px;
+  padding: 14px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--text);
-  border-radius: 10px;
+  border-radius: 50px;
+  /* Pill shape for hero */
   font-size: 15px;
   font-weight: 600;
   font-family: inherit;
@@ -1031,6 +1077,7 @@ li {
 }
 
 .btn-hero-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
