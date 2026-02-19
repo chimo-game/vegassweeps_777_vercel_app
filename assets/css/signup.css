@@ -350,6 +350,26 @@ label {
   padding-left: 4px;
 }
 
+.center-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: var(--primary-2);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.center-label ion-icon {
+  font-size: 16px;
+  color: #ffd700;
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4));
+  animation: giftPulse 2s infinite;
+}
+
 .input-capsule {
   position: relative;
   display: flex;
@@ -684,57 +704,72 @@ label {
   display: none;
 }
 
+/* ── Redesigned Coupon Area ── */
 .coupon-area {
   position: relative;
-  height: 56px;
+  height: 64px;
   perspective: 1000px;
   margin-bottom: 4px;
+  margin-top: 4px;
 }
 
 .modern-coupon-wrapper {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.03);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 4px;
-  transition: all 0.25s ease;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 6px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   height: 100%;
   position: absolute;
   width: 100%;
   z-index: 2;
   backface-visibility: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .modern-coupon-wrapper:focus-within {
   border-color: var(--primary);
-  background: rgba(59, 130, 246, 0.05);
+  background: rgba(15, 23, 42, 0.8);
+  box-shadow:
+    0 0 0 4px rgba(59, 130, 246, 0.15),
+    inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .modern-coupon-wrapper.shake {
   animation: shake 0.4s ease-in-out;
   border-color: var(--danger);
-  border-style: solid;
 }
 
 .coupon-icon-box {
-  padding: 0 14px;
-  color: var(--muted);
-  font-size: 20px;
+  width: 44px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 20px;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  height: 60%;
+}
+
+.modern-coupon-wrapper:focus-within .coupon-icon-box {
+  color: var(--primary);
+  border-right-color: rgba(59, 130, 246, 0.2);
 }
 
 .coupon-input {
   flex: 1;
   border: none;
   background: transparent;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--text);
+  color: #fff;
   text-transform: uppercase;
   outline: none;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
+  padding: 0 16px;
+  font-family: 'Outfit', sans-serif;
 }
 
 .coupon-input::placeholder {
@@ -742,65 +777,57 @@ label {
   letter-spacing: normal;
   font-weight: 500;
   color: rgba(148, 163, 184, 0.4);
+  font-size: 14px;
 }
 
 .modern-apply-btn {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--muted);
-  border: none;
-  padding: 0 20px;
-  height: 44px;
-  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0 24px;
+  height: 48px;
+  border-radius: 12px;
   font-weight: 700;
   font-size: 13px;
   cursor: not-allowed;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 80px;
   position: relative;
   overflow: hidden;
+  letter-spacing: 0.5px;
 }
 
 .modern-apply-btn.is-ready {
-  background: linear-gradient(180deg, var(--primary-2), var(--primary));
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
   color: #fff;
+  border: none;
   cursor: pointer;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.2),
-    0 2px 4px -1px rgba(0, 0, 0, 0.1);
-}
-
-.modern-apply-btn.is-ready::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 45%;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
-  border-radius: 999px 999px 40px 40px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .modern-apply-btn.is-ready:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
 }
 
 .modern-apply-btn.is-ready:active {
   transform: translateY(1px);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
 }
 
 .btn-loader {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-top: 2px solid white;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   display: none;
 }
+
 
 .modern-apply-btn.loading .btn-text {
   display: none;
@@ -814,13 +841,16 @@ label {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #ffd700, #fdb931);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 16px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0 20px;
-  color: #8a6d3b;
+  color: #ffd700;
   z-index: 1;
   transform: rotateX(-90deg);
   transform-origin: top;
@@ -828,6 +858,8 @@ label {
   opacity: 0;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(253, 185, 49, 0);
+  position: relative;
+  /* Ensure relative positioning for absolute children */
 }
 
 .success-ticket.active {
@@ -835,8 +867,10 @@ label {
   opacity: 1;
   z-index: 3;
   box-shadow:
-    0 4px 20px rgba(253, 185, 49, 0.4),
-    0 0 30px rgba(255, 215, 0, 0.15);
+    0 4px 20px rgba(253, 185, 49, 0.15),
+    0 0 30px rgba(255, 215, 0, 0.1),
+    inset 0 0 20px rgba(255, 215, 0, 0.05);
+  border-color: rgba(255, 215, 0, 0.6);
 }
 
 .ticket-shimmer {
@@ -847,7 +881,7 @@ label {
   height: 100%;
   background: linear-gradient(90deg,
       transparent,
-      rgba(255, 255, 255, 0.4),
+      rgba(255, 215, 0, 0.2),
       transparent);
   z-index: 4;
   pointer-events: none;
@@ -870,50 +904,196 @@ label {
 .ticket-left {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  /* Text above icon */
+}
+
+/* Floating Icon Animation */
+/* Dual Floating Icons */
+.ticket-icon-left,
+.ticket-icon-right {
+  position: absolute;
+  top: 50%;
+  width: 50px;
+  height: 50px;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 2;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+.ticket-icon-left {
+  left: -10px;
+  animation: floatLeft 5s ease-in-out infinite;
+}
+
+.ticket-icon-right {
+  right: -10px;
+  animation: floatRight 6s ease-in-out infinite 0.5s;
+}
+
+.ticket-icon-left img,
+.ticket-icon-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@keyframes floatLeft {
+
+  0%,
+  100% {
+    transform: translateY(-50%) rotate(-15deg);
+  }
+
+  50% {
+    transform: translateY(-65%) rotate(-5deg);
+  }
+}
+
+@keyframes floatRight {
+
+  0%,
+  100% {
+    transform: translateY(-50%) rotate(15deg);
+  }
+
+  50% {
+    transform: translateY(-35%) rotate(25deg);
+  }
+}
+
+/* Particle Background */
+.ticket-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+.ticket-particles span {
+  position: absolute;
+  bottom: -10px;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 215, 0, 0.4);
+  border-radius: 50%;
+  animation: particleRise 6s infinite linear;
+  opacity: 0;
+}
+
+.ticket-particles span:nth-child(1) {
+  left: 10%;
+  animation-duration: 4s;
+  animation-delay: 0s;
+}
+
+.ticket-particles span:nth-child(2) {
+  left: 30%;
+  animation-duration: 7s;
+  animation-delay: 1s;
+  width: 4px;
+  height: 4px;
+}
+
+.ticket-particles span:nth-child(3) {
+  left: 50%;
+  animation-duration: 5s;
+  animation-delay: 2s;
+}
+
+.ticket-particles span:nth-child(4) {
+  left: 70%;
+  animation-duration: 6s;
+  animation-delay: 0.5s;
+  width: 3px;
+  height: 3px;
+}
+
+.ticket-particles span:nth-child(5) {
+  left: 90%;
+  animation-duration: 4.5s;
+  animation-delay: 3s;
+}
+
+.ticket-particles span:nth-child(6) {
+  left: 20%;
+  animation-duration: 5.5s;
+  animation-delay: 1.5s;
+}
+
+.ticket-particles span:nth-child(7) {
+  left: 60%;
+  animation-duration: 6.5s;
+  animation-delay: 2.5s;
+  width: 5px;
+  height: 5px;
+}
+
+.ticket-particles span:nth-child(8) {
+  left: 80%;
+  animation-duration: 4.8s;
+  animation-delay: 0.2s;
+}
+
+@keyframes particleRise {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateY(-120px) scale(0);
+    opacity: 0;
+  }
+}
+
+.ticket-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
 }
 
 .ticket-amount {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 900;
-  color: #5c4015;
+  background: linear-gradient(180deg, #fff, #ffd700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   line-height: 1;
+  margin-bottom: 2px;
 }
 
 .ticket-label {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  opacity: 0.8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.ticket-right {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 700;
-  font-size: 14px;
-  background: rgba(255, 255, 255, 0.3);
-  padding: 6px 12px;
-  border-radius: 20px;
-}
 
-.ticket-punch-top,
-.ticket-punch-bottom {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  background: var(--bg);
-  border-radius: 50%;
-  left: 70%;
-}
 
-.ticket-punch-top {
-  top: -8px;
-}
 
-.ticket-punch-bottom {
-  bottom: -8px;
-}
 
 .modern-coupon-wrapper.folded {
   transform: rotateX(90deg);

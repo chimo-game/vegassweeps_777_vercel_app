@@ -740,7 +740,7 @@ def generate_page(game_name, game_slug, image_url):
         </div>
 
         <div class="field" id="f-coupon">
-            <label>Welcome Bonus</label>
+            <label>Welcome Bonus $10 Free</label>
             
             <div class="coupon-area">
                 <div class="modern-coupon-wrapper" id="couponInputWrapper">
