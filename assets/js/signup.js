@@ -41,9 +41,9 @@ const email = document.getElementById("email");
 
 const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirmPassword");
-const coupon = document.getElementById("coupon");
-const btnApply = document.getElementById("btnApply");
-const wrapper = document.getElementById("couponInputWrapper");
+// const coupon = document.getElementById("coupon"); // Removed
+// const btnApply = document.getElementById("btnApply"); // Removed
+// const wrapper = document.getElementById("couponInputWrapper"); // Removed
 const successTicket = document.getElementById("successTicket");
 
 const modal = document.getElementById("processModal");
@@ -94,7 +94,8 @@ function updateProgress() {
   if (validEmail(email.value)) score += 20;
   if (validPassword(password.value)) score += 15;
   if (confirmPassword.value && confirmPassword.value === password.value) score += 10;
-  if (successTicket && successTicket.classList.contains("active")) score += 10;
+  // Ticket is always active now
+  score += 10;
 
   score = Math.min(100, score);
   progressFill.style.width = score + "%";
@@ -285,97 +286,7 @@ document.querySelectorAll('.password-toggle').forEach(icon => {
 });
 
 
-// Coupon code handlers
-coupon.addEventListener("input", function () {
-  this.value = this.value.toUpperCase();
-  if (this.value.trim().length > 0) {
-    btnApply.classList.add("is-ready");
-    btnApply.disabled = false;
-    wrapper.classList.remove("shake");
-    cHint.innerHTML = "Recommended: <b>CLAIM10</b>";
-    cHint.style.color = "var(--muted)";
-  } else {
-    btnApply.classList.remove("is-ready");
-    btnApply.disabled = true;
-  }
-});
-
-btnApply.addEventListener("click", function () {
-  const val = coupon.value.trim();
-  btnApply.classList.add("loading");
-
-  setTimeout(() => {
-    btnApply.classList.remove("loading");
-    const ok = ["CLAIM10", "FREEPLAY", "BONUS"].includes(val);
-    if (ok) {
-      triggerSuccess();
-    } else {
-      triggerError();
-    }
-  }, 800); // Faster feedback
-});
-
-function triggerSuccess(silent = false) {
-  // Track coupon applied
-  if (window.VS7Tracker)
-    window.VS7Tracker.trackCouponApplied(coupon.value.trim());
-
-  // Fold the coupon input away
-  wrapper.classList.add("folded");
-  // Flip the golden ticket in
-  successTicket.classList.add("active");
-
-  // Hide promo banner
-  const promoBanner = document.getElementById("promoBanner");
-  if (promoBanner) promoBanner.classList.add("hidden");
-
-  cHint.textContent =
-    "Promo locked in! Your bonus will be added automatically.";
-  cHint.style.color = "var(--success)";
-
-  // Play reward sound only if not silent
-  if (!silent) {
-    const successSound = document.getElementById("successSound");
-    if (successSound) {
-      successSound.currentTime = 0;
-      successSound.play().catch(() => { });
-    }
-
-    // Confetti only if not silent (user interaction)
-    const rect = successTicket.getBoundingClientRect();
-    const x = (rect.left + rect.width / 2) / window.innerWidth;
-    const y = (rect.top + rect.height / 2) / window.innerHeight;
-
-    confetti({
-      particleCount: 60,
-      spread: 70,
-      origin: { x: x, y: y },
-      colors: ["#FFD700", "#FDB931", "#FFFFFF"],
-      zIndex: 10005,
-    });
-  }
-
-  updateProgress();
-}
-
-// Auto-apply coupon on load for better conversion (SILENTLY)
-document.addEventListener("DOMContentLoaded", () => {
-  if (!coupon.value) {
-    coupon.value = "CLAIM10";
-    // Trigger success state immediately without sound or animation delay
-    triggerSuccess(true);
-  }
-});
-
-function triggerError() {
-  wrapper.classList.add("shake");
-  cHint.textContent = "Invalid code. Try CLAIM10.";
-  cHint.style.color = "var(--danger)";
-
-  setTimeout(() => {
-    wrapper.classList.remove("shake");
-  }, 400);
-}
+/* Coupon handlers removed */
 
 
 document.getElementById("regForm").addEventListener("submit", (e) => {
@@ -424,11 +335,11 @@ document.getElementById("regForm").addEventListener("submit", (e) => {
     return;
   }
 
-  const hasCoupon = successTicket && successTicket.classList.contains("active");
+  const hasCoupon = true; // Always true now
 
   // Show/hide bonus-related success state items
   const bonusDetail = document.getElementById("bonusDetailItem");
-  if (bonusDetail) bonusDetail.style.display = hasCoupon ? "" : "none";
+  if (bonusDetail) bonusDetail.style.display = "";
 
   // Track processing started
   if (window.VS7Tracker) window.VS7Tracker.trackProcessingStarted();

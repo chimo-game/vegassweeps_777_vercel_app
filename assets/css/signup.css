@@ -705,13 +705,6 @@ label {
 }
 
 /* ── Redesigned Coupon Area ── */
-.coupon-area {
-  position: relative;
-  height: 64px;
-  perspective: 1000px;
-  margin-bottom: 4px;
-  margin-top: 4px;
-}
 
 .modern-coupon-wrapper {
   display: flex;
@@ -838,9 +831,11 @@ label {
 }
 
 .success-ticket {
-  position: absolute;
+  position: relative;
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: 70px;
+  /* Reduced from 140px */
   background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
   border: 1px solid rgba(255, 215, 0, 0.3);
   backdrop-filter: blur(10px);
@@ -849,17 +844,16 @@ label {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 20px;
+  padding: 15px;
+  /* Reduced from 20px */
   color: #ffd700;
   z-index: 1;
-  transform: rotateX(-90deg);
-  transform-origin: top;
-  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  opacity: 0;
+  /* Visible by default */
+  transform: none;
+  opacity: 1;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(253, 185, 49, 0);
   position: relative;
-  /* Ensure relative positioning for absolute children */
 }
 
 .success-ticket.active {
@@ -1073,7 +1067,7 @@ label {
 }
 
 .ticket-amount {
-  font-size: 32px;
+  font-size: 50px;
   font-weight: 900;
   background: linear-gradient(180deg, #fff, #ffd700);
   -webkit-background-clip: text;
@@ -1949,9 +1943,6 @@ label {
     font-size: 10.5px;
   }
 
-  .coupon-area {
-    height: 50px;
-  }
 
   .coupon-icon-box {
     padding: 0 10px;
@@ -1971,7 +1962,7 @@ label {
   }
 
   .ticket-amount {
-    font-size: 20px;
+    font-size: 40px;
   }
 
   .ticket-right {
@@ -2192,9 +2183,6 @@ label {
     height: 14px;
   }
 
-  .coupon-area {
-    height: 46px;
-  }
 
   .modern-apply-btn {
     padding: 0 10px;
