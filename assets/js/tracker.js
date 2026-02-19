@@ -20,6 +20,7 @@
     storageBucket: "vegassweeps-analytics.firebasestorage.app",
     messagingSenderId: "760086690909",
     appId: "1:760086690909:web:fb462a71c84c88ee8321b4",
+    measurementId: "G-WZFJ4NCSLM"
   };
 
   /* ==========================================================
@@ -150,7 +151,7 @@
       try {
         geo = JSON.parse(cached);
         return;
-      } catch (e) {}
+      } catch (e) { }
     }
 
     try {
@@ -276,7 +277,7 @@
         },
         { merge: true },
       )
-      .catch((e) => {});
+      .catch((e) => { });
   }
 
   // Time on page (fires on unload)
@@ -341,7 +342,7 @@
           },
           { merge: true },
         )
-        .catch((e) => {});
+        .catch((e) => { });
     }
   }
 
@@ -363,7 +364,7 @@
         },
         { merge: true },
       )
-      .catch((e) => {});
+      .catch((e) => { });
   }
 
   /* ==========================================================
