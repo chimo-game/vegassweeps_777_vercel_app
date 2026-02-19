@@ -757,7 +757,7 @@ def generate_page(game_name, game_slug, image_url):
                 <div class="success-ticket" id="successTicket">
                     <div class="ticket-left">
                         <div class="ticket-amount">$10</div>
-                        <div class="ticket-label">BONUS ACTIVE</div>
+                        <div class="ticket-label">BONUS FREE</div>
                     </div>
                     <div class="ticket-right">
                         <ion-icon name="checkmark-circle"></ion-icon>
