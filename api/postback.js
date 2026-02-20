@@ -90,6 +90,30 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Missing required parameters (offer_id or lead_id)' });
   }
 
+  // 4.5 POSTBACK ROUTING LOGIC
+  // If the s2 parameter indicates this traffic came from gamevault777io-signup,
+  // forward the request to the new Next.js Vercel instance.
+  if (s2 === 'signup_us_uk_hicpm' || s2 === 'gamevault777') {
+    try {
+      console.log(`[Router] Forwarding postback to GameVault777 for s1: ${s1}`);
+      // Build forwarding URL, ensuring we pass the critical s1 tracking ID and status
+      const forwardUrl = `https://gamevault777-io-signup.vercel.app/api/webhooks/postback?s1=${encodeURIComponent(s1)}&status=${encodeURIComponent(status)}&payout=${encodeURIComponent(payout)}`;
+
+      const vRes = await fetch(forwardUrl);
+      if (vRes.ok) {
+        console.log(`[Router] Successfully forwarded to GameVault777`);
+      } else {
+        console.error(`[Router] GameVault777 returned error: ${vRes.status}`);
+      }
+
+      // Stop execution for the VegasSweeps app. We still return 200 to CPABuild so they mark it delivered.
+      return res.status(200).json({ status: 'forwarded', target: 'gamevault777' });
+    } catch (routeErr) {
+      console.error(`[Router] Failed to forward request:`, routeErr);
+      return res.status(200).json({ status: 'forward_failed', detail: routeErr.message });
+    }
+  }
+
   const now = new Date();
   const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
   const isChargeback = String(status) === '0';
