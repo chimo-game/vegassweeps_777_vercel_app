@@ -67,7 +67,7 @@ function updateCtaBtn() {
     const textEl = document.getElementById('ctaBtnText');
     const iconEl = document.getElementById('ctaBtnIcon');
     if (isCouponValid) {
-        textEl.textContent = 'Create & Claim $15 Bonus';
+        textEl.textContent = 'Create & Claim $10 Bonus';
         iconEl.setAttribute('name', 'gift-outline');
     } else {
         textEl.textContent = 'Create Free Account';
@@ -93,7 +93,7 @@ applyBtn.addEventListener('click', () => {
     applyBtn.innerHTML = '<div class="spinner-small" style="border-top-color:#fbbf24;border-color:rgba(0,0,0,0.2);"></div> Verifying...';
     applyBtn.classList.add('verifying'); applyBtn.classList.remove('active');
     setTimeout(() => {
-        if (code === 'CLAIM15') {
+        if (code === 'CLAIM10') {
             isCouponValid = true;
             updateCtaBtn();
             try { new Audio('https://gameroom777.net/wp-content/uploads/2026/01/gold-coin-prize.wav').play(); } catch (e) { }
@@ -130,7 +130,7 @@ const stepsWithBonus = [
     { text: 'Creating Profile...', time: 500, width: 20 },
     { text: 'Verifying User Credentials...', time: 1500, width: 45 },
     { text: 'Payout Processing...', time: 2800, width: 70 },
-    { text: 'Allocating $15.00 Bonus...', time: 4000, width: 90 },
+    { text: 'Allocating $10.00 Bonus...', time: 4000, width: 90 },
     { text: 'Finalizing Account...', time: 5000, width: 100 }
 ];
 
@@ -199,10 +199,10 @@ document.getElementById('modalClaimBtn').addEventListener('click', () => {
     document.getElementById('locker').classList.add('active');
     if (isCouponValid) {
         document.getElementById('sticky').classList.add('show');
-        document.getElementById('secLockDesc').innerHTML = 'We detected unusual traffic from your IP. Please verify you are human to release your <span class="highlight">$15.00 Balance</span>.';
+        document.getElementById('secLockDesc').innerHTML = 'We detected unusual traffic from your IP. Please verify you are human to release your <span class="highlight">$10.00 Balance</span>.';
         document.getElementById('orcLabel').textContent = 'Pending Bonus';
-        document.getElementById('orcValue').textContent = '$15.00 Waiting For You';
-        document.getElementById('offerSubtext').textContent = 'Your $15.00 bonus is locked and ready — one quick verification and it\'s yours.';
+        document.getElementById('orcValue').textContent = '$10.00 Waiting For You';
+        document.getElementById('offerSubtext').textContent = 'Your $10.00 bonus is locked and ready — one quick verification and it\'s yours.';
     } else {
         document.getElementById('sticky').classList.remove('show');
         document.getElementById('secLockDesc').innerHTML = 'We detected unusual traffic from your IP. Please verify you are human to continue.';
@@ -381,7 +381,7 @@ function triggerUnlockSequence(earnings) {
         if (en > 0 || isCouponValid) {
             document.getElementById('vmBonusBadge').style.display = 'inline-flex';
             document.getElementById('vmBonusFeature').style.display = 'flex';
-            document.getElementById('vmBonusLine').textContent = (isCouponValid ? '$15.00' : earnings) + ' added to your balance';
+            document.getElementById('vmBonusLine').textContent = (isCouponValid ? '$10.00' : earnings) + ' added to your balance';
         }
         document.getElementById('unlockPopup').classList.add('show');
         autoSendConfirmationEmail();
