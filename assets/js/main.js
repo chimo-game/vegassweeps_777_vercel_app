@@ -370,4 +370,19 @@ document.addEventListener("DOMContentLoaded", function () {
       }).observe(desktopOnline, { childList: true });
     }
   })();
+
+  /* ===== PROMO CODE COPY ===== */
+  (function () {
+    var btn = document.getElementById("promoCodeCopy");
+    if (!btn) return;
+
+    btn.addEventListener("click", function () {
+      navigator.clipboard.writeText("CLAIM10").then(function () {
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.classList.remove("copied");
+        }, 1500);
+      });
+    });
+  })();
 });
