@@ -5,16 +5,14 @@ window.addEventListener('load', () => {
     setTimeout(() => document.getElementById('globalLoader').classList.add('hidden'), 800);
     const code = new URLSearchParams(window.location.search).get('code');
     if (code) {
-        document.getElementById('promoToggle').style.display = 'none';
-        document.getElementById('couponWrapper').style.display = 'block';
+        document.getElementById('promoSection').classList.add('open');
         document.getElementById('promoCode').value = code;
-        document.getElementById('applyBtn').click();
+        setTimeout(() => document.getElementById('applyBtn').click(), 300);
     }
 });
 
-document.getElementById('promoToggle').addEventListener('click', (e) => {
-    e.target.style.display = 'none';
-    document.getElementById('couponWrapper').style.display = 'block';
+document.getElementById('promoToggle').addEventListener('click', () => {
+    document.getElementById('promoSection').classList.toggle('open');
 });
 
 document.getElementById('eyeToggle').addEventListener('click', () => {
@@ -78,27 +76,31 @@ function updateCtaBtn() {
 const applyBtn = document.getElementById('applyBtn');
 const couponInputBox = document.getElementById('couponInputBox');
 const goldenTicket = document.getElementById('goldenTicket');
+const ticketWrap = document.getElementById('couponWrapper2');
 const promoInput = document.getElementById('promoCode');
+const promoSection = document.getElementById('promoSection');
 
 promoInput.addEventListener('input', (e) => {
     couponInputBox.classList.remove('error');
-    applyBtn.innerHTML = 'Apply <ion-icon name="arrow-forward-outline"></ion-icon>';
-    applyBtn.style.color = '';
+    applyBtn.classList.remove('error-state');
+    const applyText = applyBtn.querySelector('.promo-apply-text');
+    if (applyText) applyText.textContent = 'Apply';
     applyBtn.classList.toggle('active', e.target.value.length > 0);
 });
 
 applyBtn.addEventListener('click', () => {
     const code = promoInput.value.trim().toUpperCase();
     if (code.length < 2) return;
-    applyBtn.innerHTML = '<div class="spinner-small" style="border-top-color:#fbbf24;border-color:rgba(0,0,0,0.2);"></div> Verifying...';
-    applyBtn.classList.add('verifying'); applyBtn.classList.remove('active');
+    applyBtn.classList.add('verifying');
+    applyBtn.classList.remove('active');
     setTimeout(() => {
         if (code === 'CLAIM10') {
             isCouponValid = true;
             updateCtaBtn();
             try { new Audio('https://gameroom777.net/wp-content/uploads/2026/01/gold-coin-prize.wav').play(); } catch (e) { }
-            couponInputBox.style.display = 'none';
+            promoSection.style.display = 'none';
             document.getElementById('finalCode').textContent = code;
+            ticketWrap.classList.add('active');
             goldenTicket.classList.add('active');
             const r = goldenTicket.getBoundingClientRect();
             confetti({ particleCount: 80, spread: 80, origin: { x: (r.left + r.width / 2) / innerWidth, y: (r.top + r.height / 2) / innerHeight }, colors: ['#fbbf24', '#fff', '#d946ef'], zIndex: 1500, scalar: 0.8 });
@@ -106,12 +108,16 @@ applyBtn.addEventListener('click', () => {
             isCouponValid = false;
             updateCtaBtn();
             applyBtn.classList.remove('verifying');
-            applyBtn.innerHTML = 'Invalid <ion-icon name="warning-outline"></ion-icon>';
-            applyBtn.style.color = '#ef4444';
+            applyBtn.classList.add('error-state');
+            const applyText = applyBtn.querySelector('.promo-apply-text');
+            if (applyText) applyText.textContent = 'Invalid';
             couponInputBox.classList.add('error');
             setTimeout(() => {
-                applyBtn.innerHTML = 'Apply <ion-icon name="arrow-forward-outline"></ion-icon>';
-                applyBtn.style.color = ''; couponInputBox.classList.remove('error'); promoInput.value = '';
+                applyBtn.classList.remove('error-state');
+                const t = applyBtn.querySelector('.promo-apply-text');
+                if (t) t.textContent = 'Apply';
+                couponInputBox.classList.remove('error');
+                promoInput.value = '';
             }, 1500);
         }
     }, 1200);

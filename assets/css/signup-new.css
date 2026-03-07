@@ -298,144 +298,209 @@ body {
     color: var(--error);
 }
 
-.promo-toggle {
-    font-size: 13px;
-    color: var(--accent);
-    cursor: pointer;
-    margin-bottom: 15px;
-    font-weight: 600;
-    display: inline-block;
-    transition: 0.2s;
+/* ── Promo Code Section ── */
+.promo-section {
+    margin: 8px 0 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    overflow: hidden;
 }
 
-.promo-toggle:hover {
-    color: #fff;
-}
-
-.coupon-wrapper {
-    margin: 5px 0 20px;
-    position: relative;
-    min-height: 60px;
-    display: none;
-}
-
-.coupon-ui {
+.promo-header {
     display: flex;
-    gap: 10px;
-    background: #18181b;
-    border: 2px dashed rgba(255, 255, 255, 0.2);
-    padding: 8px;
-    border-radius: 12px;
-    transition: 0.3s;
-    position: relative;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
 }
 
-.coupon-ui::before,
-.coupon-ui::after {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 12px;
-    height: 12px;
-    background: var(--card-bg);
-    border-radius: 50%;
-    z-index: 2;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    content: '';
+.promo-header:hover {
+    background: rgba(255, 255, 255, 0.04);
 }
 
-.coupon-ui::before {
-    left: -7px;
-    border-right-color: transparent;
+.promo-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
 }
 
-.coupon-ui::after {
-    right: -7px;
-    border-left-color: transparent;
-}
-
-.coupon-ui:focus-within {
-    border-color: var(--gold);
-    box-shadow: 0 0 15px rgba(251, 191, 36, 0.1);
-}
-
-.coupon-ui.error {
-    border-color: var(--error);
-    animation: shake 0.5s both;
-}
-
-.c-input {
-    background: transparent;
-    border: none;
-    color: #fff;
-    padding: 8px 12px;
-    flex: 1;
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700;
-    letter-spacing: 2px;
+.promo-header-icon {
     font-size: 18px;
-    text-transform: uppercase;
 }
 
-.c-input::placeholder {
+.promo-chevron {
+    font-size: 16px;
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+}
+
+.promo-section.open .promo-chevron {
+    transform: rotate(180deg);
+}
+
+.promo-body {
+    display: none;
+    padding: 0 14px 14px;
+}
+
+.promo-section.open .promo-body {
+    display: block;
+}
+
+.promo-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.promo-field {
+    flex: 1;
+    min-width: 0;
+    padding: 14px 16px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.promo-field::placeholder {
     color: var(--text-muted);
     text-transform: none;
     font-family: 'Outfit', sans-serif;
-    letter-spacing: 0;
     font-weight: 400;
-    font-size: 14px;
-}
-
-.c-input:focus {
-    outline: none;
-}
-
-.c-btn {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-muted);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
     font-size: 13px;
+    letter-spacing: 0;
+}
+
+.promo-field:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(0, 224, 255, 0.15);
+}
+
+.promo-apply-btn {
     display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
+    padding: 0 20px;
+    min-width: 80px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
 }
 
-.c-btn.active {
+.promo-apply-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.promo-apply-btn.active {
     background: var(--gold);
     color: #000;
     border-color: var(--gold);
-    box-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
-    animation: btnPulse 1.5s infinite;
+    box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3);
 }
 
-@keyframes btnPulse {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7)
-    }
-
-    70% {
-        transform: scale(1.02);
-        box-shadow: 0 0 0 10px rgba(251, 191, 36, 0)
-    }
-
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(251, 191, 36, 0)
-    }
-}
-
-.c-btn.verifying {
+.promo-apply-btn.verifying {
     pointer-events: none;
-    background: transparent;
     color: var(--gold);
-    animation: none;
-    border: none;
+    background: transparent;
+    border-color: transparent;
+}
+
+.promo-apply-btn.error-state {
+    color: var(--error);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.promo-apply-spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(251, 191, 36, 0.3);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.promo-apply-btn.verifying .promo-apply-text {
+    display: none;
+}
+
+.promo-apply-btn.verifying .promo-apply-spinner {
+    display: block;
+}
+
+.promo-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    padding-left: 2px;
+}
+
+.promo-hint strong {
+    color: var(--gold);
+}
+
+.promo-input-row.error .promo-field {
+    border-color: var(--error);
+    animation: shake 0.4s both;
+}
+
+.golden-ticket-wrap {
+    display: none;
+    margin: 8px 0 14px;
+}
+
+.golden-ticket-wrap.active {
+    display: block;
+}
+
+@media (max-width: 480px) {
+    .promo-header {
+        padding: 10px 14px;
+    }
+
+    .promo-header-left {
+        font-size: 12px;
+    }
+
+    .promo-body {
+        padding: 0 10px 12px;
+    }
+
+    .promo-field {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .promo-apply-btn {
+        padding: 0 16px;
+        min-width: 70px;
+        font-size: 13px;
+    }
+
+    .promo-hint {
+        font-size: 10px;
+    }
 }
 
 .golden-ticket {
@@ -755,28 +820,28 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     background: linear-gradient(135deg, #d946ef 0%, #8b5cf6 100%);
     border: none;
     width: 100%;
-    padding: 18px;
+    padding: 14px;
     border-radius: 12px;
     color: #fff;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    margin-top: 15px;
-    box-shadow: 0 10px 30px rgba(217, 70, 239, 0.3);
+    margin-top: 12px;
+    box-shadow: 0 8px 24px rgba(217, 70, 239, 0.3);
     transition: 0.3s;
 }
 
 .cta-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 15px 40px rgba(217, 70, 239, 0.5);
+    box-shadow: 0 12px 32px rgba(217, 70, 239, 0.5);
 }
 
 .cta-btn.disabled {
@@ -789,15 +854,31 @@ body {
 }
 
 .cta-btn-icon {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     background: rgba(255, 255, 255, 0.18);
     border-radius: 50%;
     display: grid;
     place-items: center;
-    font-size: 17px;
+    font-size: 15px;
     flex-shrink: 0;
     border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 480px) {
+    .cta-btn {
+        padding: 12px;
+        font-size: 20px;
+        letter-spacing: 0.5px;
+        border-radius: 10px;
+        gap: 6px;
+    }
+
+    .cta-btn-icon {
+        width: 24px;
+        height: 24px;
+        font-size: 13px;
+    }
 }
 
 .trust-badges {

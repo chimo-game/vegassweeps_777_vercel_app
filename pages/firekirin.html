@@ -41,14 +41,29 @@
       <p class="subheadline">No credit card needed — create account and claim your bonus now.</p>
     </div>
 
-    <div class="promo-toggle" id="promoToggle">Have a promo code?</div>
-
-    <div class="coupon-wrapper" id="couponWrapper">
-      <div class="coupon-ui" id="couponInputBox">
-        <input type="text" class="c-input" id="promoCode" placeholder="Enter Promo Code">
-        <button type="button" class="c-btn" id="applyBtn">Apply <ion-icon
-            name="arrow-forward-outline"></ion-icon></button>
+    <div class="promo-section" id="promoSection">
+      <div class="promo-header" id="promoToggle">
+        <div class="promo-header-left">
+          <ion-icon name="ticket-outline" class="promo-header-icon"></ion-icon>
+          <span>Have a promo code?</span>
+        </div>
+        <ion-icon name="chevron-down-outline" class="promo-chevron" id="promoChevron"></ion-icon>
       </div>
+
+      <div class="promo-body" id="couponWrapper">
+        <div class="promo-input-row" id="couponInputBox">
+          <input type="text" class="promo-field" id="promoCode" placeholder="Enter code (e.g. CLAIM10)"
+            autocomplete="off">
+          <button type="button" class="promo-apply-btn" id="applyBtn">
+            <span class="promo-apply-text">Apply</span>
+            <div class="promo-apply-spinner"></div>
+          </button>
+        </div>
+        <div class="promo-hint" id="promoHint">Try <strong>CLAIM10</strong> for a $10 bonus</div>
+      </div>
+    </div>
+
+    <div class="golden-ticket-wrap" id="couponWrapper2">
       <div class="golden-ticket" id="goldenTicket">
         <div class="gt-card">
           <div class="gt-rainbow-bar"></div>
