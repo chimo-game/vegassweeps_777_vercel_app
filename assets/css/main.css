@@ -313,6 +313,60 @@ li {
 .hero {
   text-align: center;
   padding: 40px 0 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated gradient orbs */
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero::before {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.5), transparent 70%);
+  top: -120px;
+  left: -80px;
+  animation: heroOrbFloat 8s ease-in-out infinite;
+}
+
+.hero::after {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.45), transparent 70%);
+  bottom: -100px;
+  right: -60px;
+  animation: heroOrbFloat 10s ease-in-out infinite reverse;
+}
+
+@keyframes heroOrbFloat {
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -20px) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-20px, 15px) scale(0.95);
+  }
+}
+
+/* All hero children above the orbs */
+.hero .container {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-badge {
@@ -342,10 +396,24 @@ li {
 }
 
 .hero .gradient {
-  background: linear-gradient(135deg, var(--gold), #fb923c);
+  background: linear-gradient(135deg, var(--gold), #fb923c, var(--gold));
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: heroTextShimmer 3s ease-in-out infinite;
+}
+
+@keyframes heroTextShimmer {
+
+  0%,
+  100% {
+    background-position: 0% center;
+  }
+
+  50% {
+    background-position: 100% center;
+  }
 }
 
 .hero p {
@@ -663,11 +731,27 @@ li {
 .game-card.featured {
   border-color: rgba(250, 204, 21, 0.3);
   box-shadow: 0 10px 40px -10px rgba(250, 204, 21, 0.15);
+  animation: featuredGlow 3s ease-in-out infinite;
+}
+
+@keyframes featuredGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 10px 40px -10px rgba(250, 204, 21, 0.15),
+      0 0 20px -5px rgba(250, 204, 21, 0.08);
+  }
+
+  50% {
+    box-shadow: 0 10px 40px -10px rgba(250, 204, 21, 0.3),
+      0 0 35px -5px rgba(250, 204, 21, 0.18);
+  }
 }
 
 .game-card.featured:hover {
   border-color: var(--gold);
   box-shadow: 0 20px 50px -10px rgba(250, 204, 21, 0.25);
+  animation: none;
 }
 
 .game-card.featured .gc-badge {
@@ -694,32 +778,35 @@ li {
 .btn-show-all {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 24px;
+  gap: 8px;
+  padding: 12px 28px;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 600;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 12px;
+  color: var(--primary-light);
+  font-size: 14px;
+  font-weight: 700;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 20px -8px rgba(59, 130, 246, 0.15);
 }
 
 .btn-show-all:hover {
-  border-color: rgba(255, 255, 255, 0.16);
-  color: var(--text);
-  background: var(--surface-2);
+  border-color: var(--primary);
+  color: #fff;
+  background: rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 28px -6px rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
 }
 
 .btn-show-all ion-icon {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .show-all-wrap {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 /* ====== 13. DOWNLOAD SECTION (App Listing Style) ====== */
@@ -1634,19 +1721,21 @@ li {
     right: 0;
     width: 280px;
     height: 100dvh;
-    background: rgba(10, 14, 26, 0.97);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background:
+      linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(10, 14, 26, 0.99) 100%);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     flex-direction: column;
     align-items: stretch;
     gap: 0;
     padding: 72px 20px 24px;
     z-index: 105;
-    border-left: 1px solid var(--border);
+    border-left: 1px solid rgba(59, 130, 246, 0.15);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateX(100%);
     overflow-y: auto;
     display: flex;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4);
   }
 
   .site-nav.open {
