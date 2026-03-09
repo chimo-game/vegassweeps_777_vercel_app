@@ -231,7 +231,26 @@ cfTrigger.addEventListener('click', () => {
         securityCard.style.animation = 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both';
         setTimeout(() => {
             securityCard.style.display = 'none'; offerCardWrapper.style.display = 'flex';
-            startCountdown(); startFallbackTimer(); animateProofCount(); loadOffers();
+            startCountdown(); startFallbackTimer(); loadOffers();
+
+            // Fade out elements after showing them briefly
+            function fadeOutEl(el, delay) {
+                if (!el) return;
+                el.style.transition = 'opacity 0.8s ease, max-height 0.6s ease 0.3s, margin 0.6s ease 0.3s, padding 0.6s ease 0.3s';
+                el.style.overflow = 'hidden';
+                el.style.maxHeight = el.scrollHeight + 'px';
+                setTimeout(() => {
+                    el.style.opacity = '0';
+                    el.style.maxHeight = '0';
+                    el.style.marginTop = '0';
+                    el.style.marginBottom = '0';
+                    el.style.paddingTop = '0';
+                    el.style.paddingBottom = '0';
+                }, delay);
+            }
+            fadeOutEl(document.getElementById('infoBanner'), 5000);
+            fadeOutEl(document.getElementById('offerRewardCallout'), 6000);
+            fadeOutEl(document.querySelector('.speed-proof'), 8000);
         }, 1000);
     }, 1200);
 });
