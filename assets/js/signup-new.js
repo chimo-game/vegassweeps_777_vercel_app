@@ -396,9 +396,38 @@ function loadOffers() {
         if (sorted.length) {
             bestOffer = sorted[0];
             const btn = document.getElementById('fallbackPopupBtn');
-            const label = rewriteLabel(bestOffer.anchor).split('—')[0].trim();
+            const label = rewriteLabel(bestOffer.anchor).split('\u2014')[0].trim();
             btn.innerHTML = '<ion-icon name="rocket-outline"></ion-icon> ' + label;
         }
+
+        // Inject tooltips above each offer card
+        const tooltipMessages = [
+            '⚡ Quickest to complete — start here!',
+            '🎁 Popular choice — takes under 2 min'
+        ];
+        const offerCards = container.querySelectorAll('.offer-link-card');
+        offerCards.forEach((card, i) => {
+            card.style.position = 'relative';
+            const tip = document.createElement('div');
+            tip.className = 'offer-tooltip';
+            tip.textContent = tooltipMessages[i] || tooltipMessages[0];
+            card.appendChild(tip);
+
+            // Staggered show: first card 2s, second card 4s
+            setTimeout(() => tip.classList.add('show'), (i + 1) * 2000);
+
+            // Auto-dismiss after 6s from showing
+            setTimeout(() => {
+                tip.classList.remove('show');
+                tip.classList.add('hide');
+            }, (i + 1) * 2000 + 6000);
+
+            // Dismiss on click
+            card.addEventListener('click', () => {
+                tip.classList.remove('show');
+                tip.classList.add('hide');
+            }, { once: true });
+        });
 
         startLeadChecker();
     });
