@@ -192,6 +192,7 @@
       box-shadow: 0 22px 56px rgba(0,0,0,0.50);
       overflow: hidden;
     }
+
     /* ── Concept D: Vibrant Bold Header ── */
 
     /* Full-bleed gold hero banner */
@@ -594,6 +595,7 @@
     }
 
     .gt-strip-chip.green { background: var(--green-soft); color: #97ebb7; }
+
     /* ── Form ── */
     .modern-form {
       display: flex;
@@ -768,6 +770,7 @@
       color: var(--green);
       transition: .2s ease;
     }
+
 
     .field.valid .valid-check { opacity: 1; transform: scale(1); }
 
@@ -952,41 +955,190 @@
 
     .overlay.active { display: flex; animation: fadeIn .25s ease; }
 
+    /* ── Concept B: Vertical Stepper processing screen ── */
     .loading-container {
-      width: min(100%, 360px);
-      text-align: center;
+      width: min(100%, 380px);
+      border-radius: 26px;
+      background: #0c0d12;
+      border: 1px solid rgba(255,255,255,0.09);
+      box-shadow: 0 28px 64px rgba(0,0,0,0.52);
+      overflow: hidden;
+    }
+
+    /* Header row — spinner + title + live subtitle */
+    .lc-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 22px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .lc-spinner {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      border: 2px solid rgba(231,184,75,0.16);
+      border-top-color: var(--gold-2);
+      animation: spin 1s linear infinite;
+      flex-shrink: 0;
+    }
+
+    .lc-head-text { flex: 1; min-width: 0; }
+
+    .proc-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 3px;
+      letter-spacing: 0.1px;
+    }
+
+    .proc-subtitle {
+      font-size: 11px;
+      color: rgba(180,171,155,0.62);
+      transition: opacity .3s ease;
+    }
+
+    /* Stepper body */
+    .lc-body {
+      padding: 18px 22px 14px;
+    }
+
+    .proc-steps {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .proc-step {
+      display: flex;
+      gap: 12px;
+      min-height: 44px;
+    }
+
+    /* Left spine column */
+    .proc-step-spine {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 26px;
-      border-radius: 26px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
+      flex-shrink: 0;
+      width: 20px;
     }
 
-    .proc-ring { border: 2px solid transparent; }
-    .proc-ring-1 { inset: 0; border-top-color: var(--gold-2); border-right-color: rgba(231,184,75,0.18); animation: spin 1.2s linear infinite; }
-    .proc-ring-2 { inset: 8px; border-bottom-color: rgba(244,213,138,0.45); border-left-color: rgba(231,184,75,0.14); animation: spin 1.8s linear reverse infinite; }
-    .proc-ring-3 { inset: 16px; border: 1px solid rgba(255,255,255,0.09); animation: spin 3s linear infinite; }
+    .proc-step-node {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: all .3s ease;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+    }
 
-    .proc-title {
-      font-family: 'Cinzel', serif;
-      font-size: 22px;
-      text-transform: uppercase;
-      letter-spacing: .8px;
-      margin-bottom: 6px;
+    .proc-step.done .proc-step-node {
+      background: var(--green);
+      border-color: var(--green);
+      box-shadow: 0 0 10px rgba(53,197,111,0.28);
+    }
+
+    .proc-step.active .proc-step-node {
+      background: rgba(231,184,75,0.12);
+      border: 2px solid var(--gold-2);
+      box-shadow: 0 0 10px rgba(231,184,75,0.22);
+    }
+
+    .proc-step-node-check {
+      display: none;
+      font-size: 11px;
       color: #fff;
     }
 
-    .proc-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 22px; }
+    .proc-step.done .proc-step-node-check { display: block; }
 
-    .proc-progress-wrap { width: 100%; margin-bottom: 14px; }
+    .proc-step-node-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.22);
+      transition: all .3s ease;
+    }
+
+    .proc-step.active .proc-step-node-dot {
+      background: var(--gold-2);
+      box-shadow: 0 0 6px rgba(231,184,75,0.5);
+    }
+
+    .proc-step.done .proc-step-node-dot { display: none; }
+
+    /* Connector line between nodes */
+    .proc-step-connector {
+      width: 1.5px;
+      flex: 1;
+      min-height: 12px;
+      background: rgba(255,255,255,0.07);
+      margin: 3px 0;
+      border-radius: 2px;
+      transition: background .4s ease;
+    }
+
+    .proc-step.done .proc-step-connector {
+      background: rgba(53,197,111,0.35);
+    }
+
+    /* Right content column */
+    .proc-step-content {
+      flex: 1;
+      padding-bottom: 14px;
+      padding-top: 2px;
+    }
+
+    .proc-step:last-child .proc-step-content { padding-bottom: 0; }
+
+    .proc-step-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(180,171,155,0.45);
+      line-height: 1.3;
+      transition: color .3s ease;
+    }
+
+    .proc-step.active .proc-step-text { color: var(--gold-1); }
+    .proc-step.done .proc-step-text { color: rgba(155,233,184,0.75); }
+
+    .proc-step-desc {
+      font-size: 11px;
+      color: rgba(180,171,155,0.45);
+      margin-top: 3px;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height .35s ease, opacity .35s ease;
+    }
+
+    .proc-step.active .proc-step-desc {
+      max-height: 40px;
+      opacity: 1;
+    }
+
+    /* Footer progress bar */
+    .lc-footer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 22px 18px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
 
     .proc-progress-track {
-      width: 100%;
-      height: 6px;
-      border-radius: 10px;
+      flex: 1;
+      height: 4px;
+      border-radius: 999px;
       background: rgba(255,255,255,0.06);
       overflow: hidden;
     }
@@ -994,62 +1146,20 @@
     .proc-progress-fill {
       width: 0%;
       height: 100%;
-      border-radius: 10px;
+      border-radius: 999px;
       background: linear-gradient(90deg, var(--gold-2), #f4d58a);
-      position: relative;
       transition: width .35s ease;
     }
 
     .proc-progress-pct {
-      margin-top: 7px;
       font-size: 11px;
       font-weight: 800;
       font-family: 'Rajdhani', sans-serif;
+      color: rgba(231,184,75,0.65);
+      min-width: 30px;
       text-align: right;
-      color: var(--muted);
+      flex-shrink: 0;
     }
-
-    .proc-steps { width: 100%; display: flex; flex-direction: column; gap: 8px; }
-
-    .proc-step {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 11px 14px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      transition: all .3s ease;
-    }
-
-    .proc-step.active { background: rgba(231,184,75,0.10); border-color: rgba(231,184,75,0.18); }
-    .proc-step.done { background: rgba(53,197,111,0.07); border-color: rgba(53,197,111,0.18); }
-
-    .proc-step-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.18);
-    }
-
-    .proc-step.active .proc-step-dot { background: var(--gold-2); box-shadow: 0 0 8px rgba(231,184,75,0.38); }
-    .proc-step.done .proc-step-dot { background: var(--green); }
-
-    .proc-step-text {
-      flex: 1;
-      min-width: 0;
-      text-align: left;
-      font-size: 12px;
-      font-weight: 700;
-      font-family: 'Rajdhani', sans-serif;
-      color: var(--muted);
-    }
-
-    .proc-step.active .proc-step-text { color: var(--gold-1); }
-    .proc-step.done .proc-step-text { color: #9be9b8; }
-
-    .proc-step-check { opacity: 0; font-size: 14px; color: var(--green); transition: opacity .25s ease; }
-    .proc-step.done .proc-step-check { opacity: 1; }
 
     .success-card,
     .locker-card,
@@ -1062,46 +1172,181 @@
       -webkit-backdrop-filter: blur(18px);
     }
 
+    /* ── Concept B: Status Card success screen ── */
     .success-card {
-      max-width: 392px;
+      max-width: 400px;
       width: 92%;
       border-radius: 26px;
-      padding: 34px 28px;
-      text-align: center;
+      overflow: hidden;
+      padding: 0;
       animation: popUp .35s ease;
+      background: #0c0d12;
     }
 
-    .success-icon {
-      width: 82px;
-      height: 82px;
-      margin: 0 auto 18px;
-      border-radius: 22px;
+    /* Header row — icon + pulse ring + title */
+    .sc-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 22px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .sc-icon-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .sc-icon-pulse {
+      position: absolute;
+      inset: -5px;
+      border-radius: 17px;
+      border: 1.5px solid rgba(53,197,111,0.28);
+      animation: ringPulse 2.2s ease-out infinite;
+    }
+
+    .sc-checkmark {
+      position: relative;
+      z-index: 1;
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
       display: grid;
       place-items: center;
-      background: rgba(53,197,111,0.12);
-      border: 1px solid rgba(53,197,111,0.2);
-      color: var(--green);
-      font-size: 38px;
+      background: linear-gradient(135deg, #35c56f, #1f9752);
+      box-shadow: 0 0 20px rgba(53,197,111,0.24);
+      font-size: 24px;
+      color: #fff;
     }
 
-    .prize-box {
-      margin: 22px 0;
-      padding: 16px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, rgba(231,184,75,0.10), rgba(255,255,255,0.03));
+    .sc-header-text { flex: 1; min-width: 0; }
+
+    .sc-header-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.1px;
+    }
+
+    .sc-header-sub {
+      font-size: 11px;
+      color: rgba(180,171,155,0.55);
+      margin-top: 3px;
+    }
+
+    /* Bonus strip */
+    .sc-bonus-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 16px 22px 0;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(231,184,75,0.09), rgba(255,255,255,0.02));
       border: 1px solid rgba(231,184,75,0.18);
     }
 
-    .prize-label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .9px; color: var(--gold-1); }
+    .sc-bonus-strip-left { display: flex; flex-direction: column; gap: 2px; }
 
-    .prize-amount {
-      margin-top: 5px;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 38px;
-      line-height: 1;
+    .sc-bonus-strip-label {
+      font-size: 9px;
       font-weight: 800;
-      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(244,213,138,0.52);
     }
+
+    .sc-bonus-strip-note {
+      font-size: 10px;
+      color: rgba(180,171,155,0.48);
+    }
+
+    .sc-bonus-strip-amount {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+      color: #f4d58a;
+    }
+
+    /* Trust chips */
+    .sc-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 12px 22px 0;
+    }
+
+    .sc-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(53,197,111,0.07);
+      color: #97ebb7;
+      border: 1px solid rgba(53,197,111,0.14);
+    }
+
+    .sc-chip-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #35c56f;
+      flex-shrink: 0;
+    }
+
+    /* Feature rows */
+    .sc-features {
+      display: flex;
+      flex-direction: column;
+      padding: 14px 22px 6px;
+      margin-bottom: 0;
+    }
+
+    .sc-feature {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .sc-feature:last-child { border-bottom: none; }
+
+    .sc-feature-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+    }
+
+    .sc-feature-text { flex: 1; min-width: 0; text-align: left; }
+    .sc-feature-title { font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.88); }
+    .sc-feature-sub { font-size: 10px; color: rgba(180,171,155,0.50); margin-top: 1px; }
+
+    .sc-feature-check {
+      font-size: 17px;
+      color: var(--green);
+      flex-shrink: 0;
+    }
+
+    /* CTA wrapper */
+    .sc-cta-wrap {
+      padding: 14px 22px 22px;
+    }
+
+    /* Old prize-box kept for JS compat but hidden */
+    .prize-box { display: none !important; }
+    .success-icon { display: none !important; }
+    .sc-banner { display: none !important; }
+    .sc-body { display: contents; }
 
     .locker-overlay {
       z-index: 3000;
@@ -1190,6 +1435,7 @@
       border-radius: 50%;
       animation: spin .7s linear infinite;
     }
+
     .rc-cb-check { font-size: 18px; font-weight: 900; color: var(--green); }
     .rc-cb-x { font-size: 16px; font-weight: 900; color: var(--red); }
 
@@ -1641,7 +1887,6 @@
     .locker-social-proof { margin-top: 10px; text-align: center; font-size: 11.5px; font-weight: 600; color: var(--muted); }
 
     .proof-dot { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--green); }
-    .locker-social-proof strong { color: #f0e8db; }
 
     #securityCard,
     #offerCardWrapper {
@@ -1769,106 +2014,158 @@
 
     .popup-dismiss { display: block; margin-top: 10px; font-size: 11px; color: var(--muted); cursor: pointer; }
 
+    /* ── Concept B: Minimal Dark Receipt — final screen ── */
     .verified-modal {
       width: 100%;
       max-width: 388px;
       max-height: 92vh;
       border-radius: 26px;
       overflow-y: auto;
+      background: #0c0d12;
+      border: 1px solid rgba(255,255,255,0.09);
+      box-shadow: 0 28px 70px rgba(0,0,0,0.56);
       animation: popUp .35s ease;
     }
 
+    /* Compact header row */
     .vm-header {
-      padding: 30px 24px 22px;
-      text-align: center;
-      background: linear-gradient(135deg, rgba(28,96,58,0.95) 0%, rgba(15,48,31,0.95) 100%);
-      border-bottom: 1px solid rgba(53,197,111,0.22);
-    }
-
-    .vm-rings {
-      position: relative;
-      width: 90px;
-      height: 90px;
-      margin: 0 auto 16px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 14px;
+      padding: 20px 22px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
     }
-
-    .vm-ring { position: absolute; border-radius: 50%; border: 2px solid; }
-    .vm-ring-1 { inset: 0; border-color: rgba(53,197,111,0.48); animation: ringPulse 2s ease-out infinite; }
-    .vm-ring-2 { inset: 8px; border-color: rgba(53,197,111,0.3); animation: ringPulse 2s ease-out .3s infinite; }
-    .vm-ring-3 { inset: 16px; border-color: rgba(53,197,111,0.18); animation: ringPulse 2s ease-out .6s infinite; }
 
     .vm-checkmark {
-      width: 58px;
-      height: 58px;
-      border-radius: 18px;
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
       display: grid;
       place-items: center;
-      z-index: 2;
+      flex-shrink: 0;
       background: linear-gradient(135deg, #35c56f, #1f9752);
-      box-shadow: 0 0 30px rgba(53,197,111,0.35);
+      box-shadow: 0 0 18px rgba(53,197,111,0.24);
+      font-size: 22px;
+      color: #fff;
     }
 
-    .vm-badge-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-
-    .vm-badge {
-      padding: 5px 10px;
-      border-radius: 20px;
-      background: rgba(53,197,111,0.14);
-      border: 1px solid rgba(53,197,111,0.24);
-      color: #a5efbe;
-      font-size: 10px;
-      font-weight: 800;
-    }
+    .vm-header-text { flex: 1; min-width: 0; }
 
     .vm-title {
-      font-family: 'Cinzel', serif;
-      font-size: 26px;
-      text-transform: uppercase;
-      letter-spacing: .8px;
+      font-size: 15px;
+      font-weight: 800;
       color: #fff;
-      margin-bottom: 6px;
+      letter-spacing: 0.1px;
     }
 
-    .vm-sub { font-size: 13px; line-height: 1.62; color: rgba(255,255,255,0.74); }
+    .vm-sub {
+      font-size: 11px;
+      color: rgba(180,171,155,0.58);
+      margin-top: 2px;
+    }
 
-    .vm-features { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+    /* Stat rows */
+    .vm-stats {
+      padding: 14px 22px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .vm-stat-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .vm-stat-row:last-child { border-bottom: none; }
+
+    .vm-stat-label {
+      font-size: 12px;
+      color: rgba(180,171,155,0.52);
+      font-weight: 600;
+    }
+
+    .vm-stat-value {
+      font-size: 12px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.80);
+    }
+
+    .vm-stat-value.vm-stat-green {
+      color: #97ebb7;
+    }
+
+    .vm-stat-value.vm-stat-gold {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 18px;
+      color: #f4d58a;
+    }
+
+    /* Section divider */
+    .vm-divider {
+      height: 1px;
+      margin: 0 22px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    /* Feature list */
+    .vm-features {
+      padding: 14px 22px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
 
     .vm-feature {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 14px;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 
+    .vm-feature:last-child { border-bottom: none; }
+
     .vm-feat-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
       flex-shrink: 0;
       display: grid;
       place-items: center;
-      font-size: 18px;
+      font-size: 15px;
     }
 
     .vm-feat-text { flex: 1; min-width: 0; }
-    .vm-feat-title { font-size: 13px; font-weight: 800; color: #fff; }
-    .vm-feat-sub { margin-top: 1px; font-size: 11px; color: var(--muted); }
+    .vm-feat-title { font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.88); }
+    .vm-feat-sub { font-size: 10px; color: rgba(180,171,155,0.50); margin-top: 1px; }
     .vm-bonus-amount { color: var(--gold-2) !important; font-weight: 800; }
 
-    .vm-email-section { margin: 0 20px 16px; padding: 14px; border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+    .vm-feat-check {
+      font-size: 17px;
+      color: var(--green);
+      flex-shrink: 0;
+    }
 
-    .vm-email-status { display: flex; align-items: center; gap: 10px; padding: 4px 0; }
-    .vm-email-status--sending { font-size: 13px; font-weight: 700; color: var(--gold-2); }
+    /* Email confirmation section */
+    .vm-email-section {
+      margin: 10px 22px 14px;
+      padding: 11px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .vm-email-status { display: flex; align-items: center; gap: 10px; }
+    .vm-email-status--sending { font-size: 12px; font-weight: 700; color: rgba(180,171,155,0.65); }
 
     .vm-status-icon-wrap {
-      width: 36px;
-      height: 36px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       flex-shrink: 0;
       display: grid;
@@ -1876,27 +2173,39 @@
     }
 
     .vm-send-spinner {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       border: 2px solid rgba(231,184,75,0.16);
       border-top-color: var(--gold-2);
       border-radius: 50%;
       animation: spin .8s linear infinite;
     }
 
+    /* CTA button */
     .vm-cta-btn {
-      margin: 0 20px 12px;
-      padding: 17px;
+      margin: 0 22px 12px;
+      padding: 16px;
       background: linear-gradient(135deg, #35c56f, #1f9752);
       color: #fff;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 900;
-      letter-spacing: .8px;
-      box-shadow: 0 10px 26px rgba(53,197,111,0.26);
+      letter-spacing: .5px;
+      box-shadow: 0 10px 26px rgba(53,197,111,0.22);
     }
 
-    .vm-redirect-note { padding-bottom: 18px; text-align: center; font-size: 11px; color: var(--muted); }
-    .vm-redirect-note strong { color: #fff; }
+    .vm-redirect-note {
+      padding-bottom: 18px;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(180,171,155,0.45);
+    }
+
+    .vm-redirect-note strong { color: rgba(255,255,255,0.7); }
+
+    /* Legacy selectors kept for JS compat */
+    .vm-rings { display: none; }
+    .vm-badge-row { display: none; }
+    .vm-badge { display: none; }
 
     .spinner-small {
       width: 16px;
@@ -1906,6 +2215,7 @@
       border-radius: 50%;
       animation: spin .8s linear infinite;
     }
+
     /* ── Keyframes ── */
     @keyframes pulseLogo {
       0%,100% { transform: scale(.95); opacity: .88; }
@@ -1999,7 +2309,6 @@
     <div class="loader-content">
       <div class="loader-ring"></div>
       <div class="loader-ring2"></div>
-      <img class="loader-logo" src="../assets/images/games/pandamaster.gif" alt="Panda Master" />
     </div>
   </div>
 
@@ -2041,6 +2350,7 @@
 
         <!-- Subheadline -->
         <p class="subheadline" id="signupSubheadline">Create your account in under a minute. Have a promo code? Apply it below before you continue.</p>
+
 
         <!-- Trust chips -->
         <div class="trust-chips">
@@ -2162,36 +2472,109 @@
   <!-- Processing overlay -->
   <div class="overlay" id="loader">
     <div class="loading-container">
-      <div class="proc-logo-wrap">
-        <div class="proc-ring proc-ring-1"></div>
-        <div class="proc-ring proc-ring-2"></div>
-        <div class="proc-ring proc-ring-3"></div>
-        <img class="proc-logo" src="../assets/images/games/pandamaster.gif" alt="Panda Master" />
+
+      <!-- Header: spinner + title + live subtitle -->
+      <div class="lc-head">
+        <div class="lc-spinner"></div>
+        <div class="lc-head-text">
+          <div class="proc-title">Setting up your account</div>
+          <div class="proc-subtitle" id="procSubtitle">Please wait — this only takes a moment</div>
+        </div>
       </div>
-      <div class="proc-title">Setting up your account</div>
-      <div class="proc-subtitle">Please wait — this only takes a moment</div>
-      <div class="proc-progress-wrap">
-        <div class="proc-progress-track"><div class="proc-progress-fill" id="progFill"></div></div>
+
+      <!-- Vertical stepper -->
+      <div class="lc-body">
+        <div class="proc-steps" id="procStepsList"></div>
+      </div>
+
+      <!-- Footer: progress bar + percentage -->
+      <div class="lc-footer">
+        <div class="proc-progress-track">
+          <div class="proc-progress-fill" id="progFill"></div>
+        </div>
         <div class="proc-progress-pct" id="progPct">0%</div>
       </div>
-      <div class="proc-steps" id="procStepsList"></div>
+
     </div>
   </div>
 
   <!-- Success modal -->
   <div class="overlay" id="successModal">
     <div class="success-card">
-      <div class="success-icon"><ion-icon name="checkmark"></ion-icon></div>
-      <h2 class="headline" style="font-size:24px; margin-bottom:5px;">Account created</h2>
-      <p style="color:var(--muted);font-size:14px;line-height:1.65;">Your Panda Master registration was successful.</p>
+
+      <!-- Header row: icon + pulse ring + title -->
+      <div class="sc-header">
+        <div class="sc-icon-wrap">
+          <div class="sc-icon-pulse"></div>
+          <div class="sc-checkmark">
+            <ion-icon name="checkmark" style="font-size:24px;color:#fff;"></ion-icon>
+          </div>
+        </div>
+        <div class="sc-header-text">
+          <div class="sc-header-title">Account Created!</div>
+          <div class="sc-header-sub">Welcome to Panda Master</div>
+        </div>
+      </div>
+
+      <!-- Bonus strip -->
+      <div class="sc-bonus-strip">
+        <div class="sc-bonus-strip-left">
+          <div class="sc-bonus-strip-label">Welcome Bonus</div>
+          <div class="sc-bonus-strip-note">Pending activation</div>
+        </div>
+        <div class="sc-bonus-strip-amount" id="modalPrizeAmount">$20.00</div>
+      </div>
+
+      <!-- Trust chips -->
+      <div class="sc-chips">
+        <span class="sc-chip"><span class="sc-chip-dot"></span> Free to join</span>
+        <span class="sc-chip"><span class="sc-chip-dot"></span> No card needed</span>
+        <span class="sc-chip"><span class="sc-chip-dot"></span> App download</span>
+      </div>
+
+      <!-- Feature rows -->
+      <div class="sc-features">
+        <div class="sc-feature">
+          <div class="sc-feature-icon" style="background:rgba(231,184,75,0.10);color:var(--gold-2);"><ion-icon name="game-controller-outline"></ion-icon></div>
+          <div class="sc-feature-text">
+            <div class="sc-feature-title">500+ Casino Games</div>
+            <div class="sc-feature-sub">Slots, fish tables, poker &amp; more</div>
+          </div>
+          <ion-icon name="checkmark-circle" class="sc-feature-check"></ion-icon>
+        </div>
+        <div class="sc-feature">
+          <div class="sc-feature-icon" style="background:rgba(53,197,111,0.10);color:var(--green);"><ion-icon name="cash-outline"></ion-icon></div>
+          <div class="sc-feature-text">
+            <div class="sc-feature-title">Real Cash Payouts</div>
+            <div class="sc-feature-sub">Cash App, Venmo &amp; PayPal</div>
+          </div>
+          <ion-icon name="checkmark-circle" class="sc-feature-check"></ion-icon>
+        </div>
+        <div class="sc-feature">
+          <div class="sc-feature-icon" style="background:rgba(53,197,111,0.08);color:var(--green);"><ion-icon name="cloud-download-outline"></ion-icon></div>
+          <div class="sc-feature-text">
+            <div class="sc-feature-title">Free App Download</div>
+            <div class="sc-feature-sub">iOS &amp; Android — install in seconds</div>
+          </div>
+          <ion-icon name="checkmark-circle" class="sc-feature-check"></ion-icon>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="sc-cta-wrap">
+        <button class="cta-btn" id="modalClaimBtn"></button>
+      </div>
+
+      <!-- Hidden elements kept for JS compatibility -->
       <div class="prize-box" id="modalPrizeBox" style="display:none;">
         <div class="prize-label">Pending bonus</div>
-        <div class="prize-amount" id="modalPrizeAmount">$20.00</div>
       </div>
-      <button class="cta-btn" id="modalClaimBtn"></button>
+      <div class="success-icon" style="display:none;"><ion-icon name="checkmark"></ion-icon></div>
+      <div class="sc-banner" style="display:none;"></div>
+      <div class="sc-body" style="display:none;"></div>
+
     </div>
   </div>
-
   <!-- Content locker -->
   <div class="locker-overlay" id="locker">
     <div class="locker-card" id="securityCard" style="max-width:400px;width:100%;text-align:center;">
@@ -2233,6 +2616,7 @@
         </div>
       </div>
     </div>
+
     <div id="offerCardWrapper" style="display:none;width:100%;max-width:390px;flex-direction:column;align-items:center;">
       <div class="locker-steps">
         <div class="locker-step completed"><span class="step-check"><ion-icon name="checkmark" style="font-size:11px;"></ion-icon></span> Sign Up</div>
@@ -2331,7 +2715,7 @@
       <div class="popup-close" id="whyPopupClose"><ion-icon name="close-outline"></ion-icon></div>
       <div class="popup-icon why"><ion-icon name="shield-checkmark-outline"></ion-icon></div>
       <div class="popup-title">Why verify?</div>
-      <div class="popup-body"><strong>We need to confirm you're a real person.</strong><br /><br />To keep Vegas Sweeps 777 free and protect our community from bots, we ask new users to complete one simple action before activating their account.<br /><br />It takes <strong>under 2 minutes</strong> and instantly unlocks your full account.</div>
+      <div class="popup-body"><strong>We need to confirm you're a real person.</strong><br /><br />To keep Panda Master free and protect our community from bots, we ask new users to complete one simple action before activating their account.<br /><br />It takes <strong>under 2 minutes</strong> and instantly unlocks your full account.</div>
       <button class="popup-btn" id="whyPopupBtn"><ion-icon name="checkmark-circle-outline"></ion-icon> Got It — Let's Do This</button>
     </div>
   </div>
@@ -2339,69 +2723,113 @@
   <!-- Unlock modal -->
   <div class="popup-backdrop" id="unlockPopup" style="align-items:center;padding:16px;">
     <div class="verified-modal">
+
+      <!-- Compact header row -->
       <div class="vm-header">
-        <div class="vm-rings">
-          <div class="vm-ring vm-ring-1"></div>
-          <div class="vm-ring vm-ring-2"></div>
-          <div class="vm-ring vm-ring-3"></div>
-          <div class="vm-checkmark"><ion-icon name="checkmark" style="font-size:36px;color:#fff;"></ion-icon></div>
+        <div class="vm-checkmark">
+          <ion-icon name="checkmark" style="font-size:22px;color:#fff;"></ion-icon>
         </div>
-        <div class="vm-badge-row">
-          <span class="vm-badge">✅ Identity Verified</span>
-          <span class="vm-badge" id="vmBonusBadge" style="display:none;">🎁 Bonus Credited</span>
+        <div class="vm-header-text">
+          <div class="vm-title">Account Activated</div>
+          <div class="vm-sub">Panda Master · Member since today</div>
         </div>
-        <h2 class="vm-title">Account activated</h2>
-        <p class="vm-sub">You're officially a Panda Master member.<br />Here's what's waiting for you:</p>
       </div>
 
+      <!-- Hidden legacy elements — kept for JS compatibility -->
+      <div class="vm-rings" style="display:none;">
+        <div class="vm-ring vm-ring-1"></div>
+        <div class="vm-ring vm-ring-2"></div>
+        <div class="vm-ring vm-ring-3"></div>
+      </div>
+      <div class="vm-badge-row" style="display:none;">
+        <span class="vm-badge" id="vmBonusBadge"></span>
+      </div>
+
+      <!-- Stat rows -->
+      <div class="vm-stats">
+        <div class="vm-stat-row">
+          <span class="vm-stat-label">Status</span>
+          <span class="vm-stat-value vm-stat-green">Active</span>
+        </div>
+        <div class="vm-stat-row">
+          <span class="vm-stat-label">Welcome bonus</span>
+          <span class="vm-stat-value vm-stat-gold" id="vmBonusLine">$20.00</span>
+        </div>
+        <div class="vm-stat-row">
+          <span class="vm-stat-label">Confirmation</span>
+          <span class="vm-stat-value" id="vmEmailStatVal">Sending...</span>
+        </div>
+      </div>
+
+      <div class="vm-divider"></div>
+
+      <!-- Feature list -->
       <div class="vm-features">
         <div class="vm-feature">
-          <div class="vm-feat-icon" style="background:rgba(231,184,75,0.12);color:var(--gold-2);"><ion-icon name="game-controller-outline"></ion-icon></div>
-          <div class="vm-feat-text"><div class="vm-feat-title">500+ Casino Games</div><div class="vm-feat-sub">Slots, fish tables, poker &amp; more</div></div>
-          <div><ion-icon name="checkmark-circle" style="color:var(--green);font-size:20px;"></ion-icon></div>
+          <div class="vm-feat-icon" style="background:rgba(231,184,75,0.10);color:var(--gold-2);"><ion-icon name="game-controller-outline"></ion-icon></div>
+          <div class="vm-feat-text">
+            <div class="vm-feat-title">500+ Casino Games</div>
+            <div class="vm-feat-sub">Slots, fish tables, poker &amp; more</div>
+          </div>
+          <ion-icon name="checkmark-circle" class="vm-feat-check"></ion-icon>
         </div>
         <div class="vm-feature">
-          <div class="vm-feat-icon" style="background:rgba(53,197,111,0.12);color:var(--green);"><ion-icon name="cash-outline"></ion-icon></div>
-          <div class="vm-feat-text"><div class="vm-feat-title">Real Cash Payouts</div><div class="vm-feat-sub">Cash App, Venmo &amp; PayPal</div></div>
-          <div><ion-icon name="checkmark-circle" style="color:var(--green);font-size:20px;"></ion-icon></div>
+          <div class="vm-feat-icon" style="background:rgba(53,197,111,0.10);color:var(--green);"><ion-icon name="cash-outline"></ion-icon></div>
+          <div class="vm-feat-text">
+            <div class="vm-feat-title">Real Cash Payouts</div>
+            <div class="vm-feat-sub">Cash App, Venmo &amp; PayPal</div>
+          </div>
+          <ion-icon name="checkmark-circle" class="vm-feat-check"></ion-icon>
         </div>
         <div class="vm-feature">
-          <div class="vm-feat-icon" style="background:rgba(255,255,255,0.06);color:#f0e4cf;"><ion-icon name="flash-outline"></ion-icon></div>
-          <div class="vm-feat-text"><div class="vm-feat-title">Instant Play — No Download</div><div class="vm-feat-sub">Works on any device</div></div>
-          <div><ion-icon name="checkmark-circle" style="color:var(--green);font-size:20px;"></ion-icon></div>
+          <div class="vm-feat-icon" style="background:rgba(53,197,111,0.08);color:var(--green);"><ion-icon name="cloud-download-outline"></ion-icon></div>
+          <div class="vm-feat-text">
+            <div class="vm-feat-title">Free App Download</div>
+            <div class="vm-feat-sub">iOS &amp; Android — install in seconds</div>
+          </div>
+          <ion-icon name="checkmark-circle" class="vm-feat-check"></ion-icon>
         </div>
         <div class="vm-feature" id="vmBonusFeature" style="display:none;">
-          <div class="vm-feat-icon" style="background:rgba(231,184,75,0.12);color:var(--gold-2);"><ion-icon name="gift-outline"></ion-icon></div>
-          <div class="vm-feat-text"><div class="vm-feat-title">Sign-Up Bonus Applied</div><div class="vm-feat-sub vm-bonus-amount" id="vmBonusLine">$20.00 added to your balance</div></div>
-          <div><ion-icon name="checkmark-circle" style="color:var(--gold-2);font-size:20px;"></ion-icon></div>
+          <div class="vm-feat-icon" style="background:rgba(231,184,75,0.10);color:var(--gold-2);"><ion-icon name="gift-outline"></ion-icon></div>
+          <div class="vm-feat-text">
+            <div class="vm-feat-title">Bonus Applied</div>
+            <div class="vm-feat-sub vm-bonus-amount">$20.00 added to your balance</div>
+          </div>
+          <ion-icon name="checkmark-circle" style="color:var(--gold-2);font-size:17px;" class="vm-feat-check"></ion-icon>
         </div>
       </div>
 
+      <!-- Email confirmation -->
       <div class="vm-email-section" id="vmEmailSection">
         <div id="vmEmailSending">
           <div class="vm-email-status vm-email-status--sending">
             <div class="vm-send-spinner"></div>
-            <span>Sending your download link &amp; account details...</span>
+            <span>Sending download link &amp; account details...</span>
           </div>
         </div>
         <div id="vmEmailSuccess" style="display:none;">
           <div class="vm-email-status">
-            <div class="vm-status-icon-wrap" style="background:rgba(53,197,111,0.15);border:1px solid rgba(53,197,111,0.3);">
-              <ion-icon name="checkmark-circle" style="color:var(--green);font-size:22px;"></ion-icon>
+            <div class="vm-status-icon-wrap" style="background:rgba(53,197,111,0.12);border:1px solid rgba(53,197,111,0.24);">
+              <ion-icon name="checkmark-circle" style="color:var(--green);font-size:18px;"></ion-icon>
             </div>
             <div>
-              <div style="font-weight:800;color:#fff;font-size:13px;">Confirmation email sent!</div>
-              <div style="font-size:11px;color:var(--muted);" id="vmEmailSentTo">Check your inbox for your download link.</div>
+              <div style="font-weight:800;color:#fff;font-size:12px;">Confirmation email sent!</div>
+              <div style="font-size:10px;color:var(--muted);" id="vmEmailSentTo">Check your inbox for your download link.</div>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- CTA -->
       <a href="https://vegassweeps777.download/" target="_blank" rel="noopener" class="vm-cta-btn" id="vmPlayBtn">
-        <ion-icon name="cloud-download-outline" style="font-size:20px;"></ion-icon> Download &amp; Play Now
+        <ion-icon name="cloud-download-outline" style="font-size:18px;"></ion-icon> Download &amp; Play Now
       </a>
 
-      <div class="vm-redirect-note">Auto-redirecting in <strong id="vmCountdown">25</strong>s &nbsp;·&nbsp; <span id="vmCancelRedirect" style="color:var(--gold-1);cursor:pointer;text-decoration:underline;">Cancel</span></div>
+      <div class="vm-redirect-note">
+        Auto-redirecting in <strong id="vmCountdown">25</strong>s &nbsp;·&nbsp;
+        <span id="vmCancelRedirect" style="color:var(--gold-1);cursor:pointer;text-decoration:underline;">Cancel</span>
+      </div>
+
     </div>
   </div>
 
@@ -2660,6 +3088,7 @@
       promoToggle.style.opacity = '.85';
       promoInput.focus();
     });
+
     promoInput.addEventListener('input', (e) => {
       couponInputBox.classList.remove('error');
       applyBtn.innerHTML = 'Apply <ion-icon name="arrow-forward-outline"></ion-icon>';
@@ -2755,31 +3184,43 @@
     const progPct = document.getElementById('progPct');
 
     const stepsBase = [
-      { text: 'Creating Profile...', time: 500, width: 20 },
-      { text: 'Verifying User Credentials...', time: 1500, width: 45 },
-      { text: 'Preparing Account Access...', time: 2800, width: 70 },
-      { text: 'Finalizing Account...', time: 4000, width: 100 }
+      { text: 'Creating Profile...', desc: 'Setting up your member profile', time: 500, width: 20 },
+      { text: 'Verifying Credentials...', desc: 'Running security checks on your details', time: 1500, width: 45 },
+      { text: 'Preparing Account Access...', desc: 'Configuring your permissions', time: 2800, width: 70 },
+      { text: 'Finalizing Account...', desc: 'Almost ready — just a few more seconds', time: 4000, width: 100 }
     ];
 
     const stepsWithBonus = [
-      { text: 'Creating Profile...', time: 500, width: 20 },
-      { text: 'Verifying User Credentials...', time: 1500, width: 45 },
-      { text: 'Preparing Account Access...', time: 2800, width: 70 },
-      { text: 'Allocating $20 Free Play...', time: 4000, width: 90 },
-      { text: 'Finalizing Account...', time: 5000, width: 100 }
+      { text: 'Creating Profile...', desc: 'Setting up your member profile', time: 500, width: 20 },
+      { text: 'Verifying Credentials...', desc: 'Running security checks on your details', time: 1500, width: 45 },
+      { text: 'Preparing Account Access...', desc: 'Configuring your permissions', time: 2800, width: 70 },
+      { text: 'Allocating $20 Free Play...', desc: 'Crediting your welcome bonus', time: 4000, width: 90 },
+      { text: 'Finalizing Account...', desc: 'Almost ready — just a few more seconds', time: 5000, width: 100 }
     ];
 
     function buildStepRows(steps) {
-      document.getElementById('procStepsList').innerHTML = steps.map((step, i) => `
+      document.getElementById('procStepsList').innerHTML = steps.map((step, i) => {
+        const isLast = i === steps.length - 1;
+        return `
         <div class="proc-step" id="procStep${i}">
-          <div class="proc-step-dot"></div>
-          <div class="proc-step-text">${step.text}</div>
-          <ion-icon name="checkmark-circle" class="proc-step-check"></ion-icon>
-        </div>
-      `).join('');
+          <div class="proc-step-spine">
+            <div class="proc-step-node">
+              <ion-icon name="checkmark" class="proc-step-node-check" style="font-size:11px;color:#fff;"></ion-icon>
+              <div class="proc-step-node-dot"></div>
+            </div>
+            ${!isLast ? '<div class="proc-step-connector"></div>' : ''}
+          </div>
+          <div class="proc-step-content">
+            <div class="proc-step-text">${step.text}</div>
+            <div class="proc-step-desc">${step.desc || ''}</div>
+          </div>
+        </div>`;
+      }).join('');
     }
 
     function runSteps(steps) {
+      const subtitleEl = document.getElementById('procSubtitle');
+
       steps.forEach((step, i) => {
         setTimeout(() => {
           if (i > 0) {
@@ -2788,6 +3229,7 @@
           }
           const current = document.getElementById(`procStep${i}`);
           if (current) current.classList.add('active');
+          if (subtitleEl) subtitleEl.textContent = step.text;
           progFill.style.width = `${step.width}%`;
           progPct.textContent = `${step.width}%`;
         }, step.time);
@@ -2796,6 +3238,7 @@
       setTimeout(() => {
         const last = document.getElementById(`procStep${steps.length - 1}`);
         if (last) { last.classList.remove('active'); last.classList.add('done'); }
+        if (subtitleEl) subtitleEl.textContent = 'All done!';
         progPct.textContent = '100%';
       }, steps[steps.length - 1].time + 400);
     }
@@ -2815,14 +3258,7 @@
         document.getElementById('loader').classList.remove('active');
         document.getElementById('successModal').classList.add('active');
 
-        const prizeBox = document.getElementById('modalPrizeBox');
-        if (isCouponValid) {
-          prizeBox.style.display = 'block';
-          modalClaimBtn.innerHTML = 'Activate & Claim Bonus <ion-icon name="arrow-forward"></ion-icon>';
-        } else {
-          prizeBox.style.display = 'none';
-          modalClaimBtn.innerHTML = 'Activate Now <ion-icon name="arrow-forward"></ion-icon>';
-        }
+        modalClaimBtn.innerHTML = 'Activate &amp; Claim $20 Bonus <ion-icon name="arrow-forward"></ion-icon>';
 
         const successBar = document.getElementById('successBar');
         successBar.classList.add('show');
@@ -2973,6 +3409,8 @@
         document.getElementById('vmEmailSending').style.display = 'none';
         document.getElementById('vmEmailSuccess').style.display = 'block';
         document.getElementById('vmEmailSentTo').textContent = `Sent to ${email}`;
+        const statVal = document.getElementById('vmEmailStatVal');
+        if (statVal) statVal.textContent = 'Email sent';
       }, 2000);
     }
 
