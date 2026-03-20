@@ -12,7 +12,1987 @@
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-  <link rel="stylesheet" href="../assets/css/signup-new.css">
+  <style>
+    :root {
+      --bg: #09090c;
+      --bg-2: #0f1014;
+      --bg-3: #15161c;
+      --panel: rgba(18, 19, 25, 0.94);
+      --panel-2: rgba(22, 23, 31, 0.98);
+      --panel-soft: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.14);
+      --text: #f6f1e8;
+      --muted: #b4ab9b;
+      --muted-2: rgba(180, 171, 155, 0.62);
+      --gold-1: #f4d58a;
+      --gold-2: #e7b84b;
+      --gold-3: #bc8d28;
+      --green: #35c56f;
+      --green-soft: rgba(53, 197, 111, 0.12);
+      --red: #e35d6a;
+      --red-soft: rgba(227, 93, 106, 0.12);
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.42);
+      --radius-lg: 26px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(231,184,75,0.08), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(255,255,255,0.03), transparent 22%),
+        linear-gradient(180deg, #07080b 0%, #0b0c11 48%, #0a0b0f 100%);
+      padding: 34px 14px 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(circle at center, black 28%, transparent 80%);
+      opacity: 0.18;
+    }
+
+    img { max-width: 100%; height: auto; }
+    a { color: inherit; }
+    button, input { font: inherit; }
+
+    :focus-visible {
+      outline: 2px solid var(--gold-2);
+      outline-offset: 3px;
+    }
+
+    .success-message-bar {
+      position: fixed;
+      top: -70px;
+      left: 0;
+      right: 0;
+      z-index: 5000;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #22894f, #35c56f);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.35);
+      transition: top 0.42s ease;
+    }
+
+    .success-message-bar.show { top: 0; }
+
+    .sm-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.18);
+      font-size: 18px;
+    }
+
+    .global-loader,
+    .overlay,
+    .locker-overlay,
+    .popup-backdrop {
+      position: fixed;
+      inset: 0;
+    }
+
+    .global-loader {
+      background: #09090d;
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.55s ease, visibility 0.55s ease;
+    }
+
+    .global-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-content,
+    .proc-logo-wrap {
+      position: relative;
+      width: 104px;
+      height: 104px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loader-logo,
+    .proc-logo {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 0 16px rgba(231,184,75,0.26));
+      animation: pulseLogo 2s infinite ease-in-out;
+    }
+
+    .loader-ring,
+    .loader-ring2,
+    .proc-ring {
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .loader-ring {
+      inset: 0;
+      border: 2px solid rgba(255,255,255,0.08);
+      border-top-color: var(--gold-2);
+      animation: spin 1s linear infinite;
+    }
+
+    .loader-ring2 {
+      inset: 10px;
+      border: 1px solid transparent;
+      border-bottom-color: rgba(244,213,138,0.42);
+      animation: spin 1.7s linear reverse infinite;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 460px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .container1 {
+      position: relative;
+      width: 100%;
+      border-radius: var(--radius-lg);
+      padding: 0;
+      background: #0c0d12;
+      border: 1px solid rgba(255,255,255,0.09);
+      box-shadow: 0 22px 56px rgba(0,0,0,0.50);
+      overflow: hidden;
+    }
+    /* ── Concept D: Vibrant Bold Header ── */
+
+    /* Full-bleed gold hero banner */
+    .hero-banner {
+      position: relative;
+      overflow: hidden;
+      padding: 22px 22px 20px;
+      background: linear-gradient(135deg, #1c1400 0%, #221800 55%, #1a1200 100%);
+      border-bottom: 1px solid rgba(231,184,75,0.18);
+    }
+
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 8%, rgba(244,213,138,0.55) 40%, rgba(255,255,255,0.4) 52%, rgba(244,213,138,0.55) 64%, transparent 92%);
+    }
+
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 90% 50%, rgba(231,184,75,0.10) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-banner-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .hero-banner-left { flex: 1; min-width: 0; }
+
+    .hero-brand-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 9px;
+    }
+
+    .hero-logo-wrap {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: rgba(231,184,75,0.16);
+      border: 1px solid rgba(231,184,75,0.26);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .main-logo-img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    .hero-tagline-text {
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(244,213,138,0.52);
+    }
+
+    /* headline sits inside banner, left-aligned */
+    .hero-block { margin: 0; }
+
+    .headline {
+      font-family: 'Cinzel', serif;
+      font-size: 22px;
+      line-height: 1.18;
+      letter-spacing: -0.2px;
+      color: #fff;
+      margin: 0;
+      text-wrap: balance;
+    }
+
+    .headline span { color: #f4d58a; }
+
+    /* Bonus block — right side of banner */
+    .hero-bonus {
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .hero-bonus-lbl-top {
+      font-size: 8px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: rgba(244,213,138,0.48);
+      margin-bottom: 2px;
+    }
+
+    .hero-bonus-amt {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1;
+      color: #f4d58a;
+      letter-spacing: -1px;
+    }
+
+    .hero-bonus-lbl-bot {
+      font-size: 9px;
+      font-weight: 700;
+      color: rgba(244,213,138,0.46);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    /* Eyebrow hidden — kept for JS compatibility */
+    .eyebrow { display: none !important; }
+
+    /* Card body — wraps everything below banner */
+    .card-body {
+      padding: 18px 22px 22px;
+    }
+
+    .subheadline {
+      font-size: 13px;
+      line-height: 1.72;
+      color: rgba(180,171,155,0.72);
+      margin-bottom: 14px;
+    }
+
+    .subheadline strong { color: var(--text); font-weight: 700; }
+
+    /* Trust chips row */
+    .trust-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .trust-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(53,197,111,0.08);
+      color: #97ebb7;
+      border: 1px solid rgba(53,197,111,0.15);
+    }
+
+    .trust-chip-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #35c56f;
+      flex-shrink: 0;
+    }
+
+    /* ── Promo / Coupon ── */
+    .promo-compact {
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .promo-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: #ece4d6;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .promo-toggle-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .promo-toggle-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(231,184,75,0.12);
+      color: var(--gold-2);
+      border: 1px solid rgba(231,184,75,0.16);
+    }
+
+    .coupon-wrapper { display: none; margin-top: 12px; }
+
+    .coupon-ui {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 7px 7px 12px;
+      border-radius: 16px;
+      background: #12141a;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: border-color .22s ease, box-shadow .22s ease;
+    }
+
+    .coupon-ui:focus-within {
+      border-color: rgba(231,184,75,0.34);
+      box-shadow: 0 0 0 4px rgba(231,184,75,0.08);
+    }
+
+    .coupon-ui.error {
+      border-color: var(--red);
+      box-shadow: 0 0 0 4px rgba(227,93,106,0.08);
+      animation: shake .35s both;
+    }
+
+    .coupon-tag-icon {
+      font-size: 18px;
+      color: var(--muted-2);
+      flex-shrink: 0;
+    }
+
+    .c-input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      color: #fff;
+      padding: 10px 0;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .c-input::placeholder {
+      color: var(--muted-2);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .c-input:focus { outline: none; }
+
+    .c-btn {
+      flex-shrink: 0;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      background: linear-gradient(135deg, #f4d58a 0%, #e7b84b 52%, #bc8d28 100%);
+      color: #140f06;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .55px;
+      display: inline-flex;
+      gap: 5px;
+      align-items: center;
+      cursor: pointer;
+      transition: transform .2s ease, filter .2s ease;
+    }
+
+    .c-btn:hover { transform: translateY(-1px); filter: brightness(1.03); }
+
+    .c-btn.verifying {
+      opacity: .7;
+      pointer-events: none;
+      background: rgba(255,255,255,0.07);
+      color: var(--muted);
+    }
+
+    .golden-ticket { display: none; margin-top: 12px; }
+
+    .golden-ticket.active {
+      display: block;
+      animation: ticketReveal .55s ease both;
+    }
+
+    .gt-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      padding: 18px;
+      background: linear-gradient(135deg, rgba(231,184,75,0.13), rgba(255,255,255,0.02));
+      border: 1px solid rgba(231,184,75,0.22);
+    }
+
+    .gt-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 20%, rgba(255,255,255,0.05) 45%, transparent 75%);
+      transform: translateX(-100%);
+      animation: sweep 3.5s ease-in-out infinite;
+    }
+
+    .gt-body {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .gt-coin {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      background: radial-gradient(circle at 30% 30%, #fff7db, #e7b84b 58%, #9d6d16 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 12px 22px rgba(0,0,0,0.24);
+    }
+
+    .gt-coin-inner { font-size: 24px; }
+    .gt-info { flex: 1; min-width: 0; }
+
+    .gt-eyebrow {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 800;
+      color: rgba(244,213,138,0.82);
+      margin-bottom: 4px;
+    }
+
+    .gt-value {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 34px;
+      line-height: 1;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .gt-value em { color: var(--gold-1); font-style: normal; }
+    .gt-tagline { margin-top: 4px; font-size: 11px; color: rgba(255,255,255,0.55); }
+
+    .gt-badge-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+    }
+
+    .gt-badge-label {
+      font-size: 9px;
+      color: rgba(255,255,255,0.46);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    .gt-code-chip {
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px dashed rgba(244,213,138,0.45);
+      background: rgba(255,255,255,0.04);
+      color: var(--gold-1);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .gt-strip {
+      position: relative;
+      z-index: 2;
+      margin-top: 14px;
+      padding-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .gt-strip-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.64);
+    }
+
+    .gt-strip-chip.green { background: var(--green-soft); color: #97ebb7; }
+    /* ── Form ── */
+    .modern-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .name-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .section-kicker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .section-kicker::before,
+    .section-kicker::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .section-kicker span {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      color: rgba(180,171,155,0.54);
+      white-space: nowrap;
+    }
+
+    .field { position: relative; }
+
+    .field label {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 0 4px;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(228, 220, 206, 0.76);
+      pointer-events: none;
+      white-space: nowrap;
+      transition: all .2s ease;
+      z-index: 2;
+    }
+
+    .field.has-icon label { left: 46px; }
+
+    .field.filled label,
+    .field:focus-within label {
+      top: 0;
+      left: 16px;
+      transform: translateY(-50%);
+      background: var(--panel-2);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .25px;
+      color: var(--gold-1);
+    }
+
+    .field.error.filled label,
+    .field.error:focus-within label { color: #ffb6be; }
+
+    .field.valid.filled label,
+    .field.valid:focus-within label { color: #9be9b8; }
+
+    .field input {
+      width: 100%;
+      height: 58px;
+      padding: 0 46px 0 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: #12141a;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      transition: border-color .22s ease, box-shadow .22s ease, background .22s ease;
+      outline: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    .field.has-icon input { padding-left: 46px; }
+    .field input::placeholder { color: transparent; }
+
+    .field input:focus {
+      border-color: rgba(231,184,75,0.34);
+      background: #14161d;
+      box-shadow: 0 0 0 4px rgba(231,184,75,0.08);
+    }
+
+    .field.valid input {
+      border-color: rgba(53,197,111,0.38);
+      background: rgba(53,197,111,0.03);
+    }
+
+    .field.valid input:focus { box-shadow: 0 0 0 4px rgba(53,197,111,0.08); }
+
+    .field.error input {
+      border-color: rgba(227,93,106,0.45);
+      background: rgba(227,93,106,0.03);
+      animation: shake .35s both;
+    }
+
+    .field.error input:focus { box-shadow: 0 0 0 4px rgba(227,93,106,0.08); }
+
+    .field-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      pointer-events: none;
+      font-size: 18px;
+      color: rgba(222,206,184,0.46);
+      transition: color .2s ease;
+    }
+
+    .field:focus-within .field-icon { color: var(--gold-2); }
+    .field.valid .field-icon { color: var(--green); }
+    .field.error .field-icon { color: var(--red); }
+
+    .field-right {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      display: flex;
+      align-items: center;
+    }
+
+    .eye-toggle {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      color: rgba(222,206,184,0.58);
+      cursor: pointer;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all .2s ease;
+    }
+
+    .eye-toggle:hover,
+    .field:focus-within .eye-toggle {
+      color: var(--gold-2);
+      border-color: rgba(231,184,75,0.2);
+      background: rgba(231,184,75,0.06);
+    }
+
+    .eye-toggle.is-open {
+      color: var(--gold-1);
+      border-color: rgba(231,184,75,0.34);
+      background: rgba(231,184,75,0.1);
+    }
+
+    .valid-check {
+      opacity: 0;
+      transform: scale(.6);
+      font-size: 20px;
+      color: var(--green);
+      transition: .2s ease;
+    }
+
+    .field.valid .valid-check { opacity: 1; transform: scale(1); }
+
+    .field-hint {
+      min-height: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+      padding: 0 4px 2px;
+      font-size: 11.5px;
+      line-height: 1.4;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity .2s ease;
+    }
+
+    .field-hint.show,
+    .field-hint.default { visibility: visible; opacity: 1; }
+    .field-hint.default { color: rgba(180,171,155,0.68); }
+    .field-hint.info { color: var(--gold-1); }
+    .field-hint.error { color: #ffb4bc; }
+    .field-hint.success { color: #97ebb7; }
+
+    .agreement-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0 0;
+    }
+
+    .cb-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .cb-input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .cb-box {
+      width: 22px;
+      height: 22px;
+      border-radius: 8px;
+      border: 1.5px solid rgba(255,255,255,0.18);
+      background: #111319;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      transition: all .2s ease;
+    }
+
+    .cb-icon { display: none; font-size: 15px; color: #0f0c06; }
+
+    .cb-wrapper:hover .cb-input ~ .cb-box { border-color: rgba(231,184,75,0.42); }
+
+    .cb-input:checked ~ .cb-box {
+      border-color: rgba(231,184,75,0.5);
+      background: linear-gradient(135deg, #f4d58a 0%, #e7b84b 52%, #bc8d28 100%);
+      box-shadow: 0 0 16px rgba(231,184,75,0.14);
+    }
+
+    .cb-input:checked ~ .cb-box .cb-icon { display: block; }
+
+    .cb-text {
+      text-align: left;
+      font-size: 11px;
+      line-height: 1.6;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .cb-text a { color: var(--gold-1); text-decoration: none; font-weight: 700; }
+    .cb-text a:hover { text-decoration: underline; }
+
+    .cta-btn {
+      position: relative;
+      width: 100%;
+      margin-top: 12px;
+      padding: 17px 14px;
+      border: none;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #f7df9d 0%, #e7b84b 52%, #bc8d28 100%);
+      color: #130f07;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: .55px;
+      cursor: pointer;
+      box-shadow: 0 14px 32px rgba(231,184,75,0.22), inset 0 1px 0 rgba(255,255,255,0.18);
+      transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+      overflow: hidden;
+    }
+
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 55%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      transform: skewX(-18deg);
+      transition: left .45s ease;
+    }
+
+    .cta-btn:hover::after { left: 135%; }
+
+    .cta-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 36px rgba(231,184,75,0.28), inset 0 1px 0 rgba(255,255,255,0.18);
+    }
+
+    .cta-btn.disabled,
+    .cta-btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      pointer-events: none;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .cta-btn-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: rgba(19,15,7,0.11);
+      border: 1px solid rgba(19,15,7,0.11);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    #ctaBtnText {
+      display: block;
+      line-height: 1.08;
+      text-wrap: balance;
+      text-align: center;
+    }
+
+    .trust-badges {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .badge ion-icon { color: var(--green); font-size: 14px; }
+
+    /* ── Overlays ── */
+    .overlay {
+      background: rgba(8,9,13,0.96);
+      z-index: 2000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .overlay.active { display: flex; animation: fadeIn .25s ease; }
+
+    .loading-container {
+      width: min(100%, 360px);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 26px;
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .proc-ring { border: 2px solid transparent; }
+    .proc-ring-1 { inset: 0; border-top-color: var(--gold-2); border-right-color: rgba(231,184,75,0.18); animation: spin 1.2s linear infinite; }
+    .proc-ring-2 { inset: 8px; border-bottom-color: rgba(244,213,138,0.45); border-left-color: rgba(231,184,75,0.14); animation: spin 1.8s linear reverse infinite; }
+    .proc-ring-3 { inset: 16px; border: 1px solid rgba(255,255,255,0.09); animation: spin 3s linear infinite; }
+
+    .proc-title {
+      font-family: 'Cinzel', serif;
+      font-size: 22px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .proc-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 22px; }
+
+    .proc-progress-wrap { width: 100%; margin-bottom: 14px; }
+
+    .proc-progress-track {
+      width: 100%;
+      height: 6px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+
+    .proc-progress-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--gold-2), #f4d58a);
+      position: relative;
+      transition: width .35s ease;
+    }
+
+    .proc-progress-pct {
+      margin-top: 7px;
+      font-size: 11px;
+      font-weight: 800;
+      font-family: 'Rajdhani', sans-serif;
+      text-align: right;
+      color: var(--muted);
+    }
+
+    .proc-steps { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+
+    .proc-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all .3s ease;
+    }
+
+    .proc-step.active { background: rgba(231,184,75,0.10); border-color: rgba(231,184,75,0.18); }
+    .proc-step.done { background: rgba(53,197,111,0.07); border-color: rgba(53,197,111,0.18); }
+
+    .proc-step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+    }
+
+    .proc-step.active .proc-step-dot { background: var(--gold-2); box-shadow: 0 0 8px rgba(231,184,75,0.38); }
+    .proc-step.done .proc-step-dot { background: var(--green); }
+
+    .proc-step-text {
+      flex: 1;
+      min-width: 0;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: 'Rajdhani', sans-serif;
+      color: var(--muted);
+    }
+
+    .proc-step.active .proc-step-text { color: var(--gold-1); }
+    .proc-step.done .proc-step-text { color: #9be9b8; }
+
+    .proc-step-check { opacity: 0; font-size: 14px; color: var(--green); transition: opacity .25s ease; }
+    .proc-step.done .proc-step-check { opacity: 1; }
+
+    .success-card,
+    .locker-card,
+    .verified-modal,
+    .popup-modal {
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.022));
+      border: 1px solid var(--border);
+      box-shadow: 0 28px 70px rgba(0,0,0,0.56);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .success-card {
+      max-width: 392px;
+      width: 92%;
+      border-radius: 26px;
+      padding: 34px 28px;
+      text-align: center;
+      animation: popUp .35s ease;
+    }
+
+    .success-icon {
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 18px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      background: rgba(53,197,111,0.12);
+      border: 1px solid rgba(53,197,111,0.2);
+      color: var(--green);
+      font-size: 38px;
+    }
+
+    .prize-box {
+      margin: 22px 0;
+      padding: 16px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(231,184,75,0.10), rgba(255,255,255,0.03));
+      border: 1px solid rgba(231,184,75,0.18);
+    }
+
+    .prize-label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .9px; color: var(--gold-1); }
+
+    .prize-amount {
+      margin-top: 5px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 38px;
+      line-height: 1;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .locker-overlay {
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 14px;
+      background: rgba(8,9,13,0.96);
+      overflow-y: auto;
+    }
+
+    .locker-overlay.active { display: flex; }
+
+    .locker-card {
+      width: 100%;
+      max-width: 410px;
+      border-radius: 26px;
+      padding: 28px 20px;
+      text-align: center;
+      animation: fadeIn .35s ease;
+    }
+
+    #offerCard { padding: 22px 16px; }
+
+    .lock-title {
+      font-family: 'Cinzel', serif;
+      font-size: 19px;
+      line-height: 1.28;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .lock-desc { font-size: 14px; line-height: 1.68; color: var(--muted); margin-bottom: 20px; }
+    .highlight { color: var(--gold-1); font-weight: 700; }
+
+    .rc-wrap { width: 100%; max-width: 340px; margin: 0 auto; }
+
+    .rc-widget {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      border-radius: 18px 18px 12px 12px;
+      background: #12141a;
+      border: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    .rc-widget:hover { border-color: rgba(231,184,75,0.22); box-shadow: 0 0 0 4px rgba(231,184,75,0.06); }
+    .rc-widget.checking { pointer-events: none; }
+    .rc-widget.failed { background: rgba(227,93,106,0.06); border-color: rgba(227,93,106,0.24); }
+
+    .rc-left { display: flex; align-items: center; gap: 14px; flex: 1; }
+
+    .rc-checkbox {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      border: 2px solid #5c5f69;
+      background: #161922;
+      transition: all .2s ease;
+    }
+
+    .rc-widget:hover .rc-checkbox,
+    .rc-widget.checking .rc-checkbox { border-color: rgba(231,184,75,0.42); }
+    .rc-widget.verified .rc-checkbox { border-color: var(--green); background: rgba(53,197,111,0.08); }
+    .rc-widget.failed .rc-checkbox { border-color: var(--red); background: rgba(227,93,106,0.08); }
+
+    .rc-cb-spinner,
+    .rc-cb-check,
+    .rc-cb-x { display: none; }
+
+    .rc-cb-spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(231,184,75,0.18);
+      border-top-color: var(--gold-2);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    .rc-cb-check { font-size: 18px; font-weight: 900; color: var(--green); }
+    .rc-cb-x { font-size: 16px; font-weight: 900; color: var(--red); }
+
+    .rc-widget.checking .rc-cb-spinner { display: block; }
+    .rc-widget.verified .rc-cb-check { display: block; }
+    .rc-widget.failed .rc-cb-x { display: block; }
+
+    .rc-text-wrap { display: flex; flex-direction: column; gap: 2px; text-align: left; }
+    .rc-label { font-size: 15px; font-weight: 700; color: #ede5d8; line-height: 1.3; }
+    .rc-label-sub { font-size: 11px; color: rgba(180,171,155,0.46); }
+    .rc-widget.failed .rc-label { color: #ffc2c8; }
+
+    .rc-brand {
+      width: 56px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .rc-brand-logo { width: 42px; height: 42px; object-fit: contain; }
+    .rc-brand-links { font-size: 7.5px; color: rgba(180,171,155,0.32); text-align: center; }
+    .rc-brand-links a { text-decoration: none; }
+
+    .rc-footer {
+      padding: 8px 14px;
+      border-radius: 0 0 18px 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 10px;
+      color: rgba(180,171,155,0.4);
+    }
+
+    .rc-footer-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold-2); }
+
+    .rc-error-msg {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(227,93,106,0.08);
+      border: 1px solid rgba(227,93,106,0.22);
+      font-size: 12px;
+      color: #ffc0c7;
+      text-align: left;
+    }
+
+    .rc-error-msg.show { display: flex; }
+
+    .locker-steps {
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto 10px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .locker-step {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      font-size: 12px;
+      font-weight: 700;
+      color: #6d7586;
+    }
+
+    .locker-step.completed { color: #9be9b8; }
+    .locker-step.active { color: #fff; }
+
+    .step-check,
+    .step-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .step-check { background: var(--green); }
+    .step-num { background: #3b4252; }
+    .locker-step.active .step-num { background: #fff; color: #101116; }
+
+    .locker-step-divider { width: 24px; height: 2px; margin: 0 7px; background: #363d49; }
+    .locker-step-divider.done { background: var(--green); }
+
+    .offer-reward-callout {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0 12px;
+      padding: 12px 13px;
+      border-radius: 16px;
+      text-align: left;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .orc-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      color: var(--gold-2);
+      background: rgba(231,184,75,0.10);
+      border: 1px solid rgba(231,184,75,0.16);
+    }
+
+    .orc-text { display: flex; flex-direction: column; gap: 2px; }
+    .orc-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .7px; color: var(--gold-1); }
+
+    .orc-value {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+    }
+
+    .offer-progress-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 10px;
+    }
+
+    .offer-progress-label {
+      white-space: nowrap;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: .8px;
+    }
+
+    .offer-progress-track { height: 7px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
+
+    .offer-progress-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold-2), #f4d58a);
+      transition: width .4s ease;
+    }
+
+    .offer-progress-count { white-space: nowrap; font-size: 12px; font-weight: 800; color: #fff; }
+
+    .offer-wrapper { display: flex; flex-direction: column; gap: 12px; text-align: left; }
+    .offers-container { display: block; text-align: left; }
+
+    .offer-link-card {
+      display: block;
+      text-decoration: none;
+      border-radius: 18px;
+      overflow: hidden;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    .offer-link-card:hover { transform: translateY(-2px); }
+
+    .offer-link-card.is-selected .olc-inner {
+      border-color: rgba(53,197,111,0.28) !important;
+      box-shadow: 0 0 0 4px rgba(53,197,111,0.08), 0 12px 28px rgba(0,0,0,0.28) !important;
+    }
+
+    .offer-link-card.is-selected .olc-title { color: #ffffff; }
+    .offer-link-card.is-selected .olc-sub { color: rgba(255,255,255,0.70); }
+    .offer-link-card.is-selected .olc-helper { color: #97ebb7; }
+
+    .offer-link-card.is-selected .olc-arrow {
+      opacity: 1;
+      transform: translateX(0);
+      background: rgba(53,197,111,0.12) !important;
+      border-color: rgba(53,197,111,0.22) !important;
+    }
+
+    .offer-link-card.is-muted { opacity: 0.56; transform: none; }
+    .offer-link-card.is-muted .olc-arrow { opacity: 0.6; }
+    .offer-link-card.is-muted:hover { transform: none; }
+
+    .secondary-card .olc-title { color: rgba(255,255,255,0.82); }
+    .secondary-card .olc-sub { color: rgba(255,255,255,0.50); }
+    .secondary-card .olc-icon-wrap { opacity: 0.9; }
+    .secondary-card .olc-pill:last-child { color: rgba(255,255,255,0.52) !important; }
+    .secondary-card .olc-arrow { opacity: 0.82; }
+    .secondary-card:hover .olc-title { color: rgba(255,255,255,0.9); }
+    .secondary-card:hover .olc-sub { color: rgba(255,255,255,0.56); }
+
+    .olc-inner {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 14px;
+      border-radius: 18px;
+      transition: filter .2s ease;
+    }
+
+    .offer-link-card:hover .olc-inner { filter: brightness(1.04); }
+
+    .olc-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    .olc-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+    .olc-title { font-size: 14px; font-weight: 800; color: #fff; line-height: 1.35; }
+    .olc-sub { font-size: 11px; color: rgba(255,255,255,0.58); line-height: 1.45; }
+
+    .olc-helper {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 2px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gold-1);
+    }
+
+    .olc-pills { display: flex; gap: 5px; margin-top: 4px; flex-wrap: wrap; }
+
+    .olc-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .olc-arrow {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    .offer-link-card:hover .olc-arrow { transform: translateX(4px); }
+
+    .olc-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 3;
+      padding: 3px 7px;
+      border-radius: 20px;
+      font-size: 7px;
+      font-weight: 900;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    .olc-arrow-pulse { animation: arrowPulse 1.4s ease-in-out infinite; }
+    .offer-link-card:hover .olc-arrow-pulse { animation: none; }
+
+    .offers-loading-state { display: flex; flex-direction: column; gap: 12px; }
+
+    .offer-skeleton {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 14px;
+      border-radius: 18px;
+    }
+
+    .offer-skeleton::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 0%, transparent 36%, rgba(255,255,255,0.05) 50%, transparent 64%, transparent 100%);
+      transform: translateX(-120%);
+      animation: skeletonSweep 1.9s ease-in-out infinite;
+    }
+
+    .offer-skeleton--primary {
+      background: linear-gradient(135deg, #151820 0%, #1c202b 100%);
+      border: 1px solid rgba(231,184,75,0.18);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.24);
+    }
+
+    .offer-skeleton--secondary {
+      background: linear-gradient(135deg, #11131a 0%, #161922 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.16);
+    }
+
+    .offer-skeleton-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 2;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #f4d58a, #e7b84b);
+      color: #140f06;
+      font-size: 7px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .offer-skeleton-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .offer-skeleton--primary .offer-skeleton-icon { background: rgba(231,184,75,0.12); border-color: rgba(231,184,75,0.18); }
+
+    .offer-skeleton-content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 7px; }
+
+    .skeleton-line { height: 10px; border-radius: 999px; background: rgba(255,255,255,0.08); }
+    .offer-skeleton--primary .skeleton-line { background: rgba(255,255,255,0.09); }
+    .skeleton-line--title { width: 68%; height: 12px; }
+    .skeleton-line--sub { width: 86%; }
+    .skeleton-line--sub-short { width: 56%; }
+
+    .offer-skeleton-pills { display: flex; gap: 6px; margin-top: 2px; }
+    .skeleton-pill { width: 54px; height: 20px; border-radius: 999px; background: rgba(255,255,255,0.08); }
+
+    .offer-skeleton-arrow {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .offer-skeleton--primary .offer-skeleton-arrow { background: rgba(231,184,75,0.12); border-color: rgba(231,184,75,0.18); }
+
+    .offers-loading-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .offers-loading-note .spinner-small { width: 14px; height: 14px; }
+
+    .speed-proof,
+    .why-trigger,
+    .offer-timer-bar,
+    .locker-social-proof { border-radius: 16px; }
+
+    .speed-proof {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+      padding: 10px 12px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #97ebb7;
+      background: rgba(53,197,111,0.06);
+      border: 1px solid rgba(53,197,111,0.12);
+    }
+
+    .why-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+      padding: 6px 4px;
+      font-size: 11.5px;
+      color: var(--muted);
+      cursor: pointer;
+      background: transparent;
+      border: 1px solid transparent;
+      transition: color .2s ease, opacity .2s ease;
+    }
+
+    .why-trigger:hover { color: #fff; opacity: 0.92; }
+
+    .offer-timer-bar {
+      width: 100%;
+      margin-top: 12px;
+      padding: 11px 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .timer-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #e7dfd3;
+    }
+
+    .timer-left ion-icon { font-size: 15px; color: var(--gold-2); }
+
+    .timer-display {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--gold-2);
+    }
+
+    .locker-social-proof { margin-top: 10px; text-align: center; font-size: 11.5px; font-weight: 600; color: var(--muted); }
+
+    .proof-dot { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--green); }
+    .locker-social-proof strong { color: #f0e8db; }
+
+    #securityCard,
+    #offerCardWrapper {
+      will-change: opacity, transform, filter;
+      transition: opacity .34s ease, transform .34s ease, filter .34s ease;
+    }
+
+    #securityCard.transition-out {
+      opacity: 0;
+      transform: translateY(-10px) scale(.985);
+      filter: blur(4px);
+      pointer-events: none;
+    }
+
+    #offerCardWrapper {
+      opacity: 0;
+      transform: translateY(14px) scale(.985);
+      pointer-events: none;
+    }
+
+    #offerCardWrapper.transition-in {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    #offerCardWrapper.transition-in .locker-steps { animation: fadeIn .24s ease; }
+    #offerCardWrapper.transition-in #offerCard { animation: popUp .34s ease; }
+
+    .popup-backdrop {
+      z-index: 6000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.78);
+      backdrop-filter: blur(4px);
+      animation: fadeIn .2s ease;
+    }
+
+    .popup-backdrop.show { display: flex; }
+
+    .popup-modal {
+      position: relative;
+      width: 100%;
+      max-width: 364px;
+      border-radius: 26px;
+      padding: 30px 24px;
+      text-align: center;
+      animation: popUp .3s ease;
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.05);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .popup-close:hover { color: #fff; }
+
+    .popup-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 16px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+    }
+
+    .popup-icon.nudge,
+    .popup-icon.why {
+      background: rgba(231,184,75,0.10);
+      border: 1px solid rgba(231,184,75,0.16);
+      color: var(--gold-2);
+    }
+
+    .popup-title {
+      font-family: 'Cinzel', serif;
+      font-size: 22px;
+      line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .popup-body { margin-bottom: 20px; font-size: 13px; line-height: 1.7; color: var(--muted); }
+    .popup-body strong { color: #fff; }
+
+    .popup-btn,
+    .vm-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .2s ease, filter .2s ease;
+    }
+
+    .popup-btn {
+      padding: 13px 24px;
+      background: linear-gradient(135deg, #f7df9d 0%, #e7b84b 52%, #bc8d28 100%);
+      color: #130f07;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .popup-btn:hover,
+    .vm-cta-btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+    .popup-dismiss { display: block; margin-top: 10px; font-size: 11px; color: var(--muted); cursor: pointer; }
+
+    .verified-modal {
+      width: 100%;
+      max-width: 388px;
+      max-height: 92vh;
+      border-radius: 26px;
+      overflow-y: auto;
+      animation: popUp .35s ease;
+    }
+
+    .vm-header {
+      padding: 30px 24px 22px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(28,96,58,0.95) 0%, rgba(15,48,31,0.95) 100%);
+      border-bottom: 1px solid rgba(53,197,111,0.22);
+    }
+
+    .vm-rings {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vm-ring { position: absolute; border-radius: 50%; border: 2px solid; }
+    .vm-ring-1 { inset: 0; border-color: rgba(53,197,111,0.48); animation: ringPulse 2s ease-out infinite; }
+    .vm-ring-2 { inset: 8px; border-color: rgba(53,197,111,0.3); animation: ringPulse 2s ease-out .3s infinite; }
+    .vm-ring-3 { inset: 16px; border-color: rgba(53,197,111,0.18); animation: ringPulse 2s ease-out .6s infinite; }
+
+    .vm-checkmark {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      z-index: 2;
+      background: linear-gradient(135deg, #35c56f, #1f9752);
+      box-shadow: 0 0 30px rgba(53,197,111,0.35);
+    }
+
+    .vm-badge-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+
+    .vm-badge {
+      padding: 5px 10px;
+      border-radius: 20px;
+      background: rgba(53,197,111,0.14);
+      border: 1px solid rgba(53,197,111,0.24);
+      color: #a5efbe;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .vm-title {
+      font-family: 'Cinzel', serif;
+      font-size: 26px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .vm-sub { font-size: 13px; line-height: 1.62; color: rgba(255,255,255,0.74); }
+
+    .vm-features { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+
+    .vm-feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .vm-feat-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+    }
+
+    .vm-feat-text { flex: 1; min-width: 0; }
+    .vm-feat-title { font-size: 13px; font-weight: 800; color: #fff; }
+    .vm-feat-sub { margin-top: 1px; font-size: 11px; color: var(--muted); }
+    .vm-bonus-amount { color: var(--gold-2) !important; font-weight: 800; }
+
+    .vm-email-section { margin: 0 20px 16px; padding: 14px; border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+
+    .vm-email-status { display: flex; align-items: center; gap: 10px; padding: 4px 0; }
+    .vm-email-status--sending { font-size: 13px; font-weight: 700; color: var(--gold-2); }
+
+    .vm-status-icon-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    .vm-send-spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(231,184,75,0.16);
+      border-top-color: var(--gold-2);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    .vm-cta-btn {
+      margin: 0 20px 12px;
+      padding: 17px;
+      background: linear-gradient(135deg, #35c56f, #1f9752);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: .8px;
+      box-shadow: 0 10px 26px rgba(53,197,111,0.26);
+    }
+
+    .vm-redirect-note { padding-bottom: 18px; text-align: center; font-size: 11px; color: var(--muted); }
+    .vm-redirect-note strong { color: #fff; }
+
+    .spinner-small {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.18);
+      border-top-color: var(--gold-2);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    /* ── Keyframes ── */
+    @keyframes pulseLogo {
+      0%,100% { transform: scale(.95); opacity: .88; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @keyframes popUp {
+      from { opacity: 0; transform: scale(.94); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes ticketReveal {
+      from { opacity: 0; transform: translateY(6px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes arrowPulse {
+      0%,100% { transform: translateX(0); opacity: 1; }
+      50% { transform: translateX(4px); opacity: .72; }
+    }
+
+    @keyframes sweep {
+      0% { transform: translateX(-120%); }
+      55% { transform: translateX(120%); }
+      100% { transform: translateX(120%); }
+    }
+
+    @keyframes ringPulse {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1.3); opacity: 0; }
+    }
+
+    @keyframes skeletonSweep {
+      0% { transform: translateX(-120%); }
+      55% { transform: translateX(120%); }
+      100% { transform: translateX(120%); }
+    }
+
+    @media (max-width: 420px) {
+      body { padding-top: 18px; }
+      .container1 { border-radius: 22px; }
+      .hero-banner { padding: 16px 16px 14px; }
+      .card-body { padding: 14px 16px 18px; }
+      .headline { font-size: 18px; }
+      .subheadline { font-size: 13px; }
+      .name-row { grid-template-columns: 1fr; }
+      .field input { height: 56px; }
+      .coupon-ui { flex-wrap: wrap; }
+      .c-input { width: 100%; }
+      .c-btn { width: 100%; justify-content: center; }
+      .gt-body { align-items: flex-start; }
+      .gt-badge-wrap { align-items: flex-start; }
+      .trust-badges { grid-template-columns: 1fr; }
+      .cta-btn { font-size: 15px; padding: 16px 12px; }
+      .hero-bonus-amt { font-size: 34px; }
+      .locker-card { padding: 22px 14px; }
+      .locker-step { font-size: 11px; }
+      .locker-step-divider { width: 16px; margin: 0 4px; }
+      .offer-progress-wrap { grid-template-columns: 1fr; }
+      .offer-progress-count { text-align: left; }
+      .verified-modal { max-width: 100%; }
+      #offerCard { padding: 18px 14px !important; }
+      .locker-steps { margin-bottom: 8px; padding: 8px 14px; }
+      .offer-reward-callout { margin: 12px 0 10px; padding: 11px 12px; }
+      .speed-proof { margin-top: 7px; padding: 9px 10px; }
+      .why-trigger { margin-top: 6px; padding: 5px 2px; }
+      .offer-timer-bar { margin-top: 10px; padding: 10px 12px; }
+    }
+
+    @media (max-width: 360px) {
+      .headline { font-size: 16px; }
+      .hero-bonus-amt { font-size: 28px; }
+    }
+  </style>
 </head>
 <body>
   <div class="global-loader" id="globalLoader">
@@ -31,25 +2011,46 @@
   <div class="shell">
     <div class="container1" id="step1">
 
-      <!-- Centered hero header -->
-      <div class="top-meta">
-        <div class="hero-logo-wrap">
-          <img src="{{LOGO_URL}}" alt="{{GAME_NAME}}" class="main-logo-img" />
-        </div>
-        <div class="brand-name-centered">{{GAME_NAME}}</div>
-        <div class="eyebrow" id="signupEyebrow">
-          <ion-icon name="flash-outline"></ion-icon> Fast Signup · No Card Required
+      <!-- Vibrant Bold hero banner (full-bleed) -->
+      <div class="hero-banner">
+        <div class="hero-banner-row">
+          <div class="hero-banner-left">
+            <div class="hero-brand-row">
+              <div class="hero-logo-wrap">
+                <img src="{{LOGO_URL}}" alt="{{GAME_NAME}}" class="main-logo-img" />
+              </div>
+              <span class="hero-tagline-text">{{GAME_NAME}}</span>
+            </div>
+            <div class="hero-block">
+              <h1 class="headline">Create your <span>member account</span></h1>
+            </div>
+          </div>
+          <div class="hero-bonus" id="heroBonusBlock">
+            <div class="hero-bonus-lbl-top">Welcome</div>
+            <div class="hero-bonus-amt" id="heroBonusAmt">$20</div>
+            <div class="hero-bonus-lbl-bot">Free play</div>
+          </div>
         </div>
       </div>
 
-      <!-- Headline + subheadline — centered -->
-      <div class="hero-block">
-        <h1 class="headline">Create your <span>{{GAME_NAME}}</span> Account</h1>
+      <!-- Hidden eyebrow kept for JS compatibility -->
+      <span id="signupEyebrow" style="display:none;"></span>
+
+      <!-- Card body -->
+      <div class="card-body">
+
+        <!-- Subheadline -->
         <p class="subheadline" id="signupSubheadline">Create your account in under a minute. Have a promo code? Apply it below before you continue.</p>
-      </div>
+
+        <!-- Trust chips -->
+        <div class="trust-chips">
+          <span class="trust-chip"><span class="trust-chip-dot"></span> Free to join</span>
+          <span class="trust-chip"><span class="trust-chip-dot"></span> No card needed</span>
+          <span class="trust-chip"><span class="trust-chip-dot"></span> Takes 60 seconds</span>
+        </div>
 
       <div class="promo-compact">
-        <div class="promo-toggle" id="promoToggle">
+        <div class="promo-toggle" id="promoToggle" style="display:none;">
           <div class="promo-toggle-left">
             <span class="promo-toggle-badge"><ion-icon name="ticket-outline"></ion-icon></span>
             <div>
@@ -60,13 +2061,13 @@
           <ion-icon name="add-outline" style="font-size:18px;color:var(--muted);"></ion-icon>
         </div>
 
-        <div class="coupon-wrapper" id="couponWrapper">
-          <div class="coupon-ui" id="couponInputBox">
+        <div class="coupon-wrapper" id="couponWrapper" style="display:block;margin-top:0;">
+          <div class="coupon-ui" id="couponInputBox" style="display:none;">
             <ion-icon name="ticket-outline" class="coupon-tag-icon"></ion-icon>
             <input type="text" class="c-input" id="promoCode" placeholder="Enter promo code" autocomplete="off" spellcheck="false" />
             <button type="button" class="c-btn" id="applyBtn">Apply <ion-icon name="arrow-forward-outline"></ion-icon></button>
           </div>
-          <div class="golden-ticket" id="goldenTicket">
+          <div class="golden-ticket active" id="goldenTicket" style="animation:none;">
             <div class="gt-card">
               <div class="gt-body">
                 <div class="gt-coin"><span class="gt-coin-inner">🏆</span></div>
@@ -153,6 +2154,8 @@
           <span class="badge"><ion-icon name="flash"></ion-icon> Instant Activation</span>
         </div>
       </form>
+
+      </div><!-- /card-body -->
     </div>
   </div>
 
@@ -230,7 +2233,6 @@
         </div>
       </div>
     </div>
-
     <div id="offerCardWrapper" style="display:none;width:100%;max-width:390px;flex-direction:column;align-items:center;">
       <div class="locker-steps">
         <div class="locker-step completed"><span class="step-check"><ion-icon name="checkmark" style="font-size:11px;"></ion-icon></span> Sign Up</div>
@@ -329,7 +2331,7 @@
       <div class="popup-close" id="whyPopupClose"><ion-icon name="close-outline"></ion-icon></div>
       <div class="popup-icon why"><ion-icon name="shield-checkmark-outline"></ion-icon></div>
       <div class="popup-title">Why verify?</div>
-      <div class="popup-body"><strong>We need to confirm you're a real person.</strong><br /><br />To keep {{GAME_NAME}} free and protect our community from bots, we ask new users to complete one simple action before activating their account.<br /><br />It takes <strong>under 2 minutes</strong> and instantly unlocks your full account.</div>
+      <div class="popup-body"><strong>We need to confirm you're a real person.</strong><br /><br />To keep Vegas Sweeps 777 free and protect our community from bots, we ask new users to complete one simple action before activating their account.<br /><br />It takes <strong>under 2 minutes</strong> and instantly unlocks your full account.</div>
       <button class="popup-btn" id="whyPopupBtn"><ion-icon name="checkmark-circle-outline"></ion-icon> Got It — Let's Do This</button>
     </div>
   </div>
@@ -403,6 +2405,851 @@
     </div>
   </div>
 
-  <script src="../assets/js/signup-new.js"></script>
+  <script>
+    const VALID_PROMOS = {
+      VEGAS20: { amountLabel: '$20.00', amountEm: '$20', cents: '.00', ctaText: 'Create Account & Claim $20', modalText: '$20.00', rewardText: '$20.00 Waiting For You' },
+      CLAIM15: { amountLabel: '$20.00', amountEm: '$20', cents: '.00', ctaText: 'Create Account & Claim $20', modalText: '$20.00', rewardText: '$20.00 Waiting For You', aliasFor: 'VEGAS20' }
+    };
+
+    const DEFAULT_BONUS = VALID_PROMOS.VEGAS20;
+    let isCouponValid = false;
+    let activePromoCode = 'VEGAS20';
+    let activeBonus = DEFAULT_BONUS;
+
+    const firstNameInput = document.getElementById('firstName');
+    const lastNameInput = document.getElementById('lastName');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const confirmInput = document.getElementById('confirmPassword');
+    const termsCheck = document.getElementById('termsCheck');
+    const submitBtn = document.getElementById('submitBtn');
+    const ctaBtnText = document.getElementById('ctaBtnText');
+    const ctaBtnIcon = document.getElementById('ctaBtnIcon');
+    const passwordHint = document.getElementById('passwordHint');
+    const confirmHint = document.getElementById('confirmHint');
+    const promoToggle = document.getElementById('promoToggle');
+    const couponWrapper = document.getElementById('couponWrapper');
+    const couponInputBox = document.getElementById('couponInputBox');
+    const promoInput = document.getElementById('promoCode');
+    const applyBtn = document.getElementById('applyBtn');
+    const goldenTicket = document.getElementById('goldenTicket');
+    const finalCode = document.getElementById('finalCode');
+    const ticketBonusEm = document.getElementById('ticketBonusEm');
+    const ticketBonusCents = document.getElementById('ticketBonusCents');
+    const modalPrizeAmount = document.getElementById('modalPrizeAmount');
+    const modalClaimBtn = document.getElementById('modalClaimBtn');
+    const proofCountEl = document.getElementById('proofCount');
+    const offerSubtextEl = document.getElementById('offerSubtext');
+    const signupEyebrowEl = document.getElementById('signupEyebrow');
+    const signupSubheadlineEl = document.getElementById('signupSubheadline');
+    const speedProofEl = document.getElementById('speedProof');
+
+    const verificationDescriptions = [
+      'Complete one quick step below to confirm your identity and unlock your account.',
+      'You\'re almost done — confirm your identity to continue to your account.',
+      'Our system needs one more step to confirm your identity and activate your account.',
+      'Complete one quick step below so our system can confirm your identity and activate your account.',
+      'Verify your identity with one quick step below so we can activate your account.',
+      'Just one quick step left to confirm your identity and finish setup.',
+      'Confirm your identity below to unlock full account access.',
+      'Complete the final step to confirm your identity and continue.'
+    ];
+
+    const verificationStateCopy = {
+      waiting: 'We\'re checking your completion now. Please keep this page open while we verify your account access.',
+      fallback: 'We haven\'t received a completed verification yet. Choose one offer below to continue activating your account.'
+    };
+
+    function syncField(input) {
+      const wrapper = input.closest('.field');
+      if (!wrapper) return;
+      wrapper.classList.toggle('filled', input.value.length > 0);
+    }
+
+    function getVerificationDescription() {
+      const storageKey = 'vs777_verify_desc_v1';
+      let storedIndex = null;
+      try { storedIndex = window.sessionStorage.getItem(storageKey); } catch (e) {}
+      if (storedIndex !== null) {
+        const parsed = Number(storedIndex);
+        if (!Number.isNaN(parsed) && verificationDescriptions[parsed]) return verificationDescriptions[parsed];
+      }
+      const randomIndex = Math.floor(Math.random() * verificationDescriptions.length);
+      try { window.sessionStorage.setItem(storageKey, String(randomIndex)); } catch (e) {}
+      return verificationDescriptions[randomIndex];
+    }
+
+    function setOfferSubtext(state = 'initial') {
+      if (!offerSubtextEl) return;
+      if (state === 'waiting') { offerSubtextEl.textContent = verificationStateCopy.waiting; return; }
+      if (state === 'fallback') { offerSubtextEl.textContent = verificationStateCopy.fallback; return; }
+      offerSubtextEl.textContent = getVerificationDescription();
+    }
+
+    function normalizePromo(code) {
+      const normalized = (code || '').trim().toUpperCase();
+      if (!normalized) return null;
+      if (VALID_PROMOS[normalized]?.aliasFor) return VALID_PROMOS[VALID_PROMOS[normalized].aliasFor] ? VALID_PROMOS[normalized].aliasFor : normalized;
+      return VALID_PROMOS[normalized] ? normalized : null;
+    }
+
+    function updateSignupIntro() {
+      if (!signupSubheadlineEl) return;
+      const bonusAmt = document.getElementById('heroBonusAmt');
+      if (isCouponValid) {
+        signupSubheadlineEl.innerHTML = 'Your <strong>$20 free play</strong> is locked in — fill out the form below to claim it instantly.';
+        if (bonusAmt) bonusAmt.style.textShadow = '0 0 20px rgba(244,213,138,0.6)';
+      } else {
+        signupSubheadlineEl.textContent = 'Create your account in under a minute. Have a promo code? Apply it below before you continue.';
+        if (bonusAmt) bonusAmt.style.textShadow = '';
+      }
+    }
+
+    function setBonusUI(code) {
+      const promoConfig = VALID_PROMOS[code] || DEFAULT_BONUS;
+      activePromoCode = promoConfig.aliasFor || code;
+      activeBonus = VALID_PROMOS[promoConfig.aliasFor || code] || promoConfig;
+      finalCode.textContent = activePromoCode;
+      ticketBonusEm.textContent = activeBonus.amountEm;
+      ticketBonusCents.textContent = activeBonus.cents;
+      modalPrizeAmount.textContent = activeBonus.modalText;
+      updateCtaBtn();
+      updateSignupIntro();
+    }
+
+    function updateCtaBtn() {
+      if (isCouponValid) {
+        ctaBtnText.textContent = activeBonus.ctaText;
+        ctaBtnIcon.setAttribute('name', 'gift-outline');
+      } else {
+        ctaBtnText.textContent = 'Create Account';
+        ctaBtnIcon.setAttribute('name', 'add-circle-outline');
+      }
+      updateSignupIntro();
+    }
+
+    function validateText(input) {
+      const wrapper = input.closest('.field');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      wrapper.classList.remove('error', 'valid');
+      syncField(input);
+      if (input.value.length === 0) return false;
+      const valid = input.type === 'email' ? emailRegex.test(input.value) : input.value.trim().length > 1;
+      wrapper.classList.toggle('valid', valid);
+      if (!valid) wrapper.classList.add('error');
+      return valid;
+    }
+
+    function setHint(element, type, text, icon = '') {
+      element.className = `field-hint ${type}`.trim();
+      const iconMarkup = icon ? `<ion-icon name="${icon}"></ion-icon>` : '';
+      element.innerHTML = `${iconMarkup}${text}`;
+    }
+
+    function validatePassword() {
+      const wrapper = document.getElementById('fieldPassword');
+      const value = passwordInput.value;
+      const hasLetter = /[a-zA-Z]/.test(value);
+      const hasNumber = /[0-9]/.test(value);
+      const hasSymbol = /[^a-zA-Z0-9]/.test(value);
+      const hasMixedCase = /[a-z]/.test(value) && /[A-Z]/.test(value);
+      const valid = value.length >= 6 && hasLetter && hasNumber;
+
+      syncField(passwordInput);
+      wrapper.classList.remove('error', 'valid');
+
+      if (value.length === 0) {
+        setHint(passwordHint, 'default', 'Use at least 6 characters, including 1 letter and 1 number.');
+        return false;
+      }
+
+      if (!valid) {
+        wrapper.classList.add('error');
+        setHint(passwordHint, 'show error', 'Weak password — use at least 6 characters with 1 letter and 1 number.', 'alert-circle-outline');
+        return false;
+      }
+
+      wrapper.classList.add('valid');
+
+      if (value.length >= 10 && (hasSymbol || hasMixedCase)) {
+        setHint(passwordHint, 'show success', 'Strong password — great choice.', 'checkmark-circle-outline');
+      } else if (value.length >= 8) {
+        setHint(passwordHint, 'show success', 'Good password — strong enough for most users.', 'checkmark-circle-outline');
+      } else {
+        setHint(passwordHint, 'show info', 'Fair password — better, but adding length or a symbol helps.', 'information-circle-outline');
+      }
+
+      return true;
+    }
+
+    function validateConfirm() {
+      const wrapper = document.getElementById('fieldConfirm');
+      const match = confirmInput.value.length > 0 && confirmInput.value === passwordInput.value;
+      syncField(confirmInput);
+      wrapper.classList.remove('error', 'valid');
+
+      if (confirmInput.value.length === 0) {
+        setHint(confirmHint, 'default', 'Re-enter your password to confirm.');
+        return false;
+      }
+
+      if (match) {
+        wrapper.classList.add('valid');
+        setHint(confirmHint, 'show success', 'Passwords match.', 'checkmark-circle-outline');
+      } else {
+        wrapper.classList.add('error');
+        setHint(confirmHint, 'show error', 'Passwords do not match.', 'alert-circle-outline');
+      }
+
+      return match;
+    }
+
+    function isFormValid() {
+      return validateText(firstNameInput) &&
+             validateText(lastNameInput) &&
+             validateText(emailInput) &&
+             validatePassword() &&
+             validateConfirm() &&
+             termsCheck.checked;
+    }
+
+    function updateSubmitState() {
+      const enabled = isFormValid();
+      submitBtn.classList.toggle('disabled', !enabled);
+      submitBtn.disabled = !enabled;
+    }
+
+    ['firstName', 'lastName', 'email'].forEach((id) => {
+      const input = document.getElementById(id);
+      input.addEventListener('input', () => { validateText(input); updateSubmitState(); });
+      input.addEventListener('blur', () => { validateText(input); updateSubmitState(); });
+      setTimeout(() => syncField(input), 500);
+    });
+
+    passwordInput.addEventListener('input', () => {
+      validatePassword();
+      if (confirmInput.value.length > 0) validateConfirm();
+      updateSubmitState();
+    });
+
+    confirmInput.addEventListener('input', () => {
+      validateConfirm();
+      updateSubmitState();
+    });
+
+    termsCheck.addEventListener('change', updateSubmitState);
+
+    function bindEyeToggle(toggleId, input) {
+      const toggle = document.getElementById(toggleId);
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        toggle.setAttribute('name', show ? 'eye-off-outline' : 'eye-outline');
+        toggle.classList.toggle('is-open', show);
+        input.focus({ preventScroll: true });
+      });
+    }
+
+    bindEyeToggle('eyeToggle', passwordInput);
+    bindEyeToggle('eyeToggle2', confirmInput);
+
+    promoToggle.addEventListener('click', () => {
+      couponWrapper.style.display = 'block';
+      promoToggle.style.pointerEvents = 'none';
+      promoToggle.style.opacity = '.85';
+      promoInput.focus();
+    });
+    promoInput.addEventListener('input', (e) => {
+      couponInputBox.classList.remove('error');
+      applyBtn.innerHTML = 'Apply <ion-icon name="arrow-forward-outline"></ion-icon>';
+      applyBtn.style.color = '';
+      isCouponValid = false;
+      updateCtaBtn();
+      updateSubmitState();
+      if (!e.target.value.trim()) goldenTicket.classList.remove('active');
+    });
+
+    function launchConfettiFrom(element) {
+      const rect = element.getBoundingClientRect();
+      confetti({
+        particleCount: 90,
+        spread: 78,
+        origin: { x: (rect.left + rect.width / 2) / innerWidth, y: (rect.top + rect.height / 2) / innerHeight },
+        colors: ['#e7b84b', '#f4d58a', '#ffffff'],
+        zIndex: 1500,
+        scalar: 0.85
+      });
+    }
+
+    applyBtn.addEventListener('click', () => {
+      const normalized = normalizePromo(promoInput.value);
+      if (promoInput.value.trim().length < 2) return;
+
+      applyBtn.innerHTML = '<div class="spinner-small" style="border-top-color:#e7b84b;border-color:rgba(0,0,0,0.2);"></div> Verifying...';
+      applyBtn.classList.add('verifying');
+
+      setTimeout(() => {
+        applyBtn.classList.remove('verifying');
+
+        if (normalized) {
+          isCouponValid = true;
+          setBonusUI(normalized === 'CLAIM15' ? 'VEGAS20' : normalized);
+          couponInputBox.style.display = 'none';
+          goldenTicket.classList.add('active');
+          launchConfettiFrom(goldenTicket);
+          try { new Audio('https://gameroom777.net/wp-content/uploads/2026/01/gold-coin-prize.wav').play(); } catch (e) {}
+        } else {
+          isCouponValid = false;
+          updateCtaBtn();
+          applyBtn.innerHTML = 'Invalid <ion-icon name="warning-outline"></ion-icon>';
+          applyBtn.style.color = '#e35d6a';
+          couponInputBox.classList.add('error');
+
+          setTimeout(() => {
+            applyBtn.innerHTML = 'Apply <ion-icon name="arrow-forward-outline"></ion-icon>';
+            applyBtn.style.color = '';
+            couponInputBox.classList.remove('error');
+            promoInput.value = '';
+          }, 1500);
+        }
+
+        updateSubmitState();
+      }, 1100);
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const promoFromUrl = params.get('promo') || params.get('code');
+
+    function silentApply(code) {
+      const normalized = normalizePromo(code) || 'VEGAS20';
+      isCouponValid = true;
+      setBonusUI(normalized);
+      couponInputBox.style.display = 'none';
+      goldenTicket.classList.add('active');
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(() => document.getElementById('globalLoader').classList.add('hidden'), 800);
+      setOfferSubtext('initial');
+      [firstNameInput, lastNameInput, emailInput, passwordInput, confirmInput].forEach(syncField);
+
+      if (promoFromUrl) {
+        const normalized = normalizePromo(promoFromUrl);
+        if (normalized) {
+          silentApply(normalized);
+          launchConfettiFrom(goldenTicket);
+          try { new Audio('https://gameroom777.net/wp-content/uploads/2026/01/gold-coin-prize.wav').play(); } catch (e) {}
+        } else {
+          silentApply('VEGAS20');
+        }
+      } else {
+        silentApply('VEGAS20');
+      }
+
+      updateSignupIntro();
+      updateSubmitState();
+    });
+
+    const progFill = document.getElementById('progFill');
+    const progPct = document.getElementById('progPct');
+
+    const stepsBase = [
+      { text: 'Creating Profile...', time: 500, width: 20 },
+      { text: 'Verifying User Credentials...', time: 1500, width: 45 },
+      { text: 'Preparing Account Access...', time: 2800, width: 70 },
+      { text: 'Finalizing Account...', time: 4000, width: 100 }
+    ];
+
+    const stepsWithBonus = [
+      { text: 'Creating Profile...', time: 500, width: 20 },
+      { text: 'Verifying User Credentials...', time: 1500, width: 45 },
+      { text: 'Preparing Account Access...', time: 2800, width: 70 },
+      { text: 'Allocating $20 Free Play...', time: 4000, width: 90 },
+      { text: 'Finalizing Account...', time: 5000, width: 100 }
+    ];
+
+    function buildStepRows(steps) {
+      document.getElementById('procStepsList').innerHTML = steps.map((step, i) => `
+        <div class="proc-step" id="procStep${i}">
+          <div class="proc-step-dot"></div>
+          <div class="proc-step-text">${step.text}</div>
+          <ion-icon name="checkmark-circle" class="proc-step-check"></ion-icon>
+        </div>
+      `).join('');
+    }
+
+    function runSteps(steps) {
+      steps.forEach((step, i) => {
+        setTimeout(() => {
+          if (i > 0) {
+            const prev = document.getElementById(`procStep${i - 1}`);
+            if (prev) { prev.classList.remove('active'); prev.classList.add('done'); }
+          }
+          const current = document.getElementById(`procStep${i}`);
+          if (current) current.classList.add('active');
+          progFill.style.width = `${step.width}%`;
+          progPct.textContent = `${step.width}%`;
+        }, step.time);
+      });
+
+      setTimeout(() => {
+        const last = document.getElementById(`procStep${steps.length - 1}`);
+        if (last) { last.classList.remove('active'); last.classList.add('done'); }
+        progPct.textContent = '100%';
+      }, steps[steps.length - 1].time + 400);
+    }
+
+    document.getElementById('signupForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!isFormValid()) { updateSubmitState(); return; }
+
+      document.getElementById('step1').style.display = 'none';
+      document.getElementById('loader').classList.add('active');
+
+      const steps = isCouponValid ? stepsWithBonus : stepsBase;
+      buildStepRows(steps);
+      runSteps(steps);
+
+      setTimeout(() => {
+        document.getElementById('loader').classList.remove('active');
+        document.getElementById('successModal').classList.add('active');
+
+        const prizeBox = document.getElementById('modalPrizeBox');
+        if (isCouponValid) {
+          prizeBox.style.display = 'block';
+          modalClaimBtn.innerHTML = 'Activate & Claim Bonus <ion-icon name="arrow-forward"></ion-icon>';
+        } else {
+          prizeBox.style.display = 'none';
+          modalClaimBtn.innerHTML = 'Activate Now <ion-icon name="arrow-forward"></ion-icon>';
+        }
+
+        const successBar = document.getElementById('successBar');
+        successBar.classList.add('show');
+        setTimeout(() => successBar.classList.remove('show'), 4000);
+
+        try { new Audio('https://gameroom777.net/wp-content/uploads/2026/01/success.mp3').play(); } catch (e) {}
+
+        const defaults = { origin: { y: 0.6 }, zIndex: 9999 };
+        const fire = (ratio, opts) => confetti(Object.assign({}, defaults, opts, { particleCount: Math.floor(180 * ratio) }));
+        fire(0.25, { spread: 26, startVelocity: 55, colors: ['#e7b84b', '#f4d58a'] });
+        fire(0.2,  { spread: 60, colors: ['#f4d58a', '#fff'] });
+        fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+      }, steps[steps.length - 1].time + 500);
+    });
+
+    modalClaimBtn.addEventListener('click', () => {
+      document.getElementById('successModal').classList.remove('active');
+      document.getElementById('locker').classList.add('active');
+
+      if (isCouponValid) {
+        document.getElementById('secLockDesc').innerHTML = 'Complete one quick step to confirm your identity and release your <span class="highlight">$20.00 free play</span>.';
+        document.getElementById('orcLabel').textContent = 'Bonus Status';
+        document.getElementById('orcValue').textContent = '$20.00 Ready To Unlock';
+        setOfferSubtext('initial');
+      } else {
+        document.getElementById('secLockDesc').innerHTML = 'Complete one quick step to confirm your identity and continue to your account.';
+        document.getElementById('orcLabel').textContent = 'Access Status';
+        document.getElementById('orcValue').textContent = 'Access Ready To Unlock';
+        setOfferSubtext('initial');
+      }
+    });
+
+    const cfTrigger = document.getElementById('cfTrigger');
+    const securityCard = document.getElementById('securityCard');
+    const offerCardWrapper = document.getElementById('offerCardWrapper');
+    const reassuranceBanner = document.getElementById('reassuranceBanner');
+
+    cfTrigger.addEventListener('click', () => {
+      if (cfTrigger.classList.contains('checking')) return;
+
+      cfTrigger.classList.add('checking');
+      document.getElementById('cfText').textContent = 'Verifying…';
+      document.getElementById('gvVerifySub').textContent = 'Running security scan…';
+
+      setTimeout(() => {
+        cfTrigger.classList.remove('checking');
+        cfTrigger.classList.add('failed');
+        document.getElementById('cfText').textContent = 'Verification incomplete';
+        document.getElementById('gvVerifySub').textContent = 'Additional step required.';
+        reassuranceBanner.classList.add('show');
+        securityCard.style.animation = 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both';
+
+        setTimeout(() => {
+          securityCard.classList.add('transition-out');
+
+          setTimeout(() => {
+            securityCard.style.display = 'none';
+            offerCardWrapper.style.display = 'flex';
+            offerCardWrapper.classList.remove('transition-in');
+
+            requestAnimationFrame(() => {
+              offerCardWrapper.classList.add('transition-in');
+            });
+
+            startCountdown();
+            startFallbackTimer();
+            loadOffers();
+          }, 320);
+        }, 900);
+      }, 1800);
+    });
+
+    let countdownInterval = null;
+
+    function startCountdown() {
+      let total = 9 * 60 + 59;
+      const timer = document.getElementById('timerDisplay');
+
+      countdownInterval = setInterval(() => {
+        if (total <= 0) { clearInterval(countdownInterval); timer.textContent = '0:00'; return; }
+        total -= 1;
+        const minutes = Math.floor(total / 60);
+        const seconds = total % 60;
+        timer.textContent = `${minutes}:${String(seconds).padStart(2, '0')}`;
+        if (total < 120) timer.style.color = '#f4d58a';
+        if (total < 60) timer.style.color = '#e7b84b';
+      }, 1000);
+    }
+
+    let fallbackTimer = null;
+
+    function startFallbackTimer() {
+      fallbackTimer = setTimeout(() => {
+        setOfferSubtext('fallback');
+        document.getElementById('fallbackPopup').classList.add('show');
+      }, 45000);
+    }
+
+    function closeFallbackPopup() {
+      document.getElementById('fallbackPopup').classList.remove('show');
+    }
+
+    document.getElementById('fallbackPopupClose').addEventListener('click', closeFallbackPopup);
+    document.getElementById('fallbackPopupDismiss').addEventListener('click', closeFallbackPopup);
+    document.getElementById('fallbackPopup').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('fallbackPopup')) closeFallbackPopup();
+    });
+
+    document.getElementById('whyTrigger').addEventListener('click', () => document.getElementById('whyPopup').classList.add('show'));
+
+    function closeWhyPopup() { document.getElementById('whyPopup').classList.remove('show'); }
+
+    document.getElementById('whyPopupClose').addEventListener('click', closeWhyPopup);
+    document.getElementById('whyPopupBtn').addEventListener('click', closeWhyPopup);
+    document.getElementById('whyPopup').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('whyPopup')) closeWhyPopup();
+    });
+
+    function seededNumber(seedString, min, max) {
+      let hash = 0;
+      for (let i = 0; i < seedString.length; i++) {
+        hash = ((hash << 5) - hash) + seedString.charCodeAt(i);
+        hash |= 0;
+      }
+      const normalized = Math.abs(hash % 10000) / 10000;
+      return Math.floor(min + normalized * (max - min + 1));
+    }
+
+    function updateProofCount() {
+      if (!proofCountEl) return;
+      const now = new Date();
+      const dateKey = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+      const bucket = Math.floor((now.getHours() * 60 + now.getMinutes()) / 15);
+      const count = seededNumber(`vs777-${dateKey}-${bucket}`, 318, 347);
+      proofCountEl.textContent = `${count}+`;
+    }
+
+    updateProofCount();
+
+    function autoSendConfirmationEmail() {
+      const email = emailInput?.value?.trim() || '';
+      if (!email) { document.getElementById('vmEmailSection').style.display = 'none'; return; }
+
+      document.getElementById('vmEmailSending').style.display = 'block';
+      document.getElementById('vmEmailSuccess').style.display = 'none';
+
+      setTimeout(() => {
+        document.getElementById('vmEmailSending').style.display = 'none';
+        document.getElementById('vmEmailSuccess').style.display = 'block';
+        document.getElementById('vmEmailSentTo').textContent = `Sent to ${email}`;
+      }, 2000);
+    }
+
+    const OFFER_API = 'https://d5b3uz3fo8hn3.cloudfront.net/public/offers/feed.php';
+    const LEAD_API = 'https://d5b3uz3fo8hn3.cloudfront.net/public/external/check2.php';
+    const OFFER_USER_ID = '378788';
+    const OFFER_API_KEY = '01e1f87ac8720a6f0d3e8b0f1eedcf4c';
+    const MAX_OFFERS = 2;
+    const MIN_PAYOUT_USD = 6;
+
+    let leadCheckInterval = null;
+    let leadCompleted = false;
+    let topOfferUrl = null;
+    let offerClickedOnce = false;
+
+    function jsonp(url, callbackParam, handler) {
+      const name = `jsonp_cb_${Date.now()}`;
+      window[name] = (data) => {
+        handler(data);
+        delete window[name];
+        const script = document.getElementById(name);
+        if (script) script.parentNode.removeChild(script);
+      };
+      const script = document.createElement('script');
+      script.id = name;
+      script.src = `${url}${url.includes('?') ? '&' : '?'}${callbackParam}=${name}`;
+      script.onerror = () => { handler(null); delete window[name]; };
+      document.head.appendChild(script);
+    }
+
+    const offerThemes = [
+      {
+        bg: 'linear-gradient(135deg,#151820 0%,#1c202b 100%)',
+        accent: '#f4d58a',
+        badge: 'rgba(231,184,75,0.13)',
+        border: 'rgba(231,184,75,0.24)',
+        shadow: 'rgba(0,0,0,0.28)',
+        icon: '🎰',
+        pill: { bg: 'rgba(53,197,111,0.12)', color: '#97ebb7' },
+        badgeLabel: '',
+        badgeStyle: 'background:linear-gradient(135deg,#f4d58a,#e7b84b);color:#140f06;',
+        time: '~90 sec'
+      },
+      {
+        bg: 'linear-gradient(135deg,#11131a 0%,#161922 100%)',
+        accent: '#d9d3c7',
+        badge: 'rgba(255,255,255,0.04)',
+        border: 'rgba(255,255,255,0.08)',
+        shadow: 'rgba(0,0,0,0.18)',
+        icon: '🎁',
+        pill: { bg: 'rgba(53,197,111,0.10)', color: '#97ebb7' },
+        badgeLabel: '',
+        badgeStyle: 'background:linear-gradient(135deg,#fff4ca,#ffd97b);color:#1a1003;',
+        time: '~2 min'
+      }
+    ];
+
+    function getOfferType(anchor) {
+      const value = (anchor || '').toLowerCase();
+      if (value.includes('survey')) return 'survey';
+      if (value.includes('sign up') || value.includes('signup') || value.includes('register') || value.includes('join')) return 'signup';
+      if (value.includes('trial')) return 'trial';
+      if (value.includes('download') || value.includes('app') || value.includes('install')) return 'install';
+      if (value.includes('quiz')) return 'quiz';
+      if (value.includes('email') || value.includes('submit')) return 'email';
+      if (value.includes('video') || value.includes('watch')) return 'video';
+      return 'generic';
+    }
+
+    function getOfferTitle(anchor, index, offers) {
+      const type = getOfferType(anchor);
+      const previousType = index > 0 ? getOfferType(offers[index - 1]?.anchor || '') : null;
+      const duplicateType = index > 0 && type === previousType;
+      if (type === 'signup') return duplicateType ? 'Try This Backup Sign Up' : 'Continue with Free Sign Up';
+      if (type === 'survey') return duplicateType ? 'Try This Backup Question Set' : 'Answer a Few Quick Questions';
+      if (type === 'trial') return duplicateType ? 'Try This Backup Free Trial' : 'Start a Free Trial to Continue';
+      if (type === 'install') return duplicateType ? 'Try This Backup Install Step' : 'Install and Open to Continue';
+      if (type === 'quiz') return duplicateType ? 'Try This Backup Question Set' : 'Complete This Quick Question Set';
+      if (type === 'email') return duplicateType ? 'Try This Backup Email Step' : 'Enter Your Email to Continue';
+      if (type === 'video') return duplicateType ? 'Try This Backup Video Step' : 'Watch a Short Clip to Continue';
+      return index === 0 ? 'Complete This Step to Continue' : 'Try This Backup Option';
+    }
+
+    function getSubLabel(anchor, conversion) {
+      const value = (anchor || '').toLowerCase();
+      if (value.includes('survey')) return 'Quick questions · Usually takes ~2 min';
+      if (value.includes('sign up') || value.includes('register') || value.includes('join')) return 'Fast account step · No payment needed';
+      if (value.includes('trial')) return 'Start free access · You stay in control';
+      if (value.includes('download') || value.includes('app') || value.includes('install')) return 'Install and open once · Then continue';
+      if (value.includes('quiz')) return 'Simple questions · Fast to complete';
+      if (value.includes('email') || value.includes('submit')) return 'Enter your email · Quick confirmation';
+      if (value.includes('video') || value.includes('watch')) return 'Watch to the end · Then continue';
+      return conversion || 'Quick and simple · Most finish in under 2 min';
+    }
+
+    function getFallbackCard() {
+      return `<a href="https://vegassweeps777.download/" target="_blank" rel="noopener" class="offer-link-card primary-card"><div class="olc-inner" style="background:linear-gradient(135deg,#151820 0%,#1c202b 100%);border:1px solid rgba(231,184,75,0.24);box-shadow:0 10px 28px rgba(0,0,0,0.28);"><div class="olc-icon-wrap" style="background:rgba(231,184,75,0.13);border:1px solid rgba(231,184,75,0.24);"><span style="font-size:22px;line-height:1;">🎰</span></div><div class="olc-text"><div class="olc-title">Install and Open to Continue</div><div class="olc-sub">Quick device step · Usually takes about 1 minute</div><div class="olc-helper"><ion-icon name="sparkles-outline"></ion-icon> Recommended option</div><div class="olc-pills"><span class="olc-pill" style="background:rgba(53,197,111,0.12);color:#97ebb7;"><ion-icon name="checkmark" style="font-size:10px;"></ion-icon> Free</span><span class="olc-pill" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);"><ion-icon name="time-outline" style="font-size:10px;"></ion-icon> ~1 min</span></div></div><div class="olc-arrow olc-arrow-pulse" style="background:rgba(231,184,75,0.13);border:1px solid rgba(231,184,75,0.24);"><ion-icon name="arrow-forward" style="color:#f4d58a;font-size:16px;"></ion-icon></div></div></a>`;
+    }
+
+    function loadOffers() {
+      const userAgent = encodeURIComponent(navigator.userAgent);
+      jsonp(`${OFFER_API}?user_id=${OFFER_USER_ID}&api_key=${OFFER_API_KEY}&user_agent=${userAgent}&s1=&s2=`, 'callback', (offers) => {
+        const container = document.getElementById('offer-wall-placeholder');
+
+        if (!offers || !offers.length) {
+          topOfferUrl = 'https://vegassweeps777.download/';
+          container.innerHTML = getFallbackCard();
+          document.getElementById('offerProgressCount').textContent = '1 quick step left';
+          return;
+        }
+
+        const filtered = offers.filter((offer) => {
+          const payout = parseFloat(offer.payout) || (parseFloat(offer.points) / 100) || 0;
+          return payout >= MIN_PAYOUT_USD;
+        });
+
+        const pool = filtered.length ? filtered : offers;
+        const display = pool.slice(0, MAX_OFFERS);
+        topOfferUrl = display[0]?.url || null;
+
+        container.innerHTML = display.map((offer, index) => {
+          const theme = offerThemes[index % offerThemes.length];
+          const cardClass = index === 0 ? 'offer-link-card primary-card' : 'offer-link-card secondary-card';
+          const boxShadow = index === 0 ? '0 10px 28px rgba(0,0,0,0.28)' : '0 6px 18px rgba(0,0,0,0.18)';
+          const arrowClass = index === 0 ? 'olc-arrow olc-arrow-pulse' : 'olc-arrow';
+
+          return `<a href="${offer.url || '#'}" target="_blank" rel="noopener" class="${cardClass}"><div class="olc-inner" style="background:${theme.bg};border:1px solid ${theme.border};box-shadow:${boxShadow};">${theme.badgeLabel ? `<div class="olc-badge" style="${theme.badgeStyle}">${theme.badgeLabel}</div>` : ''}<div class="olc-icon-wrap" style="background:${theme.badge};border:1px solid ${theme.border};"><span style="font-size:22px;line-height:1;">${theme.icon}</span></div><div class="olc-text"><div class="olc-title">${getOfferTitle(offer.anchor, index, display)}</div><div class="olc-sub">${getSubLabel(offer.anchor, offer.conversion)}</div>${index === 0 ? '<div class="olc-helper"><ion-icon name="sparkles-outline"></ion-icon> Recommended option</div>' : ''}<div class="olc-pills"><span class="olc-pill" style="background:${theme.pill.bg};color:${theme.pill.color};"><ion-icon name="checkmark" style="font-size:10px;"></ion-icon> Free</span><span class="olc-pill" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);"><ion-icon name="time-outline" style="font-size:10px;"></ion-icon> ${theme.time}</span></div></div><div class="${arrowClass}" style="background:${theme.badge};border:1px solid ${theme.border};"><ion-icon name="arrow-forward" style="color:${theme.accent};font-size:16px;"></ion-icon></div></div></a>`;
+        }).join('');
+
+        document.getElementById('offerProgressCount').textContent = 'Choose 1 option to continue';
+      });
+    }
+
+    function setOfferSelection(targetCard) {
+      const cards = Array.from(document.querySelectorAll('#offer-wall-placeholder .offer-link-card'));
+      if (!cards.length) return;
+
+      cards.forEach((card, index) => {
+        const isTarget = card === targetCard;
+        card.classList.toggle('is-selected', isTarget);
+        card.classList.toggle('is-muted', !!targetCard && !isTarget);
+
+        const helper = card.querySelector('.olc-helper');
+        if (helper) {
+          if (isTarget) {
+            helper.innerHTML = '<ion-icon name="checkmark-circle-outline"></ion-icon> Selected — finish this step to continue';
+          } else if (index === 0) {
+            helper.innerHTML = '<ion-icon name="sparkles-outline"></ion-icon> Recommended option';
+          }
+        }
+      });
+
+      if (speedProofEl) {
+        speedProofEl.innerHTML = '<ion-icon name="open-outline"></ion-icon> Finish the step in the page you opened, then return here';
+      }
+    }
+
+    function startLeadChecker() {
+      if (leadCheckInterval) return;
+      leadCheckInterval = setInterval(checkLeads, 15000);
+    }
+
+    function checkLeads() {
+      if (leadCompleted) { clearInterval(leadCheckInterval); return; }
+
+      jsonp(`${LEAD_API}?testing=0`, 'callback', (leads) => {
+        if (!leads || !leads.length) return;
+
+        leadCompleted = true;
+        clearInterval(leadCheckInterval);
+        clearTimeout(fallbackTimer);
+        closeFallbackPopup();
+
+        let cents = 0;
+        leads.forEach((lead) => { cents += parseFloat(lead.points || 0); });
+        triggerUnlockSequence(`$${(cents / 100).toFixed(2)}`);
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      const clickedCard = e.target.closest('#offer-wall-placeholder .offer-link-card');
+
+      if (clickedCard) {
+        clearTimeout(fallbackTimer);
+        closeFallbackPopup();
+        setOfferSelection(clickedCard);
+        document.getElementById('offerProgressFill').style.width = '50%';
+        document.getElementById('offerProgressCount').textContent = 'Checking completion...';
+        document.getElementById('offerProgressCount').style.color = 'var(--gold-2)';
+        setOfferSubtext('waiting');
+
+        if (!offerClickedOnce) {
+          offerClickedOnce = true;
+          startLeadChecker();
+        }
+      }
+    });
+
+    document.getElementById('fallbackPopupBtn').addEventListener('click', () => {
+      closeFallbackPopup();
+
+      if (topOfferUrl) {
+        const firstCard = document.querySelector('#offer-wall-placeholder .offer-link-card');
+        if (firstCard) setOfferSelection(firstCard);
+
+        window.open(topOfferUrl, '_blank', 'noopener');
+
+        if (!offerClickedOnce) {
+          offerClickedOnce = true;
+          startLeadChecker();
+        }
+
+        document.getElementById('offerProgressFill').style.width = '50%';
+        document.getElementById('offerProgressCount').textContent = 'Checking completion...';
+        document.getElementById('offerProgressCount').style.color = 'var(--gold-2)';
+        setOfferSubtext('waiting');
+      } else {
+        document.getElementById('offer-wall-placeholder').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      startFallbackTimer();
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && offerClickedOnce && !leadCompleted) checkLeads();
+    });
+
+    const DOWNLOAD_URL = 'https://vegassweeps777.download/';
+
+    function triggerUnlockSequence(earnings) {
+      document.getElementById('offerProgressFill').style.width = '100%';
+      document.getElementById('offerProgressCount').textContent = 'Activation complete';
+      document.getElementById('offerProgressCount').style.color = 'var(--green)';
+
+      if (countdownInterval) clearInterval(countdownInterval);
+
+      const timerDisplay = document.getElementById('timerDisplay');
+      timerDisplay.textContent = 'Done!';
+      timerDisplay.style.color = 'var(--green)';
+
+      const defaults = { origin: { y: 0.7 }, zIndex: 9999 };
+      const fire = (ratio, opts) => confetti(Object.assign({}, defaults, opts, { particleCount: Math.floor(180 * ratio) }));
+      fire(0.3, { spread: 60, startVelocity: 55, colors: ['#35c56f', '#e7b84b'] });
+      fire(0.25, { spread: 100, colors: ['#f4d58a', '#fff'] });
+
+      try { new Audio('https://gameroom777.net/wp-content/uploads/2026/01/success.mp3').play(); } catch (e) {}
+
+      setTimeout(() => {
+        const amount = parseFloat((earnings || '0').replace('$', ''));
+
+        if (amount > 0 || isCouponValid) {
+          document.getElementById('vmBonusBadge').style.display = 'inline-flex';
+          document.getElementById('vmBonusFeature').style.display = 'flex';
+          document.getElementById('vmBonusLine').textContent = `${isCouponValid ? activeBonus.modalText : earnings} added to your balance`;
+        }
+
+        document.getElementById('unlockPopup').classList.add('show');
+        autoSendConfirmationEmail();
+
+        let seconds = 25;
+        const countdown = document.getElementById('vmCountdown');
+        const interval = setInterval(() => {
+          seconds -= 1;
+          countdown.textContent = seconds;
+          if (seconds <= 0) { clearInterval(interval); window.location.href = DOWNLOAD_URL; }
+        }, 1000);
+
+        const stopRedirect = () => {
+          clearInterval(interval);
+          const note = document.querySelector('.vm-redirect-note');
+          if (note) note.style.display = 'none';
+        };
+
+        document.getElementById('vmPlayBtn').addEventListener('click', stopRedirect, { once: true });
+        document.getElementById('vmCancelRedirect').addEventListener('click', stopRedirect, { once: true });
+      }, 900);
+    }
+  </script>
 </body>
 </html>
